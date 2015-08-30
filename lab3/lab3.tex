@@ -143,10 +143,12 @@ Polystyrene permittivity data was provided by Alvin and Jesse in table \ref{tab:
 \section{Discussion}
 The calculated capacitance for \(C_1 || C_2\) was, as expected, equal to \(C_1 + C_2\), matching the well accepted theory that capacitance adds in parallel. The inferred capacitance for \(C_3\) from both \(C_2 \bigoplus C_3\) and \(C_1 || (C_2 \bigoplus C_3)\) agree, with \(C_2 \bigoplus C_3\) providing the more precise value.
 
-Reviewing why our original method for measuring the capacitance of the plates failed, the plates were calculated to have a capacitance on the order of \SI{10}{\pico\farad} with the commonly accepted value of vacuum permittivity, which is far too low to measure with our method. However, our method of calculating permittivity from capacitance (\(\varepsilon = \frac{C d}{A}\)) is only limited by how accurately capacitance can be measured, and thus likely better than the alternate method.
-
 Using the alternate method along with Merryn and Jordan's data, the calculated permittivity has an error of \(200\%\) and thus is likely not a very precise method to calculate the permittivity. However, the commonly accepted value of vacuum permittivity (\SI{\approx 9}{\pico\farad\per\metre}) is within this upper bound and on the same order of magnitude, so the results were not completely off.
 
 However, using the same alternate method, but with Alvin and Jesse's data for polystyrene, the calculated permittivity has an error two order of magnitude higher than the average value, along with a negative average value when permittivity should be positive. This could indicate that the method was even worse than expected previously, or some significant unaccounted for external influence such as charge leakage or measurement errors, or both. The commonly quoted polystyrene permittivity (\SI{\approx 20}{\pico\farad\per\metre}) is within the calculated upper bound, however.
+
+Reviewing why our original method for measuring the capacitance of the plates failed, the plates were calculated to have a capacitance on the order of \SI{10}{\pico\farad} with the commonly accepted value of vacuum permittivity, which is far too low to measure with our method. However, our method of calculating permittivity from capacitance (\(\varepsilon = \frac{C d}{A}\)) is only limited by how accurately capacitance can be measured, and thus likely much better than the alternate method.
+
+If our method were to be modified to allow accurate measurement of capacitance, placing a large resistor in series with the plates will likely produce much more measurable results, since both current and the charging would be limited by it. Decreasing the input voltage may also help. Testing would be required for the values to use, but \SI{>1}{\mega\ohm} and \SI{<1}{\volt} would be good starting points for future experiments.
 
 \end{document}
