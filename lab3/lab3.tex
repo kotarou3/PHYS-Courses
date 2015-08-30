@@ -1,0 +1,152 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb}
+\usepackage{siunitx}
+\usepackage{arydshln}
+
+\begin{document}
+
+\title{PHYS1241: Capacitors and Permittivity}
+\author{ \\ \\ }
+\date{2015-08-27}
+\maketitle
+
+\section{Abstract}
+Three unknown capacitors were measured to have capacitance \(C_1 = \SI{2.8 \pm 0.1}{\milli\farad}\), \(C_2 = \SI{1.1}{\milli\farad}\) and \(C_3 = \SI{0.56}{\milli\farad}\). Upper bounds were then established on the vacuum permittivity and polystyrene permittivity to be \SI{20}{\pico\farad\per\metre} and \SI{100}{\pico\farad\per\metre}, respectively.
+
+\section{Introduction}
+Three unknown capacitors on an existing circuit was provided and we were tasked with measuring their capacitance, and then the vacuum permittivity and the polystyrene permittivity.
+
+\section{Materials and Methods}
+Please refer to pages 80 to 83 inclusive in the PHYS1241 laboratory manual for the base materials and methods used. The capacitance can then be calculated from \(C = I \frac{\Delta t}{\Delta V}\).
+
+Due to not having access to a constant current source, it was approximated by only considering the first \SI{1.0}{\second} of the capacitor charging, where the voltage-time plot was still locally linear.
+
+The method chosen to measure the vacuum permittivity was to measure the capacitance of the two plates at high radius to separation ratios to minimise end effects, and then calculating the air permittivity from \(\varepsilon = \frac{C}{d A}\) where \(d\) is the separation distance and \(A = \SI{232 \pm 6}{\centi\meter\squared}\) is the area of a single plate. The air permittivity approximates the vacuum permittivity to three significant figures, which is more than what our lab equipment can measure to, so it is a sufficient approximation.
+
+An alternative method would be to varying the distance between the plates after disconnecting the power source but keeping the electroscope connected, ensuring a constant charge on the plates, and then examining the change in voltage to infer the air permittivity with \(\varepsilon = -\frac{C_E \Delta V}{A \Delta \frac{V}{d}}\), where \(C_E = \SI{27}{\pico\farad}\) is the electroscope capacitance. This equation is derived as follows:
+\begin{align*}
+    Q = V C &= V (C_1 + C_2) = V \left( \frac{A \varepsilon}{d} + C_E \right) \\
+    \therefore V_1 \left( \frac{A \varepsilon}{d_1} + C_E \right) &= V_2 \left( \frac{A \varepsilon}{d_2} + C_E \right) \\
+    \frac{V_1}{d_1} A \varepsilon - \frac{V_2}{d_2} A \varepsilon &= V_2 C_E - V_1 C_E \\
+    -A \varepsilon \Delta \frac{V}{d} &= C_E \Delta V \\
+    \varepsilon &= - \frac{C_E \Delta V}{A \Delta \frac{V}{d}}
+\end{align*}
+
+The above two methods were also used to measure and calculate the polystyrene permittivity.
+
+\section{Results}
+\begin{table}
+    \centering
+    \begin{tabular}{c | c | c}
+        Capacitors & Current (\(I\)) (\SI{}{\milli\ampere}) & Voltage-Time ratio (\(\frac{\Delta V}{\Delta t}\)) (\SI{}{\volt\per\second}) \\
+        \hline
+        
+        & \SI{0.37}{} & \SI{0.13}{} \\
+        \(C_1\) & \SI{0.38}{} & \SI{0.13}{} \\
+        & \SI{0.37}{} & \SI{0.13}{} \\
+        \hdashline
+        Average & \SI{0.37 \pm 0.01}{} & \SI{0.13}{} \\
+        \hline
+        
+        & \SI{0.37}{} & \SI{0.33}{} \\
+        \(C_2\) & \SI{0.37}{} & \SI{0.34}{} \\
+        & \SI{0.37}{} & \SI{0.34}{} \\
+        \hdashline
+        Average & \SI{0.37}{} & \SI{0.34 \pm 0.01}{} \\
+        \hline
+        
+        & \SI{0.37}{} & \SI{0.095}{} \\
+        \(C_1 || C_2\) & \SI{0.37}{} & \SI{0.095}{} \\
+        & \SI{0.37}{} & \SI{0.095}{} \\
+        \hdashline
+        Average & \SI{0.37}{} & \SI{0.095}{} \\
+        \hline
+        
+        & \SI{0.37}{} & \SI{1.0}{} \\
+        \(C_2 \bigoplus C_3\) & \SI{0.37}{} & \SI{1.0}{} \\
+        & \SI{0.37}{} & \SI{1.0}{} \\
+        \hdashline
+        Average & \SI{0.37}{} & \SI{1.0}{} \\
+        \hline
+                
+        & \SI{0.37}{} & \SI{0.11}{} \\
+        \(C_1 || (C_2 \bigoplus C_3)\) & \SI{0.37}{} & \SI{0.12}{} \\
+        & \SI{0.37}{} & \SI{0.11}{} \\
+        \hdashline
+        Average & \SI{0.37}{} & \SI{0.11 \pm 0.01}{} \\
+        \hline
+    \end{tabular}
+    \caption{Capacitor raw data and averaged measurements}
+    \label{tab:capacitor_data}
+\end{table}
+
+\begin{table}
+    \centering
+    \begin{tabular}{c | c}
+        Capacitors & Capacitance (\SI{}{\milli\farad}) \\
+        \hline
+        \(C_1\) & \SI{2.8 \pm 0.1}{} \\
+        \(C_2\) & \SI{1.1}{} \\
+        \(C_1 || C_2\) & \SI{3.9}{} \\
+        \(C_2 \bigoplus C_3\) & \SI{0.37}{} \\
+        \(C_1 || (C_2 \bigoplus C_3)\) & \SI{3.4 \pm 0.3}{} \\
+        \(C_3\) (Inferred from \(C_2 \bigoplus C_3\)) & \SI{0.56}{} \\
+        \(C_3\) (Inferred from \(C_1 || (C_2 \bigoplus C_3)\)) & \SI{0.99 \pm 0.60}{} \\
+        \hline
+    \end{tabular}
+    \caption{Calculated capacitance}
+    \label{tab:calculated_capacitance}
+\end{table}
+
+\begin{table}
+    \centering
+    \begin{tabular}{c | c}
+        Distance (\(d\)) (\SI{}{\centi\meter}) & Voltage (\(V\)) (\SI{}{\volt}) \\
+        \hline
+        \SI{1}{} & \SI{30}{} \\
+        \SI{3}{} & \SI{32}{} \\
+        \SI{5}{} & \SI{35}{} \\
+        \SI{7}{} & \SI{40}{} \\
+        \hline
+    \end{tabular}
+    \caption{Plate raw data from Merryn and Jordan}
+    \label{tab:plate_data}
+\end{table}
+
+\begin{table}
+    \centering
+    \begin{tabular}{c | c}
+        Distance (\(d\)) (\SI{}{\centi\meter}) & Voltage (\(V\)) (\SI{}{\volt}) \\
+        \hline
+        \SI{0.3}{} & ---, \SI{24}{}, \SI{26}{} \\
+        \SI{0.4}{} & \SI{24}{}, ---, --- \\
+        \SI{0.5}{} & \SI{18}{}, \SI{26}{}, \SI{28}{} \\
+        \SI{0.7}{} & \SI{24}{}, \SI{37}{}, \SI{35}{} \\
+        \SI{1.0}{} & ---, \SI{47}{}, \SI{30}{} \\
+        \hline
+    \end{tabular}
+    \caption{Polystyrene raw data from Alvin and Jesse}
+    \label{tab:polystyrene_data}
+\end{table}
+
+The three unknown capacitors and their capacitances are represented as \(C_1\), \(C_2\) and \(C_3\), with the figure on page 81 of the lab manual showing their positions within the circuit. \(||\) is used to denote circuit elements in parallel, and \(\bigoplus\) in series.
+
+From the measurements we gathered (Table \ref{tab:capacitor_data}), \(C_1\) and \(C_2\) can be calculated directly (Table \ref{tab:calculated_capacitance}). Since \(C_3\) was not directly measured, its value can only be inferred from the other measurements.
+
+Measuring the capacitance of the two plates turned out to be infeasible. The voltage instantly rose to the input voltage giving an infinite value for the voltage-time ratio, so our method could not be used.
+
+Fortunately, Merryn and Jordan attempted the alternative method, and their data is recorded in table \ref{tab:plate_data}. Taking pairs of their data, the air permittivity was calculated to be \SI{10 \pm 20}{\pico\farad\per\metre}, or assuming a positive permittivity, an upper bound of \SI{20}{\pico\farad\per\meter}.
+
+Polystyrene permittivity data was provided by Alvin and Jesse in table \ref{tab:polystyrene_data}. Taking pairs, the polystyrene permittivity was calculated to be \SI{-1 \pm 100}{\pico\farad\per\metre}, or assuming a positive permittivity, an upper bound of \SI{100}{\pico\farad\per\meter}.
+
+\section{Discussion}
+The calculated capacitance for \(C_1 || C_2\) was, as expected, equal to \(C_1 + C_2\), matching the well accepted theory that capacitance adds in parallel. The inferred capacitance for \(C_3\) from both \(C_2 \bigoplus C_3\) and \(C_1 || (C_2 \bigoplus C_3)\) agree, with \(C_2 \bigoplus C_3\) providing the more precise value.
+
+Reviewing why our original method for measuring the capacitance of the plates failed, the plates were calculated to have a capacitance on the order of \SI{10}{\pico\farad} with the commonly accepted value of vacuum permittivity, which is far too low to measure with our method. However, our method of calculating permittivity from capacitance (\(\varepsilon = \frac{C d}{A}\)) is only limited by how accurately capacitance can be measured, and thus likely better than the alternate method.
+
+Using the alternate method along with Merryn and Jordan's data, the calculated permittivity has an error of \(200\%\) and thus is likely not a very precise method to calculate the permittivity. However, the commonly accepted value of vacuum permittivity (\SI{\approx 9}{\pico\farad\per\metre}) is within this upper bound and on the same order of magnitude, so the results were not completely off.
+
+However, using the same alternate method, but with Alvin and Jesse's data for polystyrene, the calculated permittivity has an error two order of magnitude higher than the average value, along with a negative average value when permittivity should be positive. This could indicate that the method was even worse than expected previously, or some significant unaccounted for external influence such as charge leakage or measurement errors, or both. The commonly quoted polystyrene permittivity (\SI{\approx 20}{\pico\farad\per\metre}) is within the calculated upper bound, however.
+
+\end{document}
