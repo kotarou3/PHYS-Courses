@@ -7,7 +7,7 @@
 \tikzstyle{every node} = [align = center]
 \pgfplotsset{
     compat = 1.9,
-    potential/.style = { 
+    potential/.style = {
         axis lines = middle,
         grid = both,
         minor tick num = 3,
@@ -177,7 +177,7 @@ Unfortunately, due to the low number of data points gathered, goodness of fit to
         ]
             \addplot +[no marks, domain = 0:62] {12 * x / 62};
             \addlegendentry{Ideal}
-            
+
             \addplot +[potential-scatter] table [
                 x error = xerror,
                 y error = yerror
@@ -192,7 +192,7 @@ Unfortunately, due to the low number of data points gathered, goodness of fit to
                 49  10  2       0.5
             };
             \addlegendentry{Perpendicular Bisector}
-                                                
+
             \addplot +[potential-scatter] table [
                 x error = xerror,
                 y error = yerror
@@ -207,7 +207,7 @@ Unfortunately, due to the low number of data points gathered, goodness of fit to
                 49  10  2       0.5
             };
             \addlegendentry{Left Edge}
-                                                
+
             \addplot +[potential-scatter] table [
                 x error = xerror,
                 y error = yerror
@@ -252,7 +252,7 @@ The multimeter was also used briefly to compare the results with the electromete
         ]
             \addplot +[no marks, domain = 15:101] {6.29 * (ln(x) - 2.71};
             \addlegendentry{Ideal}
-            
+
             \addplot +[potential-scatter] table [
                 x error = xerror,
                 y error = yerror
@@ -295,7 +295,7 @@ Measurement of the voltage outside of the outer cylinder was also taken, but it 
         ]
             \addplot +[no marks, domain = 11:133] {2.41 * ln(12 * x / (143 - x))};
             \addlegendentry{Ideal}
-            
+
             \addplot +[potential-scatter] table [
                 x error = xerror,
                 y error = yerror
