@@ -127,7 +127,7 @@ Table \ref{tab:part2_data} lists the collected data points after removing the sy
 \begin{figure}
     \centering
     \begin{tikzpicture}
-        \begin{axis}[bfield]
+        \begin{axis}[bfield, ymin = 0]
             \addplot +[bfield-scatter] table [
                 x error = xerror,
                 y error = yerror
@@ -146,7 +146,7 @@ Table \ref{tab:part2_data} lists the collected data points after removing the sy
             };
             \addlegendentry{Raw data}
             
-            \addplot +[no marks, domain = 0.2:2.5] {0.0528311 + 0.143822 * x};
+            \addplot +[no marks, domain = 0:2.5] {0.0528311 + 0.143822 * x};
             \addlegendentry{Fitted data}
         \end{axis}
     \end{tikzpicture}
