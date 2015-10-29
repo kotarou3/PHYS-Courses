@@ -1,0 +1,94 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb}
+
+\usepackage{sectsty}
+\sectionfont{\large\selectfont}
+\subsectionfont{\normalsize\selectfont}
+
+\usepackage{siunitx}
+
+\usepackage{tikz, pgfplots}
+\pgfplotsset{compat = 1.9}
+
+\begin{document}
+
+\title{PHYS1241: Assignment 4}
+\author{ \\ \\ }
+\date{2015-10-30}
+\maketitle
+
+\section{In a photoelectric experiment in which monochromatic light and a sodium photocathode are used, we find a stopping potential of \(K = \SI{1.85}{\electronvolt}\) for \(\lambda = \SI{300}{\nano\metre}\) and \(K = \SI{0.82}{\electronvolt}\) for \(\lambda = \SI{400}{\nano\metre}\). From these data determine:}
+\subsection{The value for Planck's constant \(h\).}
+Using \(K = \frac{h c}{\lambda} - \varphi\), one can solve simultaneously for \(h\) to obtain:
+\[h = \frac{K_2 - K_1}{c \left( \frac{1}{\lambda_2} - \frac{1}{\lambda_1} \right)}\]
+
+Evaluating this for the given values of \(K\) and \(\lambda\) (assuming three significant figures on \(\lambda\)) gives \(h = \SI{6.6e-34}{\joule\second}\).
+
+\subsection{The work function of sodium \(\varphi\) in electron volts.}
+Using the same equation as above, but solving simultaneously for \(\varphi\), one obtains:
+\[\varphi = \frac{K_1 \lambda_1 - K_2 \lambda_2}{\lambda_2 - \lambda_1}\]
+
+Evaluating this for the given values of \(K\) and \(\lambda\) (assuming three significant figures on \(\lambda\)) gives \(\varphi = \SI{2.3}{\electronvolt}\).
+
+\subsection{The threshold wavelength for sodium \(\lambda_0\).}
+Using \(\frac{h c}{\lambda_0} = \varphi\) or \(\lambda_0 = \frac{h c}{\varphi}\), and \(\varphi\) from above, \(\lambda_0 = \SI{550}{\nano\metre}\).
+
+\section{Singly ionised helium, like hydrogen, has only one electron. However, the nucleus is different. In the Bohr model, what difference does the extra nuclear charge make? Have a look at the derivation of the energies and spectral lines for hydrogen, and then determine how the energy levels and spectral wavelengths for singly ionised helium would differ from those for hydrogen.}
+To adapt the Bohr model for hydrogen to singly ionised helium, we simply use \(Z = 2\) rather than \(Z = 1\), since there are now two protons in the nucleus.
+
+This provides us with electron orbit radii \(r_n\) which are approximately half of those of hydrogen:
+\begin{align*}
+    r_n &= \frac{n^2 \hbar^2}{Z k_e e^2 m} \approx 26.5 n^2 \,\si{\pico\metre} \\
+    &\approx 26.5, 106, 238, 423, 662, ... \,\si{\pico\metre}
+\end{align*}
+
+and corresponding energies \(E_n\) which are approximately four times those of hydrogen:
+\begin{align*}
+    E_n &= -\frac{Z k_e e^2}{2 r_n} = -\frac{Z^2 (k_e e^2)^2 m}{2 n^2 \hbar^2} \approx -\frac{54.4}{n^2} \,\si{\electronvolt} \\
+    &\approx -54.4, -13.6, -6.05, -3.40, -2.18, ... \,\si{\electronvolt}
+\end{align*}
+
+where \(k_e\) is Coulomb's constant, \(e\) the elementary charge and \(m = \frac{Z m_e m_p}{m_e + Z m_p} \approx m_e\) the reduced mass of the electron-proton system.
+
+The spectral lines can be predicted to be approximately a quarter of the wavelength of hydrogen's by taking the difference between two energy levels:
+\begin{align*}
+    \frac{h c}{\lambda} &= E_i - E_f \\
+    &= \frac{Z^2 (k_e e^2)^2 m}{2 \hbar^2} \left( \frac{1}{n_f^2} - \frac{1}{n_i^2} \right) \\
+    \lambda &= \frac{2 \hbar^2 h c}{Z^2 (k_e e^2)^2 m \left( \frac{1}{n_f^2} - \frac{1}{n_i^2} \right)} \approx \frac{1}{4.39 \left( \frac{1}{n_f^2} - \frac{1}{n_i^2} \right)} \times 10^{-7} \si{\metre}
+\end{align*}
+
+The wavelengths in nanometres, with names corresponding to hydrogen's spectral lines, are:
+\begin{center}
+    \begin{tabular}{c | c | c | c | c | c | c | c}
+        \(n_i\) & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
+        \hline
+        Lyman (\(n_f = 1\)) & 30.4 & 25.6 & 24.4 & 23.7 & 23.4 & 23.3 & 23.1 \\
+        Balmer (\(n_f = 2\)) & & 164 & 122 & 109 & 103 & 99.3 & 97.2 \\
+        Paschen (\(n_f = 3\)) & & & 469 & 320 & 273 & 251 & 239 \\
+        Brackett (\(n_f = 4\)) & & & & 1010 & 656 & 541 & 486 \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\section{Assume that a laser emits monochromatic light at \(\lambda = \SI{500}{\nano\metre}\). You have three optical detectors made from materials given in the table below. Which one would you use to detect the light emission from this laser?}
+\begin{center}
+    \begin{tabular}{c | c}
+        Material & Band Gap \\
+        \hline
+        A & \SI{1}{\electronvolt} \\
+        B & \SI{6}{\electronvolt} \\
+        C & \SI{100}{\electronvolt} \\
+        \hline
+    \end{tabular}
+\end{center}
+
+A single photon of \SI{500}{\nano\metre} light has \(\frac{h c}{\lambda} \approx \SI{2.5 \pm 0.3}{\electronvolt}\) of energy.
+
+Since light absorption is quantised (i.e., an electron can only absorb a single photon at a time or none at all, and cannot ``accumulate'' energy from multiple absorptions to jump an band/energy gap), only material A will have a non-zero chance to absorb and detect \SI{500}{\nano\metre} light, because its band gap is the only band gap that is smaller or equal to the photon's energy.
+
+However, if non-linear optics are involved, third harmonic generation can produce \SI{170 \pm 20}{\nano\metre} light corresponding to \SI{7.4 \pm 0.7}{\electronvolt} of energy per photon, which is something material B can absorb. The photon energy needed for material C to absorb it is on the order of 40 times the fundamental frequency, which effectively never occurs.
+
+This means that the optical detector made from material A would be most useful for detecting light from the laser under normal circumstances, while material B might be useful in detecting third or higher harmonic generation.
+
+\end{document}
