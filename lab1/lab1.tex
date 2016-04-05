@@ -1,0 +1,137 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{siunitx}
+
+\usepackage{tikz, pgfplots}
+\usepgfplotslibrary{fillbetween}
+\pgfplotsset{
+    compat = 1.12,
+    plot/.style = {
+        axis lines = middle,
+        clip = false
+    },
+    plot-scatter/.style = {
+        only marks
+    }
+}
+
+\begin{document}
+
+\title{PHYS2113: Speed of Light}
+\author{ \\ \\ }
+\date{2016-03-23}
+\maketitle
+
+\section{Abstract}
+The speed of light in air is measured to be \SI{2.887 \pm 0.018e8}{\metre\per\second} corresponding to a refractive index of \SI{1.0384 \pm 0.0065}{}. The relative refractive indices of acrylic and water in air were also measured to be \SI{1.37 \pm 0.06}{} and \SI{1.47 \pm 0.13}{}, respectively. However, a possibly faulty detector comes to question the reliability and accuracy of these results.
+
+\section{Introduction}
+The speed of light in free space is one of the fundamental physical constants of nature. Whether light comes from a laser on a desktop or from a star receding from us at huge speeds, the speed of light has the same value.
+
+Although light travels very fast, its speed is finite. In SI units, the speed of light is defined to be \SI{299792458}{\metre\per\second}. In transparent media light travels at somewhat reduced speeds; this reduction is represented by the refractive index \(n\) of the medium, defined as the ratio of the speed of light in vacuum to that in the medium.
+
+In this experiment we measure the speed of light in air, as well as the refractive indices of water and acrylic glass, using light emitted by a laser diode whose intensity is modulated at \SI{50}{\mega\hertz}.
+
+\section{Materials and Methods}
+Please refer to the operating instructions of the experiment.
+
+The laser was red in colour but of unknown wavelength. It was estimated to be \SI{650 \pm 30}{\nano\metre} from colour alone. Accounting for the variation of refractive index vs wavelength (dispersion), this would mean our values should be within \SI{1}{\percent} of the standard \SI{589}{\nano\metre} wavelength measurements.
+
+An acrylic rod of length \SI{490}{\milli\metre} and a water-filled tube of \SI{500}{\milli\metre} was used to measure their refractive indices. Taking the length as \(l_m\), the relative refractive indices to air were calculated using \(n = \frac{\Delta x}{l_m} + 1\).
+
+\section{Results}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            plot,
+            xlabel = \(\Delta t\) (\si{\nano\second}),
+            ylabel = \(\Delta S\) (\si{\centi\metre})
+        ]
+            \addplot +[plot-scatter] table [x = Delta-t, y = Delta-S, col sep = tab] {measurement-1.tsv};
+            \addplot +[no marks, domain = 0:12] {2.98506 + 28.8763 * x};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Data from Measurement 1}
+    \label{fig:measurement-1}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            plot,
+            axis y line* = right,
+            axis x line = none,
+            ylabel = \(n\),
+            ymin = 1.20408,
+            ymax = 1.71429
+        ]
+            \addplot +[red, no marks, domain = 50:130] {1.37184};
+            \addplot +[white, no marks, domain = 50:130, name path = upper] {1.37184 + 0.0617867};
+            \addplot +[white, no marks, domain = 50:130, name path = lower] {1.37184 - 0.0617867};
+            \addplot [red!20] fill between [of = upper and lower];
+        \end{axis}
+        \begin{axis}[
+            plot,
+            xlabel = \(x_1\) (\si{\centi\metre}),
+            ylabel = \(\Delta x\) (\si{\centi\metre}),
+            ymin = 10,
+            ymax = 35
+        ]
+            \addplot +[plot-scatter] table [x = x_1, y = Delta-x, col sep = tab] {measurement-2-acrylic.tsv};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Data from Measurement 2 of Acrylic}
+    \label{fig:measurement-2-acrylic}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            plot,
+            axis y line* = right,
+            axis x line = none,
+            ylabel = \(n\),
+            ymin = 1.2,
+            ymax = 1.7
+        ]
+            \addplot +[red, no marks, domain = 50:130] {1.4664};
+            \addplot +[white, no marks, domain = 50:130, name path = upper] {1.4664 + 0.134705};
+            \addplot +[white, no marks, domain = 50:130, name path = lower] {1.4664 - 0.134705};
+            \addplot [red!20] fill between [of = upper and lower];
+        \end{axis}
+        \begin{axis}[
+            plot,
+            xlabel = \(x_1\) (\si{\centi\metre}),
+            ylabel = \(\Delta x\) (\si{\centi\metre}),
+            ymin = 10,
+            ymax = 35
+        ]
+            \addplot +[plot-scatter] table [x = x_1, y = Delta-x, col sep = tab] {measurement-2-water.tsv};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Data from Measurement 2 of Water}
+    \label{fig:measurement-2-water}
+\end{figure}
+
+Measurement 1 (Figure \ref{fig:measurement-1}) produced a gradient of \SI{28.87}{\centi\metre\per\nano\second} with a standard error of \SI{0.09}{\centi\metre\per\nano\second}, meaning a speed of light of \SI{2.887 \pm 0.018e8}{\metre\per\second}. This corresponds to a refractive index of \SI{1.0384 \pm 0.0065}{}.
+
+Measurement 2 of the acrylic rod (Figure \ref{fig:measurement-2-acrylic}) contained numerous outliers when \(x_1 > \SI{120}{\centi\metre}\). Ignoring those produced a relative refractive index of \SI{1.37 \pm 0.06}{} by simply taking the mean and \(1.96 \times\) the standard deviation.
+
+Measurement 2 of the tube of water (Figure \ref{fig:measurement-2-water}) also seemed to contain outliers, but less distinctly so, so they have been included in the calculation. This produced a refractive index of \SI{1.47 \pm 0.13}{}.
+
+\section{Discussion}
+The measured speed of light is \SI{3.7 \pm 0.1}{\percent} below the expected value in a vacuum, and likewise for air (using Wikipedia's quoted refractive index of \SI{1.0003}{} at \(\lambda = \SI{589.29}{\nano\metre}\)). Since this is outside the uncertainty in the data itself and the \SI{1}{\percent} bound for dispersion, it possibly indicates a problem in the experimental set up or equipment.
+
+Similarly, the measured refractive index for acrylic was \SI{8 \pm 4}{\percent} below the commonly quoted \SI{1.49}. Evidence for equipment problems can be seen in the data points at \(x_1 \gtrsim \SI{120}{\centi\metre}\) where \(\Delta x\) starts increasing very quickly where it should have been constant.
+
+Unrecorded ``playing around'' with various \(x_1\)s, as well as swapping the rod and reflectors with others seemed to confirm this. Using identical \(x_1\)s would produce widely varying, but positively correlated, \(\Delta x\)s from as low as \SI{8}{\centi\metre} to as high as \SI{35}{\centi\metre} from one measurement to the next, possibly indicating a problem with the detectors frequency divider. Another person doing the same experiment on another set of equipment did not encounter these problems.
+
+The measured refractive index for water was \SI{11 \pm 11}{\percent} \emph{above} the commonly quoted \SI{1.33}{}, ruling out the possibility that the surrounding air was just very very dense. While within error, the measured \(\Delta x\), like the acrylic's case, varied more than expected, though in a more regular and linear manner. This further indicates that the equipment was the source of error as opposed to the experimental set up.
+
+Due to the likely faulty equipment, the results of this experiment cannot be relied upon to be accurate. This experiment should have been retried with an alternate detector, but due to time constraints, it was not. Alternatively, the frequency divider could be avoided altogether by using a faster oscilloscope that can reliably read \SI{50}{\mega\hertz} signals.
+
+\end{document}
