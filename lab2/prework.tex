@@ -1,0 +1,104 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{tikz}
+\usepackage{siunitx}
+\usepackage{cancel}
+
+\usepackage{sectsty}
+\sectionfont{\large\selectfont}
+\subsectionfont{\normalsize\selectfont}
+
+\begin{document}
+
+\title{PHYS2113: Coupled Pendula Prework}
+\author{ \\ \\ }
+\date{2016-04-19}
+\maketitle
+
+\section{Questions}
+\subsection{Theoretical}
+\subsubsection{For the forces in Figure 1 write a general equation for the total force (Newton's second law of motion) of the system. Your equation should have the general form total torque = summation over individual torques.}
+\begin{align*}
+    \boldsymbol{\tau_1} &= \boldsymbol{\tau_1}_\mathbf{mass} + \boldsymbol{\tau_1}_\mathbf{spring} \\
+    \boldsymbol{\tau_2} &= \boldsymbol{\tau_2}_\mathbf{mass} + \boldsymbol{\tau_2}_\mathbf{spring}
+\end{align*}
+
+\subsubsection{Write the torques (\(\boldsymbol{\tau}\)) in terms of linear forces (\(\mathbf{F}\)) and radii (\(\mathbf{r}\)). This step is important because you can only measure the components of the linear forces.}
+\begin{align*}
+    \mathbf{{r_1}_{mass}} &= L (\sin \phi_1 \mathbf{\hat{x}} - \cos \phi_1 \mathbf{\hat{y}}) \\
+    \mathbf{g} &= -m g \mathbf{\hat{y}} \\
+    \boldsymbol{\tau_1}_\mathbf{mass} &= \mathbf{{r_1}_{mass}} \times \mathbf{g} = -m g L \sin \phi_1 \mathbf{\hat{z}} \\
+    \mathbf{{r_1}_{spring}} &= l (\sin \phi_1 \mathbf{\hat{x}} - \cos \phi_1 \mathbf{\hat{y}}) \\
+    \mathbf{{F_1}_{spring}} &= F_s \mathbf{\hat{x}} = k l (\sin \phi_2 - \sin \phi_1) \mathbf{\hat{x}} \\
+    \boldsymbol{\tau_1}_\mathbf{spring} &= \mathbf{{r_1}_{spring}} \times \mathbf{{F_1}_{spring}} = k l^2 \cos \phi_1 (\sin \phi_2 - \sin \phi_1) \mathbf{\hat{z}} \\
+    \therefore \boldsymbol{\tau_1} &= (-m g L \sin \phi_1 + k l^2 \cos \phi_1 (\sin \phi_2 - \sin \phi_1)) \mathbf{\hat{z}} \\
+    \text{Similarily, } \boldsymbol{\tau_2} &= (-m g L \sin \phi_2 - k l^2 \cos \phi_2 (\sin \phi_2 - \sin \phi_1)) \mathbf{\hat{z}}
+\end{align*}
+
+\subsubsection{Introduce angular acceleration and obtain the differential equations.}
+\begin{align*}
+    \boldsymbol{\tau_1} &= I \ddot{\phi}_1 \mathbf{\hat{z}} = m L^2 \ddot{\phi}_1 \mathbf{\hat{z}} \\
+    \therefore m L^2 \ddot{\phi}_1 &= -m g L \sin \phi_1 + k l^2 \cos \phi_1 (\sin \phi_2 - \sin \phi_1) \\
+    \text{Similarily, } m L^2 \ddot{\phi}_2 &= -m g L \sin \phi_2 - k l^2 \cos \phi_2 (\sin \phi_2 - \sin \phi_1)
+\end{align*}
+
+\subsubsection{Solve the differential equations.}
+Using the small angle approximations \(\sin \theta \approx \theta\) and \(\cos \theta \approx 1\), we get:
+\begin{align*}
+    m L^2 \ddot{\phi}_1 &= -m g L \phi_1 + k l^2 (\phi_2 - \phi_1) \\
+    m L^2 \ddot{\phi}_2 &= -m g L \phi_2 - k l^2 (\phi_2 - \phi_1)
+\end{align*}
+
+Using initial conditions \(\phi_1 = {\phi_1}_0\), \(\phi_2 = {\phi_2}_0\) and \(\dot{\phi}_1 = \dot{\phi}_2 = 0\), solving in a CAS yields:
+\begin{align*}
+    \phi_1 &= \frac{1}{2} \left(({\phi_1}_0 - {\phi_2}_0) \cos \left(t \frac{\sqrt{g L + \frac{2 k l^2}{m}}}{L}\right) + ({\phi_1}_0 + {\phi_2}_0) \cos \left(t \sqrt{\frac{g}{L}}\right)\right) \\
+    \phi_2 &= \frac{1}{2} \left(({\phi_2}_0 - {\phi_1}_0) \cos \left(t \frac{\sqrt{g L + \frac{2 k l^2}{m}}}{L}\right) + ({\phi_1}_0 + {\phi_2}_0) \cos \left(t \sqrt{\frac{g}{L}}\right)\right)
+\end{align*}
+
+This means that the motions of the pendula (at a small angle approximation) have two independent frequencies:
+\begin{align*}
+    f_1 &= \frac{\omega_1}{2 \pi} = \frac{\sqrt{g L + \frac{2 k l^2}{m}}}{2 \pi L} \:\si{\hertz} \\
+    f_2 &= \frac{\omega_2}{2 \pi} = \frac{1}{2 \pi} \sqrt{\frac{g}{L}} \:\si{\hertz}
+\end{align*}
+
+\subsubsection{Consider the three initial conditions: When the motions of the pendula are in phase, out of phase and when they are beating.}
+When they are in phase (\(\phi_1 = \phi_2 \:\forall t\)), \({\phi_1}_0 = {\phi_2}_0\), yielding:
+\[\phi_1 = \phi_2 = {\phi_1}_0 \cos(\omega_2 t)\]
+
+When they are out of phase (\(\phi_1 = -\phi_2 \:\forall t\)), \({\phi_1}_0 = -{\phi_2}_0\), yielding:
+\[\phi_1 = -\phi_2 = {\phi_1}_0 \cos(\omega_1 t)\]
+
+Defining beating as where \(\phi_1\) or \(\phi_2\) has a clear sinusoidal envelope, this can only happen if they can be expressed as a product of two sinusoids. This only happens when either \({\phi_1}_0\) or \({\phi_2}_0\) is zero, yielding:
+\begin{align*}
+    \phi_1 &= {\phi_1}_0 \cos \left(t \frac{\omega_1 - \omega_2}{2}\right) \cos \left(t \frac{\omega_1 + \omega_2}{2}\right) + {\phi_2}_0 \sin \left(t \frac{\omega_1 - \omega_2}{2}\right) \sin \left(t \frac{\omega_1 + \omega_2}{2}\right) \\
+    \phi_2 &= {\phi_1}_0 \sin \left(t \frac{\omega_1 - \omega_2}{2}\right) \sin \left(t \frac{\omega_1 + \omega_2}{2}\right) + {\phi_2}_0 \cos \left(t \frac{\omega_1 - \omega_2}{2}\right) \cos \left(t \frac{\omega_1 + \omega_2}{2}\right)
+\end{align*}
+
+\subsection{Experimental}
+\subsubsection{Using one DC power supply, how would you supply the same voltage across two pendula?}
+Connect them in parallel.
+
+\subsubsection{The voltage sensor is shunted by a capacitor. Why?}
+To act as a low pass filter, since the high frequencies will only be noise (and could cause aliasing, but our expected frequencies are much too low for that to be significant).
+
+Though using a order-of-magnitude estimate on the resistance in the connecting wire (\SI{1}{\meter} long, can support \SI{32}{\ampere} of current, so would be about \SI{0.01}{\ohm}) and the labelled \SI{10}{\micro\farad} of capacitance, the cut-off frequency of this RC filter would be \SI{1}{\mega\hertz}, which is far too high...
+
+\subsubsection{How would you measure the spring constant \(k\)?}
+Hang the spring vertically and add masses to the bottom (\(m\)) and measure the stretched length for each mass added (\(x\)). The spring constant can then be found by taking the gradient of the linear regression of \(x\) vs \(m g\), since \(m g = k x\).
+
+\section{Experimental Plan}
+\begin{itemize}
+    \item See operating instructions and student notes
+    \item Always set the pendula to oscillate in the same plane, and at angles where \(\sin \theta \approx \theta\)
+    \item Make sure both pendula have the same period without the coupling spring, and adjust pendulum lengths accordingly until they do
+    \item Make sure that the measuring apparatuses are zeroed correctly
+    \item Measure the spring constant
+    \item Set the pendula to oscillate in phase, out of phase and beat mode
+    \item Repeat for varying couple lengths (\(l\))
+    \item Try different oscillation modes that aren't any of the three above. Theoretically, it should also produce the same frequencies
+    \item Try large angles
+    \item Try comparing uncoupled to coupled oscillations
+\end{itemize}
+
+\end{document}
