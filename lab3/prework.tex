@@ -1,0 +1,57 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{siunitx}
+
+\usepackage{sectsty}
+\sectionfont{\large\selectfont}
+\subsectionfont{\normalsize\selectfont}
+
+\begin{document}
+
+\title{PHYS2114: RLC Circuits Prework}
+\author{ \\ \\ }
+\date{2016-09-12}
+\maketitle
+
+\section{Theoretical Questions}
+\subsection{Show that the inductance \(L\) of an ideal close packed solenoid with an air core is given by \(L = \frac{\mu_0 \pi l}{4} \left(\frac{D}{d}\right)^2\)}
+An ideal solenoid contains a B-field magnitude of:
+\[B = \frac{\mu_0 N I}{l}\]
+
+This is parallel with the solenoid, which gives a flux through the solenoid of:
+\[\Phi_B = \frac{\mu_0 N I A}{l}\]
+
+Combining this with the definition of inductance gives:
+\[L = \frac{N \Phi_B}{I} = \frac{\mu_0 N^2 A}{l}\]
+where \(N\) is the number of turns, and \(A\) the cross sectional area of the solenoid.
+
+Given that the solenoid has a circular cross sectional area with diameter \(D\), it's area is:
+\[A = \frac{\pi}{4} D^2\]
+
+With wires of diameter \(d\), the number of turns becomes:
+\[N = \frac{l}{d}\]
+
+Thus we arrive at our result:
+\[L = \frac{\mu_0 \pi l}{4} \left(\frac{D}{d}\right)^2\]
+
+\subsection{Calculate the inductance of a solenoid of \(l = \SI{110}{\milli\metre}\), \(D = \SI{82.5}{\milli\metre}\) and \(d = \SI{0.5}{\milli\metre}\), assuming it is ideal}
+\[L \approx \SI{2.96}{\milli\henry}\]
+
+\subsection{For an series RLC circuit, assume \(R = \SI{12}{\ohm}\), \(L = \SI{2.56}{\milli\henry}\) and \(C = \SI{47}{\nano\farad}\). Calculate its resonant frequency \(f_1\), Q factor \(Q\) and bandwidth \(\Delta f\)}
+\[f_1 \approx \SI{14.5}{\kilo\hertz}\]
+\[Q \approx \SI{19.4}{}\]
+\[\Delta f \approx \SI{746}{\hertz}\]
+
+\section{Experimental Plan}
+\begin{itemize}
+    \item Note the impedance, capacitance and (if possible) the inductance of the oscilloscope (via model number and specification sheet?)
+    \item Measure the actual parameters of the RLC circuit directly with a multimeter, if possible
+    \item Save numerical oscilloscope data for later analysis
+    \item Find the resonant frequency first before taking measurements, and then only points around that and extreme points (no point taking multiple measurements for ''flat'' zones)
+    \item Try alternative resistances (including without the resistor!)
+\end{itemize}
+
+Otherwise, basically just follow what the operating instructions says to do.
+
+\end{document}

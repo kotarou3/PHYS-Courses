@@ -1,0 +1,66 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{siunitx}
+
+\usepackage{sectsty}
+\sectionfont{\large\selectfont}
+\subsectionfont{\normalsize\selectfont}
+
+\begin{document}
+
+\title{PHYS2114: Electron Charge to Mass Ratio Prework}
+\author{ \\ \\ }
+\date{2016-08-29}
+\maketitle
+
+\section{Theoretical Questions}
+\subsection{Derive the magnetic flux density in the middle of a Helmholtz coil \(\mathbf{B}_0\), then calculate its value for our coil of diameter \(d = \SI{400}{\milli\metre}\) and turns \(n = 154\).}
+Consider a constant current \(I\) along a loop of radius \(R\) centred at the origin and in the \(x-y\) plane. The magnetic flux density at \(\mathbf{r} = z \mathbf{\hat{z}}\) is thus:
+\begin{align*}
+    \mathbf{l} &= \begin{pmatrix}R \cos(\theta) \\ R \sin(\theta) \\ 0\end{pmatrix} \\
+    \mathbf{r'} &= \mathbf{r} - \mathbf{l} = \begin{pmatrix}-R \cos(\theta) \\ -R \sin(\theta) \\ z\end{pmatrix} \\
+    \mathbf{B}(z) &= \frac{\mu_0 I}{4 \pi} \int_C \frac{\mathrm{d}\mathbf{l} \times \mathbf{r'}}{\mathbf{r'}^3} \\
+    &= \frac{\mu_0 I}{4 \pi} \int_0^{2 \pi} \frac{\frac{\mathrm{d}\mathbf{l}}{\mathrm{d}\theta} \times \mathbf{r'}}{\mathbf{r'}^3} \:\mathrm{d}\theta \\
+    &= \frac{\mu_0 I R^2}{2 (R^2 + z^2)^\frac{3}{2}} \mathbf{\hat{z}}
+\end{align*}
+
+Now consider \(n\) coils at \(z = \frac{R}{2}\) and another \(n\) coils at \(z = -\frac{R}{2}\): a Helmholtz coil. By superposition, the density at the origin is then:
+\begin{align*}
+    \mathbf{B}_0 &= n \mathbf{B}\left(\frac{R}{2}\right) + n \mathbf{B}\left(-\frac{R}{2}\right) \\
+    &= \left(\frac{4}{5}\right)^\frac{3}{2} \frac{\mu_0 n I}{R} \mathbf{\hat{z}}
+\end{align*}
+
+With our Helmholtz coil, we have \(R = \frac{d}{2} = \SI{200}{\milli\metre}\). This gives us a density of:
+\[\mathbf{B}_0 \approx (\SI{0.692}{\milli\tesla\per\ampere}) I \mathbf{\hat{z}}\]
+
+\subsection{An electron of charge \(e\) and mass \(m_e\) is accelerated through a potential difference \(V\). It then passes through a magnetic flux density \(\mathbf{B}_0\) at right angles to its motion, and is seen to move in an arc of a circle of radius \(r\). Derive an expression for \(\frac{e}{m_e}\) in terms of these parameters.}
+An electron will have kinetic energy of:
+\[\frac{1}{2} m_e \dot{\mathbf{x}}^2 = e V\]
+
+By the Lorentz force:
+\[\ddot{\mathbf{x}} = \frac{e}{m_e} (\dot{\mathbf{x}} \times \mathbf{B}_0)\]
+
+Assuming negligible bremsstrahlung, we can simply take \(|\ddot{\mathbf{x}}|\) as the centripetal acceleration and \(|\dot{\mathbf{x}}|\) as radial velocity of uniform circular motion:
+\[\begin{cases}
+    \frac{1}{2} m_e (\omega r)^2 = e V \\
+    \omega^2 r = \left|\frac{e}{m_e}\right| \omega r |\mathbf{B}_0|
+\end{cases}\]
+\[\Longrightarrow \left|\frac{e}{m_e}\right| = \frac{2 V}{|\mathbf{B}_0|^2 r^2} \approx (\SI{4.17e6}{\coulomb\per\kilo\gram\ampere\squared\metre\squared\per\volt}) \frac{V}{I^2 r^2}\]
+
+\section{Practical Questions}
+\subsection{What is the accepted value for the electron charge to mass ratio?}
+\SI{-1.758820024 \pm 0.000000011e11}{\coulomb\per\kilo\gram} is the 2014 CODATA recommended value.
+
+\section{Experimental Plan}
+It can be seen that:
+\[\sqrt{V} \propto r\]
+\[\frac{1}{I} \propto r\]
+
+To cover the widest range of values efficiently, \(V\) and \(I\) should be altered accordingly to their proportionality to \(r\) as shown above. Preferably, this would mean adjusting one or the other until \(r\) falls exactly on one of the markers to minimise the error in \(r\).
+
+Likely the highest source of error will still be in \(r\), due to the spread of the beam and the granularity of the markers.
+
+Otherwise, basically just follow what the operating instructions says to do.
+
+\end{document}

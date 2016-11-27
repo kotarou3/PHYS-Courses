@@ -1,0 +1,130 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{siunitx}
+
+\usepackage{tikz, pgfplots}
+\pgfplotsset{
+    compat = 1.12,
+    plot-scatter/.style = {
+        only marks,
+        mark size = 0.8
+    }
+}
+
+\begin{document}
+
+\title{PHYS2114: Electron Charge to Mass Ratio}
+\author{ \\ \\ }
+\date{2016-08-30}
+\maketitle
+
+\begin{abstract}
+    By measuring the radius of the circle an electron beam forms while moving through an (assumed uniform) magnetic field produced by a Helmholtz coil, the electron charge to mass ratio magnitude was determined to vary with radius from \SI{1.68 \pm 0.11e11}{\coulomb\per\kilo\gram} at radius \SI{2.00 \pm 0.03}{\centi\metre}, to \SI{1.82 \pm 0.05e11}{\coulomb\per\kilo\gram} at \SI{5.00 \pm 0.03}{\centi\metre}. This agrees with the 2014 CODATA recommended value of \SI{1.758820024 \pm 0.000000011e11}{\coulomb\per\kilo\gram} to \(2 \sigma\).
+\end{abstract}
+
+\section{Introduction}
+Please refer to the student notes of the experiment.
+
+\section{Materials and Methods}
+Please refer to the student notes, operating instructions and prework of the experiment.
+
+The focusing voltage was kept at it's maximum value (\SI{50}{\volt}). Each radius marker appeared to have a diameter of about \SI{3}{\milli\metre}, while our electron beam width appeared to be about \SI{2}{\milli\metre} wide throughout the entire acceleration voltage \(V\) and coil current \(I\) range. This places the error in radius measurement to about \(\pm\SI{1}{\milli\metre}\), which actually manifests as errors in \(V\) and \(I\).
+
+Each radius marker was assumed to have an equipment error (in placement) of \(\pm\SI{0.5}{\milli\metre}\), as stated in the student notes.
+
+A minimum of 30 independent measurements were made on each of the radius markers, where both \(V\) and \(I\) were adjusted. The beam was aimed at the centre of the markers as accurately as possible.
+
+Values where the acceleration voltage used had hysteresis effects were noted, but ignored in calculations and the results since our model did not account for them.
+
+We have (from the prework)
+\[\left|\frac{e}{m_e}\right| = k \frac{V}{I^2 r^2}\]
+\[\Rightarrow V = \left|\frac{e}{m_e}\right| \frac{r^2}{k} I^2\]
+where
+\[k \approx \SI{4.17e6}{\coulomb\per\kilo\gram\ampere\squared\metre\squared\per\volt}\]
+
+Since measurements of \(r\) cannot be taken continuously accurately (the markers are too few and spaced too far apart), we can use it as another arbitrary constant. We can then use a linear regression (with the linearity of \(V\) in \(I^2\)) to determine the value of \(\frac{e}{m_e}\) up to a constant factor of \(\pm\frac{r^2}{k}\). We have enough samples (>30) for each radius value that the individual errors for each data point are not really relevant, where we can simply use the standard deviation in the regression as our final error (by the central limit theorem) combined with the error in radius marker placement.
+
+\section{Results}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel = \(I^2\) (\si{\ampere\squared}),
+            ylabel = \(V\) (\si{\volt})
+        ]
+            \addplot +[plot-scatter, blue] table [x expr = {\thisrow{I}^2}, y = V, col sep = tab] {data/0.02.tsv};
+            \addplot +[no marks, red, domain = 8:16.5] {9.79363 + 16.1322 * x};
+            
+            \addplot +[plot-scatter, blue] table [x expr = {\thisrow{I}^2}, y = V, col sep = tab] {data/0.03.tsv};
+            \addplot +[no marks, red, domain = 3:8] {16.6335 + 37.5921 * x};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Data for \(r = \SI{2}{\centi\metre}\) (bottom) and \(r = \SI{3}{\centi\metre}\) (top)}
+    \label{fig:data-1}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel = \(I^2\) (\si{\ampere\squared}),
+            ylabel = \(V\) (\si{\volt})
+        ]
+            \addplot +[plot-scatter, blue] table [x expr = {\thisrow{I}^2}, y = V, col sep = tab] {data/0.04.tsv};
+            \addplot +[no marks, red, domain = 1.5:4.3] {23.8227 + 67.7409 * x};
+            
+            \addplot +[plot-scatter, blue] table [x expr = {\thisrow{I}^2}, y = V, col sep = tab] {data/0.05.tsv};
+            \addplot +[no marks, red, domain = 1:2.7] {18.4021 + 108.997 * x};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Data for \(r = \SI{4}{\centi\metre}\) (bottom) and \(r = \SI{5}{\centi\metre}\) (top)}
+    \label{fig:data-2}
+\end{figure}
+
+\begin{table}
+    \centering
+    \begin{tabular}{c | c | c | c | c}
+        \(r\) (\si{\centi\metre}) & Gradient (\si{\volt\per\ampere\squared}) & \(\frac{e}{m}\) (\si{\coulomb\per\kilo\gram}) & \(1 - R^2\) & \(p\)-value \\
+        \hline
+        \SI{2.00 \pm 0.03}{} & \SI{16.1 \pm 0.9}{} & \SI{1.68 \pm 0.11e11}{} & \SI{3.21e-3}{} & \SI{3.00e-50}{} \\
+        \SI{3.00 \pm 0.03}{} & \SI{37.6 \pm 1.6}{} & \SI{1.74 \pm 0.08e11}{} & \SI{1.70e-3}{} & \SI{1.67e-44}{} \\
+        \SI{4.00 \pm 0.03}{} & \SI{67.7 \pm 2.2}{} & \SI{1.77 \pm 0.06e11}{} & \SI{9.58e-4}{} & \SI{8.82e-41}{} \\
+        \SI{5.00 \pm 0.03}{} & \SI{109 \pm 3}{} & \SI{1.82 \pm 0.05e11}{} & \SI{6.89e-4}{} & \SI{1.84e-39}{} \\
+        \hline
+        All & \SI{4.1 \pm 1.0}{\per\centi\metre\squared} & \SI{1.7 \pm 0.4e11}{} & \SI{6.04e-2}{} & \SI{1.23e-78}{}
+    \end{tabular}
+    \caption{Results, coefficients of determination, and \(p\)-values for each radius}
+    \label{tab:results}
+\end{table}
+
+The raw data points are shown in Figures \ref{fig:data-1} and \ref{fig:data-2}, with the calculated values shown in Table \ref{tab:results}. Combining all the data and scaling by their respective radii, we get the last row in the table.
+
+Hysteresis effects were observed when the acceleration voltage was less than \SI{150}{\volt}. Specifically, it was noted that the beam landed in a different location depending on if the coil current was being adjusted downwards or upwards. While the measurements for it are shown in the figures, they were not included in the calculations.
+
+Additionally, it was noted that the our equipment gave very precise readings of the acceleration voltage and coil current, with no visible variance in the readout for each measurement. Assuming accurate equipment, this leaves all significant errors to either be in our radius measurement or our experimental model.
+
+\section{Discussion}
+\begin{table}
+    \centering
+    \begin{tabular}{c | c}
+        \(r\) (\si{\centi\metre}) & Gradient with SE (\si{\volt\per\ampere\squared\per\centi\metre\squared}) \\
+        \hline
+        \SI{2 \pm 0.1}{} & \SI{4.03 \pm 0.04}{} \\
+        \SI{3 \pm 0.1}{} & \SI{4.18 \pm 0.03}{} \\
+        \SI{4 \pm 0.1}{} & \SI{4.23 \pm 0.03}{} \\
+        \SI{5 \pm 0.1}{} & \SI{4.36 \pm 0.02}{} \\
+        \hline
+        All & \SI{4.1 \pm 0.1}{}
+    \end{tabular}
+    \caption{Standard error of the gradient where the data is scaled by \(r\)}
+    \label{tab:standard-error}
+\end{table}
+
+Notably, our results for every radius matches the 2014 CODATA recommended value of\linebreak\SI{-1.758820024 \pm 0.000000011e11}{\coulomb\per\kilo\gram} to \(2 \sigma\) (and a sign difference, since our model does not consider signedness). The errors are reasonable given the limitations of our equipment and methods.
+
+However, as can be seen from Table \ref{tab:results}, our \(\frac{e}{m}\) has a positive correlation with radius. This is unlikely due to either the measurement or equipment error in radius, since the low standard errors in the gradient for each radius makes them distinct, as shown in Table \ref{tab:standard-error}. This is clear even without a statistic test.
+
+Most likely, this is an error in our experimental model. Specifically, it is likely the assumption of an uniform magnetic field. While indeed the field at the centre of a Helmholtz coil is reasonably uniform, it is still a saddle point. Additionally, the radius markers are made of metal, which can further disrupt the magnetic field.
+
+\end{document}
