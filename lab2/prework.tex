@@ -1,0 +1,110 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{siunitx}
+
+\usepackage{sectsty}
+\sectionfont{\large\selectfont}
+\subsectionfont{\normalsize\selectfont}
+
+\begin{document}
+
+\title{PHYS3112: Muon Lifetime Prework}
+\author{ \\ \\ }
+\date{2017-03-26}
+\maketitle
+
+\section{Questions}
+\subsection{Theoretical prework}
+Suppose the muons from pion decay in the upper atmosphere are born approximately \(h = \SI{50}{\kilo\metre}\) above sea level and possess energies of order \(E = \SI{2}{\giga\electronvolt}\).
+
+\subsubsection{How long do these muons take to reach sea level?}
+First we find the muon's speed:
+\begin{align*}
+    E^2 &= (\gamma m)^2 = \frac{m^2}{1 - v^2} \\
+    \therefore v &= \sqrt{1 - \frac{m^2}{E^2}} \\
+    &\approx \SI{0.999}{\clight}
+\end{align*}
+
+Thus
+\[t = \frac{h}{v} \approx \SI{170}{\micro\second}\]
+
+\subsubsection{Suppose you did not know anything about the Special Theory of Relativity. Given a lifetime of \(\tau = \SI{2}{\micro\second}\), what fraction of the muons should survive a descent lasting that long?}
+\[e^{-\frac{t}{\tau}} \approx \SI{5.4e-37}{}\]
+
+\subsubsection{What is the Lorentz factor for the muon?}
+\[\gamma = \frac{E}{m} \approx 19\]
+
+\subsubsection{What is the muon lifetime in Earth's reference frame, and hence the fraction of muons expected to survive the descent to sea level?}
+Time dilation would slow the muon's clock by the Lorentz factor, effectively increasing its lifetime by the same factor:
+\[\tau_\oplus = \gamma \tau \approx \SI{38}{\micro\second}\]
+
+Thus the expected fraction of muons would be:
+\[e^{-\frac{t}{\tau_\oplus}} \approx \SI{1.2}{\percent}\]
+
+\subsubsection{What is the time required to traverse the distance between the upper atmosphere and sea level in the muon's reference frame?}
+The distance the muon will travel will be contracted to:
+\[h_\mu = \frac{h}{\gamma} \approx \SI{2.6}{\kilo\metre}\]
+
+Thus it traverses this distance in:
+\[t_\mu = \frac{h_\mu}{v} \approx \SI{8.8}{\micro\second}\]
+
+\subsubsection{What is the muon survival fraction in its own rest frame? Does it agree with the result in Earth's frame?}
+\[e^{-\frac{t_\mu}{\tau}} \approx \SI{1.2}{\percent}\]
+...which agrees with our previous value.
+
+\subsection{Experimental prework}
+Figure references are for those in the student notes.
+
+\subsubsection{What exactly is happening in Figure 3? How does the threshold voltage affect the discriminator output? Why does the discriminator fire multiple times even though there is only one pulse from the PMT? How does this relate to the height of the PMT signal?}
+The threshold voltage looks like it is set to a value close to the noise floor of the PMT signal, so it is being triggered spuriously by noise and the ``ringing'' of the PMT.
+
+\subsubsection{What steps would you take during the experiment to determine what is the optimal threshold voltage to use for your experiment?}
+Set the oscilloscope to trigger on the discriminator, then adjust the threshold until the PMT signal looks reasonable. Triggers per second should be around the value in the student notes (\(\sim\SI{14}{\per\second}\)).
+
+\subsubsection{Suppose you let your experiment run for a day. How many ``through-going'' muon events per time bin would you expect to find if the bin width is \SI{1}{\micro\second}, average muon incidence rate is 1 every \SI{70}{\milli\second}, and average ``stop and decay'' rate of \SI{3}{\per\minute}? How would this impact on your reconstruction of the decay time distribution, especially at the tail of the distribution?}
+Since muon incidence events are uncorrelated and random, the time between events follows an exponential distribution with \(\lambda\) equal to the average incidence rate. Thus the events per time bin of width \(b\), starting at time \(t\), after collecting data for \(T\) length of time, would be:
+\[\lambda T \int_t^{t + b} \lambda e^{-\lambda t} \:\mathrm{d}t = \lambda T \left(e^{-\lambda t} - e^{-\lambda (t + b)}\right)\]
+
+Since both \(t \ll \frac{1}{\lambda}\) and \(b \ll \frac{1}{\lambda}\), we can take the Taylor expansion around 0 for these two variables and ignore higher order terms to get:
+\[\lambda^2 T b + \mathcal{O}(t^2 + t b + b^2)\]
+
+With concrete values of \(\lambda = \frac{1}{\beta}\), \(\beta = \SI{70}{\milli\second}\), \(b = \SI{1}{\micro\second}\) and \(T = \SI{24}{\hour}\), we get event counts of about 18 events per bin.
+
+Meanwhile, for the muons that end up decaying inside the detector, the time between entering and decaying also follows an exponential distribution with \(\lambda = \frac{1}{\tau}\), where \(\tau\) is the muon lifetime. Thus the events per time bin using the variables as defined above, and \(r\) being the stop and decay rate, would be:
+\[r T \int_t^{t + b} \frac{1}{\tau} e^{-\frac{t}{\tau}} \:\mathrm{d}t = r T \left(e^{-\frac{t}{\tau}} - e^{-\frac{t + b}{\tau}}\right)\]
+
+With concrete values of \(\tau = \SI{2}{\micro\second}\), \(b = \SI{1}{\micro\second}\), \(T = \SI{24}{\hour}\), \(r = \SI{3}{\per\minute}\) and \(t = 0, 1, 2, ... \:\si{\micro\second}\), we get event counts of around:
+\[1700, 1000, 630, 380, 230, 140, 85, 51, 31, 19, 11, 6.9, 4.2, 2.6, 1.6, ...\]
+
+Notice that at the bins of \(t > 12\), the event counts per bin are an order of magnitude smaller than the counts of the through-going muon events. This would mean that this area of the histogram would not contribute to the fit very much, since the variance in the data would be too high.
+
+\subsubsection{Determine the length of time you will need to sample in order to gain enough statistics for a good muon decay distribution. Discuss trade-offs and practicalities.}
+If we pessimistically estimate (to avoid doing the formal statistical analysis) that for a bin to be useful, we require the stop and decay counts to be greater than the through-going counts, we end with the following condition:
+\[r T \left(e^{-\frac{t}{\tau}} - e^{-\frac{t + b}{\tau}}\right) > \lambda^2 T b\]
+
+Note how the \(T\)s cancel to get a result independent of the measure time. With the previous answer's values for \(r\), \(\tau\), \(b\) and \(\lambda\), we get:
+\[t > \tau \log \left(\frac{r e^{\frac{b}{\tau}} - r}{b \lambda^2}\right) - b \approx \SI{9.1}{\micro\second}\]
+
+Once again, trying to avoid doing formal statistical analysis, we estimate that we need at least 10 stop and decay counts in a bin for it to be useful. This is the condition:
+\[r T \left(e^{-\frac{t}{\tau}} - e^{-\frac{t + b}{\tau}}\right) \geq 10\]
+
+With \(t = \SI{9}{\micro\second}\):
+\[T \geq \frac{10}{r e^{-\frac{t}{\tau}} - r e^{-\frac{t + b}{\tau}}} \approx \SI{13}{\hour}\]
+...which is greater than the amount of time we have in the lab.
+
+Instead, with our \(T \lesssim \SI{4}{\hour}\) limit in the lab, we get a constraint on \(t\):
+\[t \lesssim \tau \log \left(\frac{r T e^{\frac{b}{\tau}} - r T}{10}\right) - b \approx \SI{6.7}{\micro\second}\]
+
+That is, we would only get around 7 useful bins. Hopefully this is enough to get a good exponential fit.
+
+\section{Experimental Plan}
+\begin{itemize}
+    \item Follow the method outlined in the operating instructions.
+    \item Find a reasonable threshold voltage for the discriminator.
+    \item Do a short test run and export of the experimental data to make sure everything works.
+    \item Wait a long time...
+    \item Remember to export the data!
+\end{itemize}
+
+\end{document}
