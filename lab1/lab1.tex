@@ -1,0 +1,184 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{siunitx}
+\usepackage[backend = biber, style = numeric-comp]{biblatex}
+
+\usepackage{tikz, pgfplots}
+\pgfplotsset{
+    compat = 1.12,
+    plot-scatter/.style = {
+        only marks,
+        error bars/.cd,
+        x dir = both, y dir = both,
+        x explicit, y explicit
+    }
+}
+
+\pgfplotstableread{constant-volume.tsv}\constantvolumetsv
+\pgfplotstableread{constant-pressure.tsv}\constantpressuretsv
+\pgfplotstableread{constant-volume-transformed.tsv}\constantvolumetransformedtsv
+\pgfplotstableread{constant-pressure-transformed.tsv}\constantpressuretransformedtsv
+
+\DeclareSIUnit\litre{\liter}
+
+\begin{filecontents}{\jobname.bib}
+@misc{linear-regression,
+	url = {http://mathematica.stackexchange.com/a/13122},
+	year  = {2017},
+	month = {mar},
+	title = {Estimate error on slope of linear regression given data with associated uncertainty}
+}
+\end{filecontents}
+\addbibresource{\jobname.bib}
+
+\begin{document}
+
+\title{PHYS3113: Heat Capacity of Gases}
+\author{ \\ \\ }
+\date{2017-04-04}
+\maketitle
+
+\begin{abstract}
+    By heating air inside a uninsulated glass jar, and measuring the changes in pressure and volume, we calculate a dimensionless heat capacity of \(\hat{c}_V = \SI{4.2 \pm 1.0}{}\) and \(\hat{c}_P = \SI{4.1 \pm 0.3}{}\). This is \SI{68 \pm 40}{\percent} and \SI{17 \pm 9}{\percent} larger than the expected values of \(\hat{c}_V = \frac{5}{2} = 2.5\) and \(\hat{c}_P = \frac{7}{2} = 3.5\), and also does not follow the \(\hat{c}_V + 1 = \hat{c}_P\) law for ideal gases.
+\end{abstract}
+
+\section{Materials and Methods}
+Please refer to the operating instructions of the experiment and the prework.
+
+The manometer used at a tube radius of \(r = \SI{1.90 \pm 0.03}{\milli\metre}\), and had a pressure scale of \(\frac{\mathrm{d} l}{\mathrm{d} P} = \SI{65.0 \pm 0.5}{\milli\metre\per\milli\bar}\). Due to the angle the manometer was mounted at, the working liquid had a fairly concave meniscus, causing the reading to be probably no better than \(\pm \SI{0.05}{\milli\bar}\).
+
+The volume of the flask was specified to be \(V = \SI{10}{\litre}\). The pressure of the lab at the time of experiment was \(P = \SI{1035}{\milli\bar}\), and ambient temperature was \(T = \SI{24 \pm 2}{\degreeCelsius}\).
+
+The flask was noted to be glass and not thermally insulated.
+
+To make our results easy to compare to expected numbers, we will be solving for the dimensionless heat capacity \(\hat{c}_V\) and \(\hat{c}_P\) for our measurements. This involves transforming our equations as follows:
+\begin{align*}
+    C_V &= n R\frac{p \mathrm{d} t - \pi r^2 \frac{\mathrm{d} l}{\mathrm{d} P} P \mathrm{d} P}{\pi r^2 \frac{\mathrm{d} l}{\mathrm{d} P} P \mathrm{d} P + V \mathrm{d} P} \\
+    \therefore \hat{c}_V &= \frac{C_V}{n R} = \frac{p \mathrm{d} t - \pi r^2 \frac{\mathrm{d} l}{\mathrm{d} P} P \mathrm{d} P}{\pi r^2 \frac{\mathrm{d} l}{\mathrm{d} P} P \mathrm{d} P + V \mathrm{d} P} \\
+    C_P &= n R \frac{p \mathrm{d} t}{P \mathrm{d} V} \\
+    \therefore \hat{c}_P &= \frac{C_P}{n R} = \frac{p \mathrm{d} t}{P \mathrm{d} V}
+\end{align*}
+
+Since the gas we are measuring is regular air which is primarily diatomic, we would expect \(\hat{c}_V = \frac{5}{2} = 2.5\) and \(\hat{c}_P = \frac{7}{2} = 3.5\).
+
+For both heat capacities, it is fairly easy to rearrange into a linear equation suitable for a linear regression on:
+\begin{align*}
+    x_V &= \pi r^2 \frac{\mathrm{d} l}{\mathrm{d} P} P \mathrm{d} P + V \mathrm{d} P \\
+    y_V &= p \mathrm{d} t - \pi r^2 \frac{\mathrm{d} l}{\mathrm{d} P} P \mathrm{d} P \\
+    \therefore \hat{c}_V x_V &= y_V \\
+    x_P &= P \mathrm{d} V \\
+    y_P &= p \mathrm{d} t \\
+    \therefore \hat{c}_P x_P &= y_P
+\end{align*}
+
+Of course each of these \(x\) and \(y\) coordinates will have their own individual errors, which we can calculate using the standard rule:
+\[\Delta f(n_1, n_2, ..., n_k) = \sqrt{\sum_{i = 1}^k \left(\frac{\partial f}{\partial n_i} \Delta n_i\right)^2} = |\nabla f \circ \Delta \mathbf{n}|\]
+where \(\circ\) represents the matrix Hadamard product.
+
+As such, we will be using a linear regression that takes into account of these errors\cite{linear-regression}.
+
+\section{Results}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel = \(\mathrm{d} P\) (\si{\milli\bar}),
+            ylabel = \(\mathrm{d} t\) (\si{\milli\second})
+        ]
+            \addplot +[plot-scatter] table [
+                x = dP,
+                y = dt,
+                x error = DdP
+            ] {\constantvolumetsv};
+        \end{axis}
+    \end{tikzpicture}
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel = \(x_V\) (\si{\joule}),
+            ylabel = \(y_V\) (\si{\joule})
+        ]
+            \addplot +[plot-scatter] table [
+                x = x,
+                y = y,
+                x error = Dx,
+                y error = Dy
+            ] {\constantvolumetransformedtsv};
+            \addplot +[no marks, domain = 0:2] {-0.223995 + 4.23396 * x};
+            \addplot +[no marks, black, domain = 0:2] {0.697718 + 5.19525 * x};
+            \addplot +[no marks, black, domain = 0:2] {-1.14571 + 3.27267 * x};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Data points for constant volume}
+    \label{fig:constant-volume}
+\end{figure}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel = \(\mathrm{d} V\) (\si{\centi\metre\cubed}),
+            ylabel = \(\mathrm{d} t\) (\si{\milli\second})
+        ]
+            \addplot +[plot-scatter] table [
+                x = dV,
+                y = dt,
+                x error = DdV
+            ] {\constantpressuretsv};
+        \end{axis}
+    \end{tikzpicture}
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel = \(x_P\) (\si{\joule}),
+            ylabel = \(y_P\) (\si{\joule})
+        ]
+            \addplot +[plot-scatter] table [
+                x = x,
+                y = y,
+                x error = Dx,
+                y error = Dy
+            ] {\constantpressuretransformedtsv};
+            \addplot +[no marks, domain = 0:1.2] {-0.0847765 + 4.05986 * x};
+            \addplot +[no marks, black, domain = 0:1.2] {0.413432 + 4.37144 * x};
+            \addplot +[no marks, black, domain = 0:1.2] {-0.582985 + 3.74828 * x};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Data points for constant pressure}
+    \label{fig:constant-pressure}
+\end{figure}
+
+The current and voltage to the heating element was consistently around \SI{0.63 \pm 0.01}{\ampere} and \SI{4.44 \pm 0.01}{\volt} during the experiment, corresponding to a power of \SI{2.80 \pm 0.04}{\watt}.
+
+The raw data points measured can be seen in the left graph of figures \ref{fig:constant-volume} and \ref{fig:constant-pressure}, while the transformed points (according to the methods above) are on the right.
+
+The linear regression produced gradients of \(\hat{c}_V = \SI{4.2 \pm 1.0}{}\) and \(\hat{c}_P = \SI{4.1 \pm 0.3}{}\).
+
+\section{Discussion}
+Our \(\hat{c}_V\) and \(\hat{c}_P\) are \SI{68 \pm 40}{\percent} and \SI{17 \pm 9}{\percent} larger than the expected values for air, respectively, despite both graphs being obviously quite linear. While the error in these values are rather large (especially for \(\hat{c}_V\)), they still exclude our expected values, indicating a systematic error rather than random error.
+
+The most obvious cause would be heat leaking out of the flask to the environment, and we can mathematically show this would increase the measured heat capacity, by considering \(\mathrm{\delta} Q_{loss}\) being leaked to the environment:
+\begin{align*}
+    C_{measured} &= \frac{\mathrm{\delta} Q}{\mathrm{d} T} \\
+    C_{actual} &= \frac{\mathrm{\delta} Q - \mathrm{\delta} Q_{loss}}{\mathrm{d} T} \\
+    \therefore C_{measured} &= C_{actual} + \frac{\mathrm{\delta} Q_{loss}}{\mathrm{d} T}
+\end{align*}
+
+In other words, we think we're adding \(\mathrm{\delta} Q\) to the system (and using it in our calculations), but in reality, only \(\mathrm{\delta} Q - \mathrm{\delta} Q_{loss}\) is being added. Thus we need to add more heat than we ``need'' to reach the same temperature, hence increasing our perceived heat capacity.
+
+The solution, of course, is to insulate the system well so that the leakage heat is minimised, or otherwise have some way of measuring the leaked heat to factor into the calculations.
+
+However, we have another systematic error in our results, in that we expect \(\hat{c}_V + 1 = \hat{c}_P\), but this did not happen in our results. Our explanation for this is similar to the one above, but instead of heat leaking out (which still happens in this case, but we will ignore it since it is likely approximately the same between the two parts of the experiment), we have extra heat added in due to the extra human element in the constant pressure experiment.
+
+To effectively perform the ``volume compensation'' for measuring at constant pressure with the given equipment, a human has to grip the syringe. Since the temperature of the air inside the syringe would be in thermal equilibrium with the surrounding temperature (of \SI{24 \pm 2}{\degreeCelsius}), a human gripping it would transfer heat into it due to the human body temperature of \SI{37}{\degreeCelsius}. This effectively turns the above \(\mathrm{\delta} Q_{loss}\) into a \(-\mathrm{\delta} Q_{grip}\), resulting in a lower heat capacity than otherwise.
+
+Solving this problem is simple: remove the human. Some kind of device (whether electronic or otherwise) that automatically adjusts its volume to keep pressure constant, instead of the syringe, should be used instead.
+
+Finally, we can reduce the relative random errors in \(\hat{c}_V\) and \(\hat{c}_P\) by taking out the human element, and additionally taking more measurements. Without a human involved, the data will likely show less variance, while more measurements means a more accurate linear regression.
+
+\section{Conclusion}
+\emph{(From abstract)} By heating air inside a uninsulated glass jar, and measuring the changes in pressure and volume, we calculate a dimensionless heat capacity of \(\hat{c}_V = \SI{4.2 \pm 1.0}{}\) and \(\hat{c}_P = \SI{4.1 \pm 0.3}{}\). This is \SI{68 \pm 40}{\percent} and \SI{17 \pm 9}{\percent} larger than the expected values of \(\hat{c}_V = \frac{5}{2} = 2.5\) and \(\hat{c}_P = \frac{7}{2} = 3.5\), and also does not follow the \(\hat{c}_V + 1 = \hat{c}_P\) law for ideal gases.
+
+The reason for this discrepancy is that our system was not thermally insulated, allowing heat to transfer in and out, affecting our results. Heat capacity measurements therefore must be done in a thermally insulated (and otherwise closed) system.
+
+\printbibliography
+
+\end{document}
