@@ -1,0 +1,136 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{siunitx}
+\usepackage{listings, color}
+
+\usepackage{tikz, pgfplots, pgfplotstable}
+\pgfplotsset{
+    compat = 1.12,
+    plot-scatter/.style = {
+        only marks,
+        mark size = 0.5,
+        error bars/.cd,
+        x dir = both, y dir = both,
+        x explicit, y explicit
+    }
+}
+
+\pgfplotstableread{2N3904-10Ohm.tsv}\bjttsv
+\pgfplotstableread{2N3904-Alt-2kOhm.tsv}\bjtalttsv
+\pgfplotstableread{Diode-3kOhm.tsv}\diodetsv
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{
+    basicstyle = \footnotesize,
+    commentstyle = \color{dkgreen},
+    frame = single,
+    keepspaces = true,
+    keywordstyle = \color{blue},
+    numbers = left,
+    numbersep = 5pt,
+    numberstyle = \tiny\color{gray},
+    rulecolor = \color{black},
+    stringstyle = \color{mauve},
+    showstringspaces = false
+}
+
+\begin{document}
+
+\title{PHYS3112: IV Curve of a forward biased NPN BJT and diode}
+\author{ \\ \\ }
+\date{2017-05-01}
+\maketitle
+
+\begin{abstract}
+    Some IV curves of a 2N3904 NPN BJT were measured, along with an unknown diode. Both components were determined to have a cut-off voltage at around \SI{0.6}{\volt}, while the diode's curve has the typical shape of a pn diode.
+\end{abstract}
+
+\section{Materials and Methods}
+Please refer to the operating instructions of the experiment (experiment automation).
+
+The NPN BJT we used was a 2N3904 BJT, while the diode had an unknown model number.
+
+We performed measurements on the NPN BJT in two different arrangements:
+\begin{itemize}
+    \item \SI{+5}{\volt} connected directly to the collector; Variable PSU connected via a \SI{2}{\kilo\ohm} resistor to the base; And ground connected via a \SI{10}{\ohm} resistor to the emitter. This results in a resistor tuple of \((R_C, R_B, R_E) = (0, 2000, 10) \:\si{\ohm}\), and is measuring the emitter current.
+    \item \SI{+5}{\volt} connected via a \SI{2}{\kilo\ohm} resistor to the collector; Variable PSU connected via a \SI{2}{\kilo\ohm} resistor to the base; And ground connected directly to the emitter. This results in a resistor tuple of \((R_C, R_B, R_E) = (2000, 2000, 0) \:\si{\ohm}\), and is measuring the collector current.
+\end{itemize}
+
+Meanwhile, the measurements on the diode was done simply by connecting the variable PSU to the positive end, and ground via a \SI{3}{\kilo\ohm} resistor to the negative end.
+
+Unfortunately due to the limitations of both the oscilloscope and power supply, we were unable to collect enough data to give an accurate quantitative view of the NPN's IV curve. More specifically, the oscilloscope could only return one channel data, so only one voltage drop per data point could be recorded, even though we used two separate resistors and thus needed to record the voltage drop of both. The power supply limited the resolution of the voltage to \SI{0.1}{\volt}, so the resolution of our data is also poor.
+
+As such, our data can only provide an approximate shape of the NPN's IV curve.
+
+The script used to collect the raw data is as follows
+\lstinputlisting[language = Python]{main.py}
+
+\section{Results and Discussion}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel = \(V_{BE} + I_B R_B\) (\si{\volt}),
+            ylabel = \(I_E\) (\si{\ampere})
+        ]
+            \addplot +[plot-scatter] table [
+                x expr = \thisrowno{0} - \thisrowno{1},
+                x error expr = \thisrowno{2},
+                y expr = \thisrowno{1} / 10,
+                y error expr = \thisrowno{2} / 10
+            ] {\bjttsv};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{NPN IV curve with \((R_C, R_B, R_E) = (0, 2000, 10) \:\si{\ohm}\)}
+    \label{fig:bjt}
+\end{figure}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel = \(V_{BE} + I_B R_B\) (\si{\volt}),
+            ylabel = \(I_C\) (\si{\ampere})
+        ]
+            \addplot +[plot-scatter] table [
+                y expr = \thisrowno{1} / 2000,
+                y error expr = \thisrowno{2} / 2000,
+                restrict x to domain = 0:4
+            ] {\bjtalttsv};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{NPN IV curve with \((R_C, R_B, R_E) = (2000, 2000, 0) \:\si{\ohm}\)}
+    \label{fig:bjt-alt}
+\end{figure}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel = \(V\) (\si{\volt}),
+            ylabel = \(I\) (\si{\ampere})
+        ]
+            \addplot +[plot-scatter] table [
+                x expr = \thisrowno{0} - \thisrowno{1},
+                x error expr = \thisrowno{2},
+                y expr = \thisrowno{1} / 3000,
+                y error expr = \thisrowno{2} / 3000
+            ] {\diodetsv};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Diode IV curve with \(R = \SI{3}{\kilo\ohm}\)}
+    \label{fig:diode}
+\end{figure}
+
+The two measurement arrangement results on the NPN BJT are shown in Figures \ref{fig:bjt} and \ref{fig:bjt-alt}, and the results for the diode is shown in Figure \ref{fig:diode}.
+
+One can clearly see the regions where the component is non-conducting, active, and saturated (in the case of the BJT). Both the BJT and diode appear to have a cut-off voltage at around \SI{0.6}{\volt}. This is in line with typical textbook values of \SI{0.7}{\volt}.
+
+While the shape of the BJT IV curves can't be commented on due to the lack of a proper \(V_{BE}\) number, the diode has a very typical IV curve of a pn diode.
+
+\section{Conclusion}
+\emph{(From abstract)} Some IV curves of a 2N3904 NPN BJT were measured, along with an unknown diode. Both components were determined to have a cut-off voltage at around \SI{0.6}{\volt}, while the diode's curve has the typical shape of a pn diode.
+
+\end{document}
