@@ -1,0 +1,45 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{siunitx}
+
+\usepackage{sectsty}
+\sectionfont{\large\selectfont}
+\subsectionfont{\normalsize\selectfont}
+
+\begin{document}
+
+\title{PHYS3112: Compton Effect Prework}
+\author{ \\ \\ }
+\date{2017-05-07}
+\maketitle
+
+\section{Questions}
+\subsection{Describe, concisely, the three main ways in which high energy photons interact with matter.}
+\begin{itemize}
+    \item Absorption or elastic scattering, where the photon is absorbed by an electron or the nucleus, and then possibly re-emitted (e.g., Photoelectric effect, X-ray crystallography)
+    \item Inelastic scattering, where the wavelength does change (e.g., Compton effect)
+    \item Pair production, where the photon decays in to a particle-antiparticle pair while simultaneously dumping excess energy or momentum in another particle
+\end{itemize}
+
+\subsection{Use the Compton formula to calculate the expected wavelength shift and energy change in this experiment for angles \SI{30}{\degree}, \SI{90}{\degree}, \SI{135}{\degree} and \SI{180}{\degree}.}
+If we assume an incident energy of \(E_0 = \SI{662}{\kilo\electronvolt}\), then:
+\[\Delta E = E_1 - E_0 = h c \left(\frac{1}{\lambda + \Delta \lambda} - \frac{1}{\lambda}\right)\]
+\begin{center}
+\begin{tabular}{c | c | c}
+    Angle (\si{\degree}) & \(\Delta \lambda\) (\si{\pico\metre}) & \(\Delta E\) (\si{\kilo\electronvolt}) \\
+    \hline
+    30 & 0.325 & -97.9 \\
+    90 & 2.436 & -373.6 \\
+    135 & 4.142 & -455.9 \\
+    180 & 4.853 & -477.7
+\end{tabular}
+\end{center}
+
+\subsection{Suggest reasons for the broadening of the experimentally observed peaks.}
+Primarily thermal Doppler broadening
+
+\subsection{Briefly discuss the estimated resolution available with the combination of the Sodium Iodide scintillation detector and the Multi Channel Analyser. How does this compare to the expected peak separation?}
+From the screenshot of the MCA, it appears to have a resolution of about \SI{0.217}{\kilo\electronvolt} per bin, with 4000 bins in total. This means we have a minimum and maximum possible separations of \SI{0.650}{\kilo\electronvolt} and \SI{866}{\kilo\electronvolt} respectively. This is enough to distinguish the separations we expect for angles between \SI{30}{\degree} and \SI{180}{\degree}.
+
+\end{document}
