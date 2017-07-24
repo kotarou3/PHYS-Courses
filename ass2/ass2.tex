@@ -1,0 +1,154 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{siunitx}
+\usepackage{braket}
+
+\begin{document}
+
+\title{PHYS3111: Assignment 2}
+\author{ \\ \\ }
+\date{2017-05-25}
+\maketitle
+
+\section{Consider an electron localised in a box, and the box is slowly circled around an ideal solenoid. Find the variation of the electron's wavefunction after one circling.}
+Suppose the electron has a Hamiltonian and wavefunction of \(H(\hat{\mathbf{p}}, \hat{\mathbf{r}})\) and \(\psi(\hat{\mathbf{r}})\). If we now perform a coordinate transformation of \(\hat{\mathbf{r}} \to \hat{\mathbf{r}} - \mathbf{R}\), where \(|\mathbf{R}| = R\) is the radius of the circular path, then its new Hamiltonian and wavefunction are:
+\begin{align*}
+    \hat{H} &= H(\hat{\mathbf{p}}, \hat{\mathbf{r}} - \mathbf{R}) \\
+    \psi &= \psi(\hat{\mathbf{r}} - \mathbf{R})
+\end{align*}
+
+If we now add a vector potential, the electron will acquire a phase shift if it moves:
+\begin{align*}
+    \hat{H} &= H(\hat{\mathbf{p}} - q \mathbf{A}(\hat{\mathbf{R}}), \hat{\mathbf{r}} - \mathbf{R}) \\
+    \psi &= \exp\left(\frac{i e}{\hbar} \int_\mathbf{R}^{\mathbf{R} + \Delta \mathbf{R}} \mathbf{A}(\mathbf{r}') \cdot \mathrm{d} \mathbf{r}'\right) \psi(\hat{\mathbf{r}} - \mathbf{R})
+\end{align*}
+
+If we now calculate the Berry phase shift with \(\mathbf{R}\) as our slowly varying variable:
+\begin{align*}
+    \gamma &= i \oint \braket{\psi | \nabla_\mathbf{R} \psi} \:\mathrm{d} \mathbf{R} \\
+    &= \frac{e}{\hbar} \oint \iiint \psi^\dagger(\mathbf{r} - \mathbf{R}) \mathbf{A}(\mathbf{R}) \psi(\mathbf{r} - \mathbf{R}) \:\mathrm{d}^3 \mathbf{r} \cdot \mathrm{d} \mathbf{R} \\
+    &= \frac{e}{\hbar} \oint \mathbf{A}(\mathbf{R}) \cdot \mathrm{d} \mathbf{R} \\
+    &= \frac{e}{\hbar} \iint \nabla \times \mathbf{A} \cdot \mathrm{d} \mathbf{S} \\
+    &= \frac{e}{\hbar} \Phi_B
+\end{align*}
+
+Where \(\Phi_B\) is the enclosed magnetic flux, which in our situation is through the solenoid.
+
+This equals the Aharonov--Bohm effect's phase shift, which is expected.
+
+\section{Consider the propagation of a particle of finite mass \(m\) and zero energy \(E = \frac{k^2}{2 m} = 0\) in a spherical potential well of \(U(r < b) = -W\).}
+\subsection{Find the wavefunction \(\psi\) for the scattering problem.}
+To solve this problem, we will be using partial wave analysis. Most working is left out since they were solved in a CAS for my own sanity.
+
+Solving the radial Schrodinger equation explicitly, we obtain the following solutions:
+\begin{align*}
+    \psi &= R_l(r) Y_{l m}(\theta, \phi) \\
+    R_l(r) &= \begin{cases}
+        A_l j_l(\kappa r) + B_l y_l(\kappa r) & r < b \\
+        C_l j_l(k r) + D_l y_l(k r) & r > b
+    \end{cases} \\
+    \kappa &= \frac{\sqrt{2 m (E + W)}}{\hbar} \\
+    k &= \frac{\sqrt{2 m E}}{\hbar}
+\end{align*}
+where \(j_l\) and \(y_k\) are the spherical Bessel functions.
+
+Since \(R_l(0)\) must be finite, clearly \(B_l = 0\).
+
+Let us ensure the continuity of both the wavefunction and its derivative at the boundary \(r = b\):
+\begin{align*}
+    \lim_{r \to b^-} R_l(r) &= \lim_{r \to b^+} R_l(r) \\
+    \lim_{r \to b^-} \frac{\mathrm{d}}{\mathrm{d} r} R_l(r) &= \lim_{r \to b^+} \frac{\mathrm{d}}{\mathrm{d} r} R_l(r)
+\end{align*}
+\begin{align*}
+    \therefore C_l &= A_l k b^2 (\kappa y_l(k b) j_{l + 1}(\kappa b) - k y_{l + 1}(k b) j_l(\kappa b)) \\
+    D_l &= A_l k b^2 (k j_{l + 1}(k b) j_l(\kappa b) - \kappa j_l(k b) j_{l + 1}(\kappa b))
+\end{align*}
+
+This leaves only \(A_l\) as an arbitrary constant.
+
+While this is the general wavefunction for this potential, it is not very ``useful'' by itself. We can get a more relevant wavefunction in the next question, after finding the scattering amplitude.
+
+\subsection{Derive from it the scattering amplitude \(f\). Verify that when \(E = 0\), \(f\) is real and independent of scattering angle.}
+Continuing with partial wave analysis, let us solve for the phase shift \(\tan \delta_l = -\frac{D_l}{C_l}\):
+\[\tan \delta_l = \frac{k j_{l + 1}(k b) j_l(\kappa b) - \kappa j_l(k b) j_{l + 1}(\kappa b)}{k y_{l + 1}(k b) j_l(\kappa b) - \kappa y_l(k b) j_{l + 1}(\kappa b)}\]
+
+Our scattering amplitude is:
+\begin{align*}
+    f(\theta, k) &= \sum_{l = 0}^\infty (2 l + 1) \frac{e^{i \delta_l} \sin \delta_l}{k} P_l(\cos \theta)
+\end{align*}
+which is unfortunately not analytically solvable in the general case.
+
+Instead, let us examine what happens as \(E \propto k \to 0\). If we take the asymptotic expansion of the Bessel functions containing \(k\) at 0, we arrive at the following values:
+\[\lim_{k \to 0^+} \frac{e^{i \delta_l} \sin \delta_l}{k} = \begin{cases}
+    \kappa b^2 \sec(\kappa b) j_1(\kappa b) & l = 0 \\
+    0 & l > 0
+\end{cases}\]
+
+This indicates only the \(s\)-wave gets scattered, with a resulting scattering amplitude of:
+\begin{align*}
+    f(\theta, 0) &= \kappa b^2 \sec(\kappa b) j_1(\kappa b) \\
+    &= \frac{\tan (\kappa b)}{\kappa} - b
+\end{align*}
+
+Clearly the scattering amplitude is no longer dependent on \(\theta\); and since both \(\kappa\) and \(b\) are real numbers, \(f(\theta, 0)\) is also real.
+
+The wavefunction for this scattering problem is then:
+\[\psi = e^{i k r \cos \theta} + f(\theta, k) \frac{1}{r} e^{i k r}\]
+
+At the low energy limit \(E \to 0\), this becomes:
+\[\psi \approx e^{i k r \cos \theta} + \left(\frac{\tan (\kappa b)}{\kappa} - b\right) \frac{1}{r} e^{i k r}\]
+
+\subsection{Find the scattering length \(a\) and total cross section \(\sigma\).}
+The scattering length is just the negative scattering amplitude at \(k \to 0\):
+\[a = b - \frac{\tan (\kappa b)}{\kappa}\]
+
+The total cross section is:
+\[\sigma = \oiint |f(\theta, k)|^2 \:\mathrm{d} \Omega\]
+
+For \(k \to 0\), this is simply:
+\[\sigma = 4 \pi a^2 = 4 \pi \left(b - \frac{\tan (\kappa b)}{\kappa}\right)^2\]
+
+\subsection{Find the restriction on the parameters \(m\), \(W\) and \(b\) where the scattering length and cross section turn infinite.}
+Examining the scattering length (at \(E \to 0\)), one can trivially see that due to the tangent function, the length diverges when:
+\[\kappa b = \frac{\sqrt{2 m W}}{\hbar} b = n \pi + \frac{\pi}{2}\]
+where \(n\) is an integer.
+
+\subsection{Compare the restriction with the condition which ensures that there exists a low energy \(s\)-wave bound state in the potential well.}
+Going back to the general wavefunction we derived earlier, let us examine when \(E \in [-W, 0)\) for bound states. Since now our wavefunction needs to be normalisable, it is convenient to use spherical Hankel functions instead of Bessel functions for the wavefunction outside of the potential:
+\begin{align*}
+    \psi &= R_l(r) Y_{l m}(\theta, \phi) \\
+    R_l(r) &= \begin{cases}
+        A_l j_l(\kappa r) & r < b \\
+        C_l' h_l^{(1)}(i k' r) + D_l' h_l^{(2)}(i k' r) & r > b
+    \end{cases} \\
+    \kappa &= \frac{\sqrt{2 m (E + W)}}{\hbar} \\
+    k' &= \frac{\sqrt{-2 m E}}{\hbar}
+\end{align*}
+
+The asymptotic behaviours of the Hankel functions at infinity are:
+\begin{align*}
+    h_l^{(1)}(x) &\sim e^{i x} \\
+    h_l^{(2)}(x) &\sim e^{-i x}
+\end{align*}
+
+So clearly \(D_l' = 0\), or otherwise our wavefunction would diverge.
+
+We can now divide our continuity equations to eliminate the constants completely, and get the conditions for a bound state:
+\begin{align*}
+    \lim_{r \to b^-} \frac{R_l(r)}{\frac{\mathrm{d} R_l(r)}{\mathrm{d} r}} &= \lim_{r \to b^+} \frac{R_l(r)}{\frac{\mathrm{d} R_l(r)}{\mathrm{d} r}} \\
+    \kappa h_l^{(1)}(i k' b) j_{l + 1}(\kappa b) &= i k' h_{l + 1}^{(1)}(i k' b) j_l(\kappa b)
+\end{align*}
+
+For \(s\)-wave states, this simplifies down to:
+\[k' = -\kappa \cot \kappa b\]
+If we take the limit when \(E \to 0\), we find a ``pseudo-bound'' state:
+\[\kappa \cot \kappa b = 0\]
+\[\therefore \kappa b = \frac{\sqrt{2 m W}}{\hbar} b = n \pi + \frac{\pi}{2}\]
+
+Which exactly matches the restriction from the previous question.
+
+\subsection{Using your previous two results, explain which energy levels in the system are responsible for the resonance of the scattering problem.}
+If we substitute the resonance condition from two questions ago into the previous question, we can see the \emph{only} \(s\)-wave bound state that satisfies it is when \(k' = 0\). Therefore, this is the only energy level that is responsible for the resonance.
+
+\end{document}
