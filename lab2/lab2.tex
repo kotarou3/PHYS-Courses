@@ -1,0 +1,187 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{siunitx}
+
+\usepackage{tikz, pgfplots}
+\pgfplotsset{
+    compat = 1.12,
+    plot-scatter/.style = {
+        only marks,
+        error bars/.cd,
+        x dir = both, y dir = both,
+        x explicit, y explicit
+    }
+}
+
+\begin{document}
+
+\title{PHYS3114: Polarisation of Light}
+\author{ \\ \\ }
+\date{2017-08-28}
+\maketitle
+
+\section{Materials and Methods}
+Please refer to the student notes of the experiment.
+
+\subsection{Circular Polarisation}
+Without loss of generality, assume the laser outputs linearly vertically polarised light. This is a Jones vector of:
+\[\mathbf{J} = \begin{pmatrix}1 \\ 0\end{pmatrix}\]
+
+Our birefringent crystal has its fast axis at an angle of \(\phi\) from the vertical, and produces a phase difference of \(\eta\) between its fast and slow axes. Additionally, we assume the crystal has no dichroism. This corresponds to a Jones matrix of:
+\[\mathbf{P} = \begin{pmatrix}\cos \phi & -\sin \phi \\ \sin \phi & \cos \phi\end{pmatrix} \begin{pmatrix} e^{i \frac{\eta}{2}} & 0 \\ 0 & e^{-i \frac{\eta}{2}}\end{pmatrix} \begin{pmatrix}\cos \phi & \sin \phi \\ -\sin \phi & \cos \phi\end{pmatrix}\]
+
+Finally, we have our linear analyser at an angle of \(\theta\) from the vertical:
+\[\mathbf{A} = \begin{pmatrix}\cos \theta & -\sin \theta \\ \sin \theta & \cos \theta\end{pmatrix} \begin{pmatrix} 1 & 0 \\ 0 & 0\end{pmatrix} \begin{pmatrix}\cos \theta & \sin \theta \\ -\sin \theta & \cos \theta\end{pmatrix}\]
+
+This results in a final output intensity of:
+\begin{align*}
+    I &= \mathbf{J}^\dagger \mathbf{P}^\dagger \mathbf{A}^\dagger \mathbf{A P J} \\
+    &= \frac{1}{4} \left|\left(e^{i \eta} + 1\right) \cos \theta + \left(e^{i \eta} - 1\right) \cos(\theta - 2 \phi)\right|^2
+\end{align*}
+
+To match our experimental setup, we need to maximise \(I\) when \(\theta = \frac{\pi}{2}\) while varying \(\phi\). This gives us the constraint \(\phi = \frac{\pi}{4} + n \frac{\pi}{2} + \varepsilon_{\phi}\), where \(\varepsilon_{\phi}\) is our error in crystal alignment. This results in an expression for \(I\):
+\begin{align*}
+    I &= \frac{1}{4} (2 + \cos(2 \theta) - \cos(2 \theta - 4 \varepsilon_{\phi}) + 2 \cos(\eta) \cos(2 \varepsilon_{\phi}) \cos(2 \theta - 2 \varepsilon)) \\
+    &= \frac{1}{2}(1 + A \cos(2 \theta + \alpha)) \\
+    &\approx \frac{1}{2} (1 + \cos(\eta) \cos(2 \theta)) + (\cos \eta - 1) \sin(2 \theta) \varepsilon \\
+    A &= \frac{1}{2} \sqrt{3 + \cos(2 \eta) - 2 \sin^2(\eta) \cos(4 \varepsilon)} \\
+    \tan \alpha &= -\frac{1}{4} \csc^2\left(\frac{\eta}{2}\right) \cos(2 \varepsilon) \csc(\varepsilon) \sec(\varepsilon) \left(\cos(\eta) + \tan^2(2 \varepsilon)\right)
+\end{align*}
+
+For a perfect quarter-wave plate and alignment (i.e., perfectly circularly polarised), \(\eta = \frac{\pi}{2}\) and \(\varepsilon = 0\), which results in a uniform intensity of \(I = \frac{1}{2}\) regardless of the angle of the analyser.
+
+If we take measurements by only varying \(\theta\), we theoretically can obtain values for both \(\eta\) and \(\varepsilon\). But since they are so heavily coupled together, the errors in the result will be huge. Hence, their values will not be attempted to be found in our report.
+
+\section{Results}
+\subsection{Scattering of polarised light off Dettol and Ajax solutions}
+Rotating the half wave plate changes the intensity of the scattered light in the horizontal direction. An intensity minima occurs when the plate's fast axis is set to \SI{45 \pm 5}{\degree} from the vertical. 
+
+The only difference observed between the Dettol and Ajax solutions was that the Ajax had a lower intensity of scattered light in general, as well as being a clearer solution overall than Dettol (The Dettol solution was cloudy white).
+
+\subsection{Linear Polarisation}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel = Polariser Angle (\si{\degree}),
+            ylabel = Reading (\si{\volt}),
+            samples = 100,
+            smooth
+        ]
+            \addplot +[plot-scatter] table [
+                skip first n = 1,
+                x index = 0,
+                y index = 1,
+                y error index = 2
+            ] {3.3.A.tsv};
+            \addplot +[no marks, domain = 0:180] {0.100977 + 0.100229 * cos(180 / pi * 0.347268 - 2 * x)};
+            \addplot [no marks, domain = 0:180] {0.100977 + 0.100229 * cos(180 / pi * 0.347268 - 2 * x) - 0.004908};
+            \addplot [no marks, domain = 0:180] {0.100977 + 0.100229 * cos(180 / pi * 0.347268 - 2 * x) + 0.004908};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Test of Malus' law in the linear region of the photodiode with \SI{95}{\percent} CI bands}
+    \label{fig:3.3.A}
+\end{figure}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel = Polariser Angle (\si{\degree}),
+            ylabel = Reading (\si{\volt}),
+            samples = 100,
+            smooth
+        ]
+            \addplot +[plot-scatter] table [
+                skip first n = 1,
+                x index = 0,
+                y index = 1,
+                y error index = 2
+            ] {3.3.B.tsv};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Test of Malus' law in a non-linear region of the photodiode}
+    \label{fig:3.3.B}
+\end{figure}
+
+A background reading of \SI{0}{\milli\volt} was observed. The polariser notable notably had marks on it (that wouldn't come off in isopropyl alchohol or acetone solution) that affected light passage, that were significant at angles of about 120, 175, 210, 260, 280, \SI{355}{\degree}.
+
+The measurements of the polarised light with the photodiode in its linear region is plotted in Figure \ref{fig:3.3.A}. Fitting with Malus' law and a constant background produced an good fit with an adjusted \(R^2\) of 0.99966. A background reading of \SI{0.0007 \pm 0.0043}{\volt} (\(p = 0.27\)) was estimated from this data, hence an accurate value of the extinction ratio cannot be obtained.
+
+The same measurements were repeated as above, but in the non-linear range of the photodiode in Figure \ref{fig:3.3.B}. It is so far away from a sinusoidal shape that I did not even bother to try to fit one.
+
+\subsection{Circular Polarisation}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel = Polariser Angle (\si{\degree}),
+            ylabel = Reading (\si{\volt}),
+            samples = 100,
+            smooth
+        ]
+            \addplot +[plot-scatter] table [
+                skip first n = 1,
+                x index = 0,
+                y index = 1,
+                y error index = 2
+            ] {3.4.A.tsv};
+            \addplot +[no marks, domain = 0:360] {0.114506 + 0.0153491 * cos(180 / pi * 0.588047 - 2 * x)};
+            \addplot [no marks, domain = 0:360] {0.114506 + 0.0153491 * cos(180 / pi * 0.588047 - 2 * x) - 0.00403359};
+            \addplot [no marks, domain = 0:360] {0.114506 + 0.0153491 * cos(180 / pi * 0.588047 - 2 * x) + 0.00403359};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Measurements on quarter-wave plate with sinusoidal fit and \SI{95}{\percent} CI bands}
+    \label{fig:3.4.A}
+\end{figure}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel = Polariser Angle (\si{\degree}),
+            ylabel = Reading (\si{\volt}),
+            samples = 100,
+            smooth
+        ]
+            \addplot +[plot-scatter] table [
+                skip first n = 1,
+                x index = 0,
+                y index = 1,
+                y error index = 2
+            ] {3.4.B.tsv};
+            \addplot +[no marks, domain = 0:360] {0.0786097 + 0.0249662 * cos(180 / pi * 0.968576 - 2 * x)};
+            \addplot [no marks, domain = 0:360] {0.0786097 + 0.0249662 * cos(180 / pi * 0.968576 - 2 * x) - 0.00287724};
+            \addplot [no marks, domain = 0:360] {0.0786097 + 0.0249662 * cos(180 / pi * 0.968576 - 2 * x) + 0.00287724};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Measurements on circular polariser with sinusoidal fit and \SI{95}{\percent} CI bands}
+    \label{fig:3.4.B}
+\end{figure}
+
+Once again, a background reading of \SI{0}{\milli\volt} was noted for all measurements.
+
+The measurements of the quarter-wave plate and circular polariser are shown in Figures \ref{fig:3.4.A} and \ref{fig:3.4.B} respectively. Fitting a sinusoid produced adjusted \(R^2\) values of 0.99973 and 0.99972, respectively.
+
+The ratios between the sinusoid amplitude and the constant offset were \SI{0.134 \pm 0.046}{} and \SI{0.318 \pm 0.049}{}, respectively.
+
+When the laser light was passed through the circular polariser and the reflected back through the same circular polariser, an intensity value of \SI{107.7}{\milli\volt} was recorded with the grey side facing the laser, and \SI{8.0}{\milli\volt} with the white side facing the laser. This is a ratio of 0.074 between the two.
+
+\section{Discussion}
+\subsection{Scattering of polarised light off Dettol and Ajax solutions}
+Since the half wave plate at an angle of \SI{45 \pm 5}{\degree} from the vertical produces a minima scattering intensity, meaning the light was horizontally polarised when entering the medium.
+
+Since a half wave plate reflects linear polarisation along its fast axis, this means the laser is polarised approximately to \SI{0 \pm 5}{\degree} relative to the vertical.
+
+Likely the reason for the lower intensity of scattered light in the Ajax solution is because it has a lower particle density that participate in the scattering process. This could be simply because the Ajax solution has less ``Ajax'' particles in general, or it could be that the Ajax particles are much smaller than Dettol particles and hence do not scatter as much.
+
+\subsection{Linear Polarisation}
+Our results are in good agreement with Malus' law, both obvious from the plot in Figure \ref{fig:3.3.A} as well as the \(R^2\) of 0.99966. 
+
+Meanwhile, Figure \ref{fig:3.3.B} shows why equipment should be calibrated before use, since rubbish results can easily be obtained.
+
+\subsection{Circular Polarisation}
+Our adjusted \(R^2\) values of 0.99973 and 0.99972 indicate a very good fit. However, the sinusoid amplitude to constant offset ratios of \SI{0.134 \pm 0.046}{} and \SI{0.318 \pm 0.049}{} indicates alignment could be improved or the crystal was not a perfect quarter-wave plate.
+
+When the laser light was passed through the circular polariser and then reflected back through, one would expect no difference in intensity regardless of which side was facing the laser if it was just a simple quarter-wave plate, since the mirror reverses the handedness of the light, of which passage through the quarter-wave plate again should just return it to linearly polarised light (albeit orthogonal to the original polarisation). However, the difference in intensity when changing the side facing the laser seems to indicate the circular polariser has an additional linear polariser on its white side, so the reflected orthogonally polarised light is significantly attenuated when the white side is facing the laser.
+
+\end{document}

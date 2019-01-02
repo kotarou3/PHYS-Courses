@@ -1,0 +1,284 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{siunitx}
+\usepackage{upgreek}
+\usepackage{listings, color}
+
+\usepackage{tikz, pgfplots}
+\pgfplotsset{compat = 1.12}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{
+    basicstyle = \footnotesize,
+    commentstyle = \color{dkgreen},
+    frame = single,
+    keepspaces = true,
+    keywordstyle = \color{blue},
+    numbers = left,
+    numbersep = 5pt,
+    numberstyle = \tiny\color{gray},
+    rulecolor = \color{black},
+    stringstyle = \color{mauve},
+    showstringspaces = false
+}
+
+\begin{document}
+
+\title{PHYS3114: Assignment 2}
+\author{Donny Yang \\ z3470068}
+\date{2017-10-27}
+\maketitle
+
+\section{A charge \(e\) moves in simple harmonic motion along the \(z\)-axis such that \(z(t) = a \cos(\omega_0 t)\)}
+\subsection{Find the instantaneous power radiated per unit solid angle.}
+From the lecture notes, we have the following formula of a charge accelerating parallel to its velocity:
+\[\frac{\mathrm{d} P}{\mathrm{d} \Omega} = \frac{\mu_0 e^2 \ddot{z}^2}{16 \pi^2 c} \frac{\sin^2 \theta}{(1 - \beta \cos \theta)^5}\]
+where \(\beta = \frac{\dot{z}}{c}\) and \(\theta\) is the angle between the observer and the \(z\)-axis.
+
+Expanding out the \(\ddot{z}\) and \(\beta\) terms, we get:
+\[\frac{\mathrm{d} P}{\mathrm{d} \Omega} = \frac{\mu_0 e^2 a^2 \omega_0^4}{16 \pi^2 c} \frac{\sin^2 \theta \cos^2 \omega_0 t}{(1 + \frac{a \omega_0}{c} \cos \theta \sin \omega_0 t)^5}\]
+
+If we substitute \(\beta_0 = \frac{a \omega_0}{c}\) (which incidentally is the maximum speed the charge takes as a fraction of the speed of light), we get:
+\begin{align*}
+    \frac{\mathrm{d} P}{\mathrm{d} \Omega} &= \frac{\mu_0 e^2 c^3 \beta_0^4}{16 \pi^2 a^2} \frac{\sin^2 \theta \cos^2 \omega_0 t}{(1 + \beta_0 \cos \theta \sin \omega_0 t)^5} \\
+    &= \frac{e^2 c \beta_0^4}{16 \pi^2 \varepsilon_0 a^2} \frac{\sin^2 \theta \cos^2 \omega_0 t}{(1 + \beta_0 \cos \theta \sin \omega_0 t)^5}
+\end{align*}
+
+In Gaussian units, \(e^2 \to 4 \pi \varepsilon_0 e^2\):
+\[\frac{\mathrm{d} P}{\mathrm{d} \Omega} = \frac{e^2 c \beta_0^4}{4 \pi a^2} \frac{\sin^2 \theta \cos^2 \omega_0 t}{(1 + \beta_0 \cos \theta \sin \omega_0 t)^5}\]
+
+\subsection{Find the average power per unit solid angle over time.}
+The above expressions are periodic in \(t\) with period \(T = \frac{2 \pi}{\omega_0}\). To take the time average, we simply integrate over the period, and then divide by it:
+\begin{align*}
+    \left\langle \frac{\mathrm{d} P}{\mathrm{d} \Omega} \right\rangle &= \frac{1}{T} \int_0^T \frac{\mathrm{d} P}{\mathrm{d} \Omega} \:\mathrm{d} t \\
+    &= \frac{\omega_0}{2 \pi} \frac{e^2 c \beta_0^4}{16 \pi^2 \varepsilon_0 a^2} \sin^2 \theta \int_0^T \frac{\cos^2 \omega_0 t}{(1 + \beta_0 \cos \theta \sin \omega_0 t)^5} \:\mathrm{d} t
+\end{align*}
+
+Performing the integral in Mathematica:
+\begin{lstlisting}[language = Mathematica, frame = single]
+$Assumptions = {\[Omega]0 > 0, -1 < c < 1};
+Integrate[
+    Cos[\[Omega]0 t]^2 / (1 + c Sin[\[Omega]0 t])^5,
+    {t, 0, 2 \[Pi] / \[Omega]0}
+] /. c -> \[Beta]0 Cos[\[Theta]]
+\end{lstlisting}
+\begin{align*}
+    \therefore \left\langle \frac{\mathrm{d} P}{\mathrm{d} \Omega} \right\rangle &= \frac{\omega_0}{2 \pi} \frac{e^2 c \beta_0^4}{16 \pi^2 \varepsilon_0 a^2} \frac{\pi}{4 \omega_0} \frac{4 + \beta_0^2 \cos^2 \theta}{(1 - \beta_0^2 \cos^2 \theta)^{\frac{7}{2}}} \sin^2 \theta \\
+    &= \frac{e^2 c \beta_0^4}{128 \pi^2 \varepsilon_0 a^2} \frac{4 + \beta_0^2 \cos^2 \theta}{(1 - \beta_0^2 \cos^2 \theta)^{\frac{7}{2}}} \sin^2 \theta
+\end{align*}
+
+In Gaussian units:
+\[\left\langle \frac{\mathrm{d} P}{\mathrm{d} \Omega} \right\rangle = \frac{e^2 c \beta_0^4}{32 \pi a^2} \frac{4 + \beta_0^2 \cos^2 \theta}{(1 - \beta_0^2 \cos^2 \theta)^{\frac{7}{2}}} \sin^2 \theta\]
+
+\subsection{What does \(\left\langle \frac{\mathrm{d} P}{\mathrm{d} \Omega} \right\rangle\) look like for \(\beta_0 \ll 1\) and \(\beta_0 = 0.9\)?}
+Ignoring the scale factor at the front, we have:
+\[\left\langle \frac{\mathrm{d} P}{\mathrm{d} \Omega} \right\rangle = \frac{4 + \beta_0^2 \cos^2 \theta}{(1 - \beta_0^2 \cos^2 \theta)^{\frac{7}{2}}} \sin^2 \theta\]
+
+For \(\beta_0 \ll 1\):
+\[\left\langle \frac{\mathrm{d} P}{\mathrm{d} \Omega} \right\rangle = 4 \sin^2 \theta\]
+
+Since neither equation depends on \(\phi\), it is symmetric for rotation around the \(z\)-axis. Hence we will only plot a single 2D slice of it.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 8cm]{{1.3.1}.png}
+    \includegraphics[width = 8cm]{{1.3.2}.png}
+    \caption{Left: \(\beta_0 = 0\); Right: \(\beta_0 = 0.9\); \(z\)-axis is the horizontal (\SI{0}{\degree}). The scale on the right is vastly greater than on the left.}
+    \label{fig:1.3}
+\end{figure}
+
+\section{A uniformly charged line of length \(L\) and charge density \(\lambda\) slides along the \(x\)-axis with constant speed \(v\). The back end has position \(x_1 = v t\) while the front \(x_2 = v t + L\). Find the retarded scalar potential at the origin as a function of time for \(t > 0\).}
+Let us define the rectangular function \(\Pi\):
+\[\Pi(x) = \begin{cases}
+    1 & 0 < x < 1 \\
+    0 & \text{otherwise}
+\end{cases}\]
+
+A trivial property of this function is:
+\[\int \Pi\left(\frac{b x - a}{L}\right) f(x) \:\mathrm{d} x = \int_{\frac{a}{b}}^{\frac{a + L}{b}} f(x) \:\mathrm{d} x\]
+
+Our scalar potential is the result of the following integral:
+\begin{align*}
+    \varphi &= \frac{1}{4 \pi \varepsilon_0} \iiint \frac{\rho(\mathbf{r'}, t_r)}{|\mathbf{r} - \mathbf{r'}|} \:\mathrm{d} \mathbf{r'} \\
+    \rho(\mathbf{r'}, t) &= \lambda \Pi\left(\frac{\mathbf{r'}_x - x_1}{x_2 - x_1}\right) \delta(y) \delta(z) \\
+    &= \lambda \Pi\left(\frac{\mathbf{r'}_x - v t}{L}\right) \delta(y) \delta(z) \\
+    \mathbf{r} &= \mathrm{0} \\
+\end{align*}
+
+Expanding out our retarded time for real time:
+\begin{align*}
+    t_r &= t - \frac{|\mathbf{r} - \mathbf{r'}|}{c} \\
+    &= t - \frac{\mathbf{r'}_x}{c} \\
+    \therefore \rho(\mathbf{r'}, t_r) &= \lambda \Pi\left(\frac{\mathbf{r'}_x \left(1 + \frac{v}{c}\right) - v t}{L}\right) \delta(y) \delta(z) \\
+    \therefore \varphi &= \frac{\lambda}{4 \pi \varepsilon_0} \int_{\frac{v t}{1 + \frac{v}{c}}}^{\frac{v t + L}{1 + \frac{v}{c}}} \frac{1}{|\mathbf{r'}_x|} \:\mathrm{d} \mathbf{r'}_x \\
+    &= \frac{\lambda}{4 \pi \varepsilon_0} \log\left(1 + \frac{L}{v t}\right)
+\end{align*}
+
+\subsection{Is your answer consistent with the Lienard--Wiechert potential in the point charge limit?}
+The corresponding Lienard--Wiechert scalar potential is:
+\begin{align*}
+    \varphi_\delta &= \frac{q}{4 \pi \varepsilon_0} \frac{1}{(1 - \mathbf{n} \cdot \boldsymbol{\upbeta'})|\mathbf{r} - \mathbf{r'}|} \bigg|_{t \to t_r} \\
+    \mathbf{n} &= -\hat{\mathbf{x}} \\
+    \boldsymbol{\upbeta'} &= \frac{v}{c} \:\hat{\mathbf{x}} \\
+    \mathbf{r'} &= x_1 \:\hat{\mathbf{x}} \\
+    \mathbf{r} &= \mathbf{0} \\
+    \therefore \varphi_\delta &= \frac{q}{4 \pi \varepsilon_0} \frac{1}{\left(1 + \frac{v}{c}\right) v t_r}
+\end{align*}
+
+Expanding out our retarded time for real time:
+\begin{align*}
+    t_r &= t - \frac{|\mathbf{r} - \mathbf{r'}|}{c} \\
+    &= t - \frac{v t_r}{c} \\
+    &= \frac{t}{1 + \frac{v}{c}} \\
+    \therefore \varphi_\delta &= \frac{q}{4 \pi \varepsilon_0} \frac{1}{v t}
+\end{align*}
+
+If we take the point particle limit (\(L \to 0\) and \(\lambda L = q\)) of our previous question:
+\begin{align*}
+    \varphi &= \lim_{L \to 0} \frac{q}{4 \pi \varepsilon_0} \log\left(1 + \frac{L}{v t}\right)^{\frac{1}{L}} \\
+    &= \frac{q}{4 \pi \varepsilon_0} \log \exp \frac{1}{v t} \\
+    &= \frac{q}{4 \pi \varepsilon_0} \frac{1}{v t}
+\end{align*}
+
+Which matches the Lienard--Wiechert potential, as expected.
+
+\section{A Lincoln Continental is twice as long as a VW Beetle when they are both at rest. As the Continental overtakes the VW, going through a speed trap, a stationary policeman observes that they both have the same length. The VW is going at half the speed of light. How fast is the Lincoln going, as a multiple of c?}
+Let the length of the Continental be \(2 a\), and the Beetle be \(a\), in their rest frames. Their speeds are \(\beta_c\) and \(\beta_b = \frac{1}{2}\) respectively.
+
+The policeman observes the two objects shorter than their rest lengths due to Lorentz length contraction:
+\begin{align*}
+    2 a \sqrt{1 - \beta_c^2} &= a \sqrt{1 - \beta_b^2} \\
+    \therefore \beta_c &= \frac{1}{2} \sqrt{3 + \beta_b^2} \\
+    &= \frac{\sqrt{13}}{4} \approx 0.901
+\end{align*}
+
+\section{This question is concerned with the famous twin paradox. On their 21st birthday, one twin gets on a moving sidewalk, which carries her out to a star X at speed \(\frac{4}{5} c\). Her twin brother stays home. When the travelling twin gets to star X, she immediately jumps onto the returning moving sidewalk and comes back to Earth, again at speed \(\frac{4}{5} c\). She arrives on her 39th birthday as determined by her watch.}
+Firstly, let us assume that star X is at rest in Earth's frame.
+
+Let us denote the Earth's (and brother's, and star X's) frame as \(S\), the outgoing frame \(\bar{S}\), and the incoming frame \(\tilde{S}\). Their velocities relative to \(S\) are:
+\begin{align*}
+    \beta_{S \to \bar{S}} &= \frac{4}{5} \\
+    \beta_{S \to \tilde{S}} &= -\frac{4}{5}
+\end{align*}
+
+Using the velocity addition formula, the velocity of \(\tilde{S}\) in \(\bar{S}\) is:
+\[\beta_{\bar{S} \to \tilde{S}} = \frac{\beta_{S \to \tilde{S}} - \beta_{S \to \bar{S}}}{1 - \beta_{S \to \tilde{S}} \beta_{S \to \bar{S}}} = -\frac{40}{41}\]
+
+Since we are only dealing with one spatial and one temporal dimension, our Lorentz transformations take on the form:
+\[{\Lambda^\mu}_\nu = \begin{pmatrix}\gamma & -\gamma \beta \\ -\gamma \beta & \gamma\end{pmatrix}\]
+
+Defining the starting state at Earth as \((0, 0)\) in all frames, we get the following Lorentz transformations:
+\begin{align*}
+    \Lambda_{S \to \bar{S}} = \Lambda_{\tilde{S} \to S} &= \frac{1}{3} \begin{pmatrix}5 & -4 \\ -4 & 5\end{pmatrix} \\
+    \Lambda_{\bar{S} \to \tilde{S}} &= \frac{1}{9} \begin{pmatrix}41 & 40 \\ 40 & 41\end{pmatrix}
+\end{align*}
+
+(We could have avoided computing \(\beta_{\bar{S} \to \tilde{S}}\), since \(\Lambda_{\bar{S} \to \tilde{S}} = \Lambda_{\tilde{S} \to S}^{-1} \Lambda_{S \to \bar{S}}^{-1} = \left(\Lambda_{S \to \bar{S}} \Lambda_{\tilde{S} \to S}\right)^{-1}\) as well)
+
+For convenience, let us also denote three events:
+\begin{enumerate}
+    \item[0.] The sister leaving the Earth.
+    \item[1.] The sister arriving at the star.
+    \item[2.] The sister arriving back at Earth.
+\end{enumerate}
+
+\subsection{How old is her twin brother?}
+By the sister's clock, she has aged \(T_s = \SI{18}{years}\). Jumping from \(\bar{S}\) to \(\tilde{S}\) does not change her clock, so she must have spent \(T_{s, \bar{S}}\) years in frame \(\bar{S}\) and \(T_{s, \tilde{S}} = T_s - T_{s, \bar{S}}\) in frame \(\tilde{S}\).
+
+We need to follow the sister's path through spacetime through three Lorentz transformations: \(S \to \bar{S}\) at \(t_S = 0\), \(\bar{S} \to \tilde{S}\) upon arrival at the star, and the final \(\tilde{S} \to S\) to find the brother's clock \(T_b\) upon her arrival back on Earth:
+\begin{align*}
+    X^\mu_{0, S} &= (0, 0) \\
+    X^\mu_{1, \bar{S}} &= {{\Lambda_{S \to \bar{S}}}^\nu}_\mu X^\mu_{0, S} + (T_{s, \bar{S}}, 0) \\
+    X^\mu_{2, \tilde{S}} &= {{\Lambda_{\bar{S} \to \tilde{S}}}^\nu}_\mu X^\mu_{1, \bar{S}} + (T_{s, \tilde{S}}, 0) \\
+    X^\mu_{2, S} &= {{\Lambda_{\tilde{S} \to S}}^\nu}_\mu X^\mu_{2, \tilde{S}} \\
+    &= \left(\frac{5}{3} T_s, \frac{4}{3} \left(2 T_{s, \bar{S}} - T_s\right)\right)
+\end{align*}
+
+Since the brother has not moved in his frame \(S\):
+\begin{align*}
+    X^\mu_{2, S} &= (T_b, 0) \\
+    \therefore T_b &= \frac{5}{3} T_s = \SI{30}{years} \\
+    T_{s, \bar{S}} &= \frac{1}{2} T_s = \SI{9}{years}
+\end{align*}
+
+This means that the brother has aged 30 years during the sister's travels, thus is now 51 years old.
+
+Incidentally from the calculations, we can also see that exactly half of the sister's time spent (9 years) was travelling towards the star, and half travelling back, as one would expect from the same speed travel in both directions.
+
+\subsection{How many light years away is star X?}
+We can simply transform \(\bar{S} \to S\) when the sister has arrived at the star:
+\begin{align*}
+    X^\mu_{1, S} &= {{\Lambda_{S \to \bar{S}}^{-1}}^\nu}_\mu X^\mu_{1, \bar{S}} \\
+    &= \left(\frac{5}{3} T_{s, \bar{S}}, \frac{4}{3} T_{s, \bar{S}}\right) \\
+    &= (15, 12) \:\si{years}
+\end{align*}
+
+Thus the star X is 12 spatial (light) years away from the brother in frame \(S\). This also matches with travelling at \(\frac{4}{5} c\) for half the time the brother spent waiting for his sister (15 years).
+
+\subsection{What are the spacetime coordinates of the \(\bar{S} \to \tilde{S}\) jump in each of the frames?}
+We already have all the coordinates as by-products from the above calculations:
+\begin{align*}
+    X^\mu_{1, \bar{S}} &= {{\Lambda_{S \to \bar{S}}}^\nu}_\mu X^\mu_{0, S} + (T_{s, \bar{S}}, 0) \\
+    &= (T_{s, \bar{S}}, 0) = (9, 0) \:\si{years} \\
+    X^\mu_{1, S} &= {{\Lambda_{S \to \bar{S}}^{-1}}^\nu}_\mu X^\mu_{1, \bar{S}} \\
+    &= \left(\frac{5}{3} T_{s, \bar{S}}, \frac{4}{3} T_{s, \bar{S}}\right) = (15, 12) \:\si{years} \\
+    X^\mu_{1, \tilde{S}} &= {{\Lambda_{\bar{S} \to \tilde{S}}}^\nu}_\mu X^\mu_{1, \bar{S}} \\
+    &= \left(\frac{41}{9} T_{s, \bar{S}}, \frac{40}{9} T_{s, \bar{S}}\right) = (41, 40) \:\si{years}
+\end{align*}
+
+\subsection{If the travelling twin wants her watch to agree with the clock in \(\tilde{S}\), how must she reset it immediately after the jump? What does her watch then read as she gets home?}
+Since \(X^0_{1, \tilde{S}} - X^0_{1, \bar{S}} = \SI{38}{years}\), she must add 38 years to her watch. She then waits (travels) \(T_{s, \tilde{S}} = \SI{9}{years}\) in that frame, so her watch at the end reads \(X^0_{2, \tilde{S}} = X^0_{1, \tilde{S}} + T_{s, \tilde{S}} = \SI{50}{years}\).
+
+\subsection{If the travelling twin is asked the question ``How old is your brother right now?'', what is the correct reply if}
+We interpret this question to mean ``What is the brother's proper time (plus his age at event 0) at the point where his world line intersects the sister's plane of simultaneity?''
+
+The brother's world line in his own frame \(S\) is:
+\[X^\mu_{b, S} = (\tau_b, 0)\]
+
+\subsubsection{Just before she makes the jump?}
+The sister is currently in frame \(\bar{S}\), so the brother's world line is:
+\begin{align*}
+    X^\mu_{b, \bar{S}} &= {{\Lambda_{S \to \bar{S}}}^\nu}_\mu X^\mu_S \\
+    &= \left(\frac{5}{3} \tau_b, -\frac{4}{3} \tau_b\right)
+\end{align*}
+
+The sister's plane of simultaneity is \(X^0_{1, \bar{S}} = \SI{9}{years}\). Intersecting this with the brother's world line gives:
+\begin{align*}
+    X^0_{b, \bar{S}} &= X^0_{1, \bar{S}} \\
+    \therefore \tau_b &= \frac{3}{5} X^0_{1, \bar{S}} = \frac{27}{5} \:\si{years}
+\end{align*}
+
+Thus her brother's age is:
+\[\tau_b + \SI{21}{years} = \frac{132}{5} \:\si{years} = \SI{26.4}{years}\]
+
+\subsubsection{Just after she makes the jump?}
+Following the same steps as above, but for frame \(\tilde{S}\):
+\begin{align*}
+    X^\mu_{b, \tilde{S}} &= {{\Lambda_{\tilde{S} \to S}^{-1}}^\nu}_\mu X^\mu_S \\
+    &= \left(\frac{5}{3} \tau_b, \frac{4}{3} \tau_b\right) \\
+    X^0_{b, \tilde{S}} &= X^0_{1, \tilde{S}} = \SI{41}{years} \\
+    \therefore \tau_b &= \frac{123}{5} \:\si{years}
+\end{align*}
+
+Thus her brother's age is:
+\[\tau_b + \SI{21}{years} = \frac{228}{5} \:\si{years} = \SI{45.6}{years}\]
+
+\subsection{How many Earth years does the return trip take? How old does she expect her brother to be at their reunion?}
+This is the same as saying, ``How much proper time elapses on Earth between events 1 and 2?''
+
+If it's according to the Earth's frame, this is simply the temporal displacement between the two events in its frame. We already know their spacetime coordinates from previous questions, so this is trivial:
+\[X^0_{2, S} - X^0_{1, S} = \SI{15}{years}\]
+
+If it's according to the sister's frame \(\tilde{S}\), we have to examine the brother's world line in frame \(\tilde{S}\) again. We already know its simultaneity intersection with event 1, so let us just work it out for event 2:
+\begin{align*}
+    X^0_{b, \tilde{S}} &= X^0_{2, \tilde{S}} = \SI{50}{years} \\
+    \therefore \tau_b &= \SI{30}{years}
+\end{align*}
+
+Taking the difference with event 1, it comes out to be \(\frac{27}{5} \:\si{years} = \SI{5.4}{years}\). Thus according to the sister, after the frame jump the brother is \SI{45.6}{years} old, and then ages another \SI{5.4}{years} on the sister's return trip, so is at a final age of \SI{51}{years}, as expected.
+
+\end{document}

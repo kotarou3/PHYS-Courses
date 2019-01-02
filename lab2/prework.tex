@@ -1,0 +1,64 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{siunitx}
+
+\usepackage{sectsty}
+\sectionfont{\large\selectfont}
+\subsectionfont{\normalsize\selectfont}
+
+\begin{document}
+
+\title{PHYS3114: Polarisation of Light Prework}
+\author{ \\ \\ }
+\date{2017-08-27}
+\maketitle
+
+\section{Questions}
+\subsection{What is the condition for linearly polarised light to remain unaltered as it passes through a polarising filter?}
+The light's polarisation vector is parallel to the filter's polarsation axis.
+
+\subsection{What are the conditions to create circularly polarised light?}
+Assuming a linear polarisation basis, the two orthogonal polarisation magnitudes must be equal, with a phase difference of \(\frac{\pi}{2}\).
+
+\subsection{What is the effect of a quarter wave plate on circularly polarised light?}
+Makes it linearly polarised.
+
+\subsection{What is the effect of a half-wave plate on circularly polarised light?}
+Swaps its handedness.
+
+\subsection{Sometimes the scattering of light off particles may lead to polarisation. Explaining in terms of scattering, why is the sky blue and why are clouds grey?}
+The particle size of air (air molecules) is much smaller than the wavelength of sunlight, so it follows the Rayleigh scattering approximation where shorter wavelengths are scattered more strongly than longer wavelengths, and hence the sky is violet. But our eyes are much less sensitive to violet than blue, so we perceive it as blue.
+
+On the other hand, the particle size of clouds (water droplets) are much larger than the wavelength of sunlight, so following the more general Mie scattering theory, all wavelengths are scattered equally, so clouds are white/grey.
+
+\subsection{Linearly \(z\)-polarised light traveling in the \(y\) direction is scattered of a perfectly spherical point particle. What are the expected relative magnitudes of the electric field in the \(z\), \(y z\), \(y\), \(x y\) and \(x\) directions?}
+Angular dependence of Rayleigh scattering intensity is proportional to \(1 + \cos^2 \theta\), where \(\theta\) is the angle between the unscattered ray and scattered ray. Since polarisation is also involved, and scattering is approximated by an oscillating dipole in the polarisation axis, we have to multiply this with \(\sin^2 \phi\), the angular dependence term in dipole radiation, where \(\phi\) is the angle between the polarisation axis and reflected ray.
+
+Taking the square root of this to get the amplitude, we arrive at a normalised E-field of:
+\[|\mathbf{E}| \propto \frac{1}{\sqrt{2}} |\sin \phi| \sqrt{1 + \cos^2 \theta}\]
+
+\begin{center}
+    \begin{tabular}{c | c | c | c}
+        Direction & \(\theta\) & \(\phi\) & E-field Fraction \\
+        \hline
+        \(z\) & \(\frac{\pi}{2}\) & \(0\) & \(0\) \\
+        \(y z\) & \(\frac{\pi}{4}\) & \(\frac{\pi}{4}\) & \(\sqrt{\frac{3}{8}} \approx 0.61\) \\
+        \(y\) & \(0\) & \(\frac{\pi}{2}\) & \(1\) \\
+        \(x y\) & \(\frac{\pi}{4}\) & \(\frac{\pi}{2}\) & \(\frac{\sqrt{3}}{2}  \approx 0.87\) \\
+        \(x\) & \(\frac{\pi}{2}\) & \(\frac{\pi}{2}\) & \(\frac{1}{\sqrt{2}} \approx 0.71\)
+    \end{tabular}
+\end{center}
+
+\subsection{Linearly polarised light is passed through a linear polariser. What fraction of the incident light intensity is passed through, if the polariser axis is \SI{0}{\degree}, \SI{45}{\degree} or \SI{90}{\degree} offset from the incident light's polarisation?}
+\begin{center}
+    \begin{tabular}{c | c}
+    Offset (\si{\degree}) & Passed Intensity \\
+    \hline
+    0 & 1 \\
+    45 & \(\frac{1}{2}\) \\
+    90 & 0
+    \end{tabular}
+\end{center}
+
+\end{document}

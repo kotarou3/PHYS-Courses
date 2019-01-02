@@ -1,0 +1,48 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{siunitx}
+
+\usepackage{sectsty}
+\sectionfont{\large\selectfont}
+\subsectionfont{\normalsize\selectfont}
+
+\begin{document}
+
+\title{PHYS3114: Transmission Lines Prework}
+\author{ \\ \\ }
+\date{2017-08-06}
+\maketitle
+
+\section{Questions}
+\subsection{Find the expression for the value of \(\theta\) at the points along the transmission line corresponding to \(V_{max}\) and \(V_{min}\)}
+Since \(\rho = \rho_0 e^{i \theta}\) is a constant determined purely by the characteristic and load impedances, we have:
+\begin{align*}
+    \rho &= \rho_0 e^{i \theta} = \frac{Z_L - Z_0}{Z_L + Z_0} \\
+    \therefore \theta &= \tan^{-1} \frac{\Im(\rho)}{\Re(\rho)}
+\end{align*}
+
+If we split the impedances into Cartesian form and go through the lengthy algebra, we arrive at the following expression:
+\[\tan \theta = 2 \frac{\Im(Z_0) \Re(Z_L) - \Re(Z_0) \Im(Z_L)}{|Z_0|^2 - |Z_L|^2}\]
+
+For a purely resistive characteristic and load impedance, this simply reduces to \(\theta = 0\).
+
+\subsection{What is the input impedance of the TL if the load impedance \(Z_L\) is equal to the characteristic impedance \(Z_0\)?}
+\begin{align*}
+    Z_L &= Z_0 \\
+    \therefore Z_{in} &= Z_0 \frac{Z_0 (1 + \tanh \gamma l)}{Z_0 (1 + \tanh \gamma l)} \\
+    &= Z_0
+\end{align*}
+
+\subsection{Determine an expression for the input impedance for a lossless transmission line when the length of the transmission line is equal to a quarter wavelength}
+\begin{align*}
+    l &= \frac{\pi}{2 \beta} \\
+    Z_{in} &= Z_0 \frac{Z_L + i Z_0 \tan \beta l}{Z_0 + i Z_L \tan \beta l} \\
+    &= \lim_{\alpha \to \frac{\pi}{2}} Z_0 \frac{Z_L + i Z_0 \tan \alpha}{Z_0 + i Z_L \tan \alpha} \\
+    &= \frac{Z_0^2}{Z_L}
+\end{align*}
+
+\subsection{Write the expression for the delay time per section as a function of \(L'\) and \(C'\)}
+\[\frac{1}{v} = \sqrt{L' C'}\]
+
+\end{document}

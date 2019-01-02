@@ -1,0 +1,228 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{siunitx}
+\usepackage{upgreek}
+\usepackage{listings, color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{
+    basicstyle = \footnotesize,
+    commentstyle = \color{dkgreen},
+    frame = single,
+    keepspaces = true,
+    keywordstyle = \color{blue},
+    numbers = left,
+    numbersep = 5pt,
+    numberstyle = \tiny\color{gray},
+    rulecolor = \color{black},
+    stringstyle = \color{mauve},
+    showstringspaces = false
+}
+
+\begin{document}
+
+\title{PHYS3114: Assignment 1}
+\author{Donny Yang \\ z3470068}
+\date{2017-09-15}
+\maketitle
+
+\section{What is the magnetic field \(\mathbf{B}\) at the centre of a Helmholtz coil of radius \(R\), separation \(2 d\), and each coil carrying current \(I\)? Show that the field is nearly constant at this point.}
+Placing each coil at \(z = \pm d\) and having their centre axes in the \(z\) direction, we obtain the following expression for \(\mathbf{B}\):
+\begin{align*}
+    \mathbf{B} &= \frac{\mu_0 I}{4 \pi} \int \frac{\mathrm{d}\mathbf{l} \times \mathbf{r}'}{|\mathbf{r}'|^3} \\
+    t &\in [0, 2 \pi) \\
+    \mathbf{l} &= \begin{pmatrix}R \cos t \\ R \sin t \\ \pm d\end{pmatrix} \\
+    \mathrm{d}\mathbf{l} &= \begin{pmatrix}-R \sin t \\ R \cos t \\ 0\end{pmatrix} \mathrm{d} t \\
+    \mathbf{r'} &= \begin{pmatrix}x - R \cos t \\ y - R \sin t \\ z \mp d\end{pmatrix}
+\end{align*}
+
+Next, we convert the integrand to cylindrical coordinates \((\rho, \theta, h)\) to simplify our integral. The resulting integral is still quite difficult to integrate analytically, so we take the Taylor series expansion at \(\rho = 0\), and integrate with Mathematica:
+\begin{lstlisting}[language = Mathematica, frame = single]
+dl = {-R Sin[t], R Cos[t], 0};
+r = {x - R Cos[t], y - R Sin[t], z - d};
+integrand = TransformedField[
+    "Cartesian" -> "Cylindrical",
+    Cross[dl, r] / (Norm[r]^3 /. Abs[x_^2] -> x^2),
+    {x, y, z} -> {\[Rho], \[Theta], h}
+];
+integrand = Series[integrand, {\[Rho], 0, 6}];
+Bfield = \[Mu]0 i / (4 \[Pi]) Integrate[integrand, {t, 0, 2 Pi}];
+Bfield = FullSimplify[Bfield + (Bfield /. d -> -d)];
+\end{lstlisting}
+
+The resulting value for \(\mathbf{B}\) is too hairy to reproduce here, but one interesting detail that pops out is that the entire expression no longer depends on \(\theta\), and the angular component \(\mathbf{B}_{\theta}\) is 0, which is expected due to the axial symmetry of the problem.
+
+Let us now take another Taylor series expansion, but now at \(h = 0\):
+\begin{lstlisting}[language = Mathematica, frame = single]
+ExpandAll[Series[Bfield, {h, 0, 6}], \[Rho]]
+\end{lstlisting}
+\[\mathbf{B} = \mu_0 I \begin{pmatrix}
+    \frac{3 R^2 \left(R^2 - 4 d^2\right)}{2 \left(d^2 + R^2\right)^{7/2}} \rho h + \mathcal{O}(\rho h^3) + \mathcal{O}(\rho^3 h) \\
+    0 \\
+    \frac{R^2}{\left(d^2 + R^2\right)^{3/2}} + \frac{3 R^2 \left(R^2 - 4 d^2\right)}{4 \left(d^2 + R^2\right)^{7/2}} \rho^2 - \frac{3 R^2 \left(R^2 - 4 d^2\right)}{2 \left(d^2 + R^2\right)^{7/2}} h^2 + \mathcal{O}(\rho^4) + \mathcal{O}(\rho^2 h^2) + \mathcal{O}(h^4)
+\end{pmatrix}\]
+
+As you can see, the field does not have any first-order terms, so the field is quite constant at the centre. In fact, if we set \(d = \frac{R}{2}\) (that is, the coils are separated by a distance equal to their radii), we loose the second-order terms, resulting with an expression containing only fourth-order and higher terms (ignoring the constant term):
+\[\mathbf{B} = \frac{\mu_0 I}{\sqrt{5}} \begin{pmatrix}
+    \frac{1728}{625 R^5} \rho^3 h + \frac{2304}{625 R^5} \rho h^3 + \mathcal{O}(\rho^5 h) + \mathcal{O}(\rho^3 h^3) + \mathcal{O}(\rho h^5) \\
+    0 \\
+    \frac{8}{5 R} - \frac{432}{625 R^5} \rho^4 + \frac{3456}{625 R^5} \rho^2 h^2 - \frac{1152}{625 R^5} h^4 + \mathcal{O}(\rho^6) + \mathcal{O}(\rho^4 h^2) + \mathcal{O}(\rho^2 h^4) + \mathcal{O}(h^6)
+\end{pmatrix}\]
+
+\section{Find the total electromagnetic momentum \(\mathbf{P}_{EM}\) of a parallel plate capacitor whose plates have charges \(\pm Q\), area \(A\), and separation distance \(d\). It is orientated such that the electric field is in the \(y\) direction, and that there is in a constant magnetic field of \(\mathbf{B} = B \hat{\mathbf{z}}\).}
+\subsection{Start by considering a dipole made of two point charges of \(\pm q\) separated by a distance \(d\) in the magnetic field, and using the formula \(\mathbf{P}_{EM} = q \mathbf{A}\).}
+Let \(\mathbf{d}_+\) and \(\mathbf{d}_-\) be the positions of the \(+q\) and \(-q\) charge respectively, and \(\mathbf{d} = \mathbf{d}_+ - \mathbf{d}_-\) be the displacement between the two, and thus the dipole moment as \(\mathbf{p} = q \mathbf{d}\).
+
+Since the magnitude of the momentum should be invariant under rotation along the magnetic field's axis (\(\hat{\mathbf{z}}\)), we have to choose an \(\mathbf{A}\) such that it is independent of \(\theta\) in cylindrical coordinates:
+\[\mathbf{A} = \frac{\rho}{2} B \:\hat{\boldsymbol{\uptheta}} = \frac{1}{2} B (-y \:\hat{\mathbf{x}} + x \:\hat{\mathbf{y}})\]
+
+The latter expression looks suspiciously like a cross product, and it is in fact is:
+\[-y \hat{\mathbf{x}} + x \hat{\mathbf{y}} = -\mathbf{r} \times \hat{\mathbf{z}} = \hat{\mathbf{z}} \times \mathbf{r}\]
+\[\therefore \mathbf{A} = \frac{1}{2} B \hat{\mathbf{z}} \times \mathbf{r} = \frac{1}{2} \mathbf{B} \times \mathbf{r}\]
+
+Now we simply substitute in the values for each charge into the electromagnetic momentum formula:
+\begin{align*}
+    \mathbf{P}_{EM} &= q \mathbf{A}(\mathbf{d}_+) - q \mathbf{A}(\mathbf{d}_-) \\
+    &= \frac{q}{2} \mathbf{B} \times \mathbf{d}_+ - \frac{q}{2} \mathbf{B} \times \mathbf{d}_- \\
+    &= \frac{q}{2} \mathbf{B} \times \mathbf{d} \\
+    &= \frac{1}{2} \mathbf{B} \times \mathbf{p}
+\end{align*}
+
+\subsection{Use superposition to determine the electromagnetic moment of the capacitor, by considering the capacitor as a set of these dipoles in a plane.}
+We simply convert the dipole \(\mathbf{p}\) into a differential \(\mathrm{d}\mathbf{p}\), and integrate across the area of the capacitor:
+\begin{align*}
+    \mathbf{P}_{EM} &= \frac{1}{2} \iint_S \mathbf{B} \times \mathrm{d}\mathbf{p} \\
+    \mathrm{d}\mathbf{p} &= \frac{Q}{A} d \:\mathrm{d}\mathbf{A}
+\end{align*}
+
+For our system, our dipoles are orientated in the \(-\hat{\mathbf{y}}\) direction (remembering the field lines of the dipole run in the opposite direction of the dipole itself), while the magnetic field is in the \(\hat{\mathbf{z}}\) direction orthogonal to it, so we can simplify our integral by noting that \(\hat{\mathbf{z}} \times -\hat{\mathbf{y}} = \hat{\mathbf{x}}\):
+\[\mathbf{P}_{EM} = \frac{1}{2} \iint_S \frac{B Q d}{A} \:\mathrm{d}A \:\hat{\mathbf{x}} = \frac{1}{2} B Q d \:\hat{\mathbf{x}}\]
+
+Curiously, our result is exactly the same as that of a dipole with identical charge and orientation of the capacitor.
+
+\section{Now consider the same capacitor, but it is now at the centre of a Helmholtz coil with coil separation equal to its radius generating the constant field. Calculate the hidden momentum of this system using \(\mathbf{P}_{hid} = -\frac{I}{c^2} \oint \phi \:\mathrm{d}\mathbf{l}\)}
+Treating the capacitor as a dipole \(\mathbf{p} = -Q d \:\hat{\mathbf{y}}\), it generates a potential of:
+\[\phi = \frac{1}{4 \pi \varepsilon_0} \frac{\mathbf{p} \cdot \mathbf{r}}{|\mathbf{r}|^3}\]
+
+Using the same line element \(\mathrm{d}\mathbf{l}\) as in the first question, we integrate with Mathematica:
+\begin{lstlisting}[language = Mathematica, frame = single]
+p = {0, -Q pd, 0};
+l = {R Cos[t], R Sin[t], d};
+dl = {-R Sin[t], R Cos[t], 0};
+\[Phi] = 1 / (4 \[Pi] \[Epsilon]0) p . l / (Norm[l]^3 /. Abs[x_^2] -> x^2);
+Phid = -i / c^2 Integrate[\[Phi] dl, {t, 0, 2 Pi}];
+Phid = Refine[Phid + (Phid /. d -> -d) /. d -> R/2, {R > 0}];
+\end{lstlisting}
+\[\mathbf{P}_{hid} = -\frac{4 I Q d}{5 \sqrt{5} c^2 R \varepsilon_0} \hat{\mathbf{x}}\]
+
+From the first question, we can see that a Helmholtz coil with coil separation equal to its coil radius has a magnetic field strength at its centre of:
+\[\mathbf{B} = \frac{8 \mu_0 I}{5 \sqrt{5} R} \hat{\mathbf{z}} = B \:\hat{\mathbf{z}}\]
+
+Substituting this into \(\mathbf{P}_{hid}\):
+\[\mathbf{P}_{hid} = -\frac{1}{2} B Q d \:\hat{\mathbf{x}}\]
+
+This value is conveniently the exact opposite of \(\mathbf{P}_{EM}\), thus leaving the total momentum at 0, as one would expect.
+
+\section{Let's see what happens when either the electric or magnetic fields are removed.}
+\subsection{The capacitor is discharged via a straight wire between its two plates. What is the impulse delivered to the wire, and where is it compensated?}
+Assuming the discharging starts at \(t_0\) and the capacitor is completely discharged at \(t_1\), the total charge transferred by the current \(I_p = -\dot{q}\) must equal \(Q\):
+\[\int_{t_0}^{t_1} I_p \:\mathrm{d}t = Q\]
+
+We then simply take the time integral of the Lorentz force over the discharge time:
+\begin{align*}
+    \mathbf{J}_{cap} &= \int_{t_0}^{t_1} I_p \mathbf{l} \times \mathbf{B} \:\mathrm{d}t \\
+    \mathbf{l} &= d \:\hat{\mathbf{y}} \\
+    \therefore \mathbf{J}_{cap} &= B d \int_{t_0}^{t_1} I_p \:\mathrm{d}t \:\hat{\mathbf{x}} \\
+    &= B Q d \:\hat{\mathbf{x}}
+\end{align*}
+
+Since discharging the capacitor will also change its electric field, this induces a magnetic field. To calculate this field, we define a new primed Cartesian and cylindrical basis such that the capacitor dipole now points in the \(-\hat{\mathbf{z}}'\) or \(-\hat{\mathbf{h}}'\) direction. We form an Amperian circle coaxial to the dipole of radius \(R\) (unrelated to the Helmholtz coil's \(R\)), with the enclosed surface being a disc of the same radius. We will assume this disc does not intersect the wire, so no current is enclosed, and such that the discharge rate is slow enough such that its induced electric field can be ignored, leaving us with only the dipole's electric field to worry about:
+\begin{align*}
+    \oint \mathbf{B} \cdot \mathrm{d}\mathbf{l} &= \mu_0 \varepsilon_0 \frac{\partial}{\partial t} \iint_S \mathbf{E} \cdot \mathrm{d}\mathbf{S} \\
+    &= B 2 \pi R \:\hat{\boldsymbol{\uptheta}}' \\
+    \mathbf{E} &= \frac{3 (\mathbf{p} \cdot \hat{\mathbf{r}}) \hat{\mathbf{r}} - \mathbf{p}}{4 \pi \varepsilon_0 |\mathbf{r}|^3} \\
+    \mathbf{p} &= p \:\hat{\mathbf{z}}' \\
+    \mathrm{d}\mathbf{S} &= \rho \:\mathrm{d}\theta \:\mathrm{d}\rho \:\hat{\mathbf{h}}'
+\end{align*}
+
+Integration is performed with Mathematica, by first expanding out the integrand in Cartesian coordinates, then converting to cylindrical coordinates and integrating:
+\begin{lstlisting}[language = Mathematica, frame = single]
+p = {0, 0, pz[t]};
+r = {x, y, z};
+rHat = r / Norm[r];
+Efield = (3 (p . rHat) rHat - p) / (4 \[Pi] \[Epsilon]0 Norm[r]^3);
+dS = TransformedField[
+    "Cylindrical" -> "Cartesian",
+    {0, 0, 1} \[Rho],
+    {\[Rho], \[Theta], h} -> {x, y, z}
+];
+integrand = TransformedField[
+    "Cartesian" -> "Cylindrical" ,
+    Efield . dS /. Abs[x_^2] -> x^2,
+    {x, y, z} -> {\[Rho], \[Theta], h}
+];
+Bdl = \[Mu]0 \[Epsilon]0 D[Integrate[integrand, {\[Theta], 0, 2 \[Pi]}, {\[Rho], 0, R}], t];
+Bfield = {0, Bdl / (2 \[Pi] R), 0};
+Bfield = FullSimplify[Bfield, {R > 0, Element[h, Reals]}] /. R -> \[Rho];
+\end{lstlisting}
+\[\mathbf{B} = \frac{\mu_0 R \dot{p}}{4 \pi \left(h^2 + R^2\right)^\frac{3}{2}} \:\hat{\boldsymbol{\uptheta}}' = \frac{\mu_0 \rho \dot{p}}{4 \pi \left(h^2 + \rho^2\right)^\frac{3}{2}} \:\hat{\boldsymbol{\uptheta}}'\]
+
+Now let us rotate back into our unprimed Cartesian basis with the dipole pointing in the \(-\hat{\mathbf{y}}'\) direction:
+\begin{lstlisting}[language = Mathematica, frame = single]
+rotation = RotationMatrix[{{0, 0, 1}, {0, 1, 0}}];
+Bfield = ReplaceAll[
+    rotation . TransformedField[
+        "Cylindrical" -> "Cartesian",
+        Bfield,
+        {\[Rho], \[Theta], h} -> {x, y, z}
+    ],
+    (#1 -> #2) & @@@ Transpose[{{x, y, z}, rotation . {x, y, z}}]
+];
+\end{lstlisting}
+
+What is the impulse due to the Lorentz force experienced by the Helmholtz coil in this field? (Note: The time variable is now \(\tau\) here, as not to conflict with the line element parameter \(t\), and \(R\) is now the Helmholtz coil radius. In hindsight, I should have chosen unambiguous variable names, but I can't be bothered to change them now.)
+\[\mathbf{J}_{coil} = \int_{t_0}^{t_1} \mathrm{d}\tau \int_l I \mathrm{d}\mathbf{l} \times \mathbf{B}\]
+\begin{lstlisting}[language = Mathematica, frame = single]
+l = {R Cos[t], R Sin[t], d};
+dl = {-R Sin[t], R Cos[t], 0};
+integrand = ReplaceAll[
+    Cross[dl, Bfield /. t -> \[Tau]],
+    (#1 -> #2) & @@@ Transpose[{{x, y, z}, l}]
+];
+force = Integrate[integrand, {t, 0, 2 \[Pi]}];
+force = Refine[(force + (force /. d -> -d)) /. d -> R / 2, R > 0]
+\end{lstlisting}
+\begin{align*}
+    \mathbf{J}_{coil} &= -\frac{4 \mu_0 I}{5 \sqrt{5} R} \int_{t_0}^{t_1} \dot{p} \:\mathrm{d}\tau \:\hat{\mathbf{x}} \\
+    &= \frac{4 \mu_0 I d}{5 \sqrt{5} R} \int_{t_0}^{t_1} \dot{q} \:\mathrm{d}\tau \:\hat{\mathbf{x}} \\
+    &= -\frac{4 \mu_0 I Q d}{5 \sqrt{5} R} \:\hat{\mathbf{x}} \\
+    &= -\frac{1}{2} B Q d \:\hat{\mathbf{x}}
+\end{align*}
+
+Notably, \(\mathbf{J}_{cap} + \mathbf{J}_{coil} = \frac{1}{2} B Q d \:\hat{\mathbf{x}} \neq \mathbf{0}\), violating conservation of momentum, so clearly we've missed something that also gets an impulse. Two obvious candidates would be the electromagnetic momentum \(\mathbf{P}_{EM}\), or the hidden momentum \(\mathbf{P}_{hid}\), both of which should have changed to become \(\mathbf{0}\). It's not the electromagnetic momentum, since that becomes the Lorentz force impulse (\(\mathbf{P}_{EM} \to \mathbf{J}_{cap} + \mathbf{J}_{coil}\)). This leaves us with the hidden momentum. One could say that upon removal of the field, the hidden momentum gets transferred onto the coil, hence balancing the equation (\(\mathbf{J}_{cap} + \mathbf{J}_{coil} + \mathbf{P}_{hid} = \mathbf{0}\)), but I'm not going to rigorously prove this.
+
+\subsection{The current to the coil are ramped down to 0. Find the induced field \(\mathbf{E}\) at the dipole and hence the impulse that is delivered. Where is the impulse compensated?}
+Form an Amperian loop of radius \(R'\) at the origin (where the dipole is at) coaxial to the coil, with the enclosed surface being a disc of the same radius. We will assume the discharge rate is slow enough such that the force delivered to the dipole moves it slow enough such that its induced magnetic field can be ignored, leaving us with only the coil's ``constant'' magnetic field to worry about:
+\begin{align*}
+    \oint \mathbf{E} \cdot \mathrm{d}\mathbf{l} &= -\frac{\partial}{\partial t} \iint_S \mathbf{B} \cdot \mathrm{d}\mathbf{S} \\
+    &= E 2 \pi R' \:\hat{\boldsymbol{\theta}} \\
+    \mathbf{B} &= B \:\hat{\mathbf{z}} \\
+    \mathrm{d}\mathbf{S} &= \rho \:\mathrm{d}\theta \:\mathrm{d}\rho \:\hat{\mathbf{h}} \\
+    \therefore \mathbf{E} &= -\frac{1}{2} \dot{B} R' \:\hat{\boldsymbol{\theta}} = -\frac{1}{2} \dot{B} \rho \:\hat{\boldsymbol{\theta}} \\
+    &= \frac{1}{2} \dot{B} y \:\hat{\mathbf{x}} - \frac{1}{2} \dot{B} x \:\hat{\mathbf{y}}
+\end{align*}
+
+Summing together the forces on both ends of the dipole and integrating over time gives us the impulse:
+\begin{align*}
+    \mathbf{J}_{cap} &= \frac{1}{2} \left(-Q \frac{d}{2} - Q \frac{d}{2}\right) \int_{t_0}^{t_1} \dot{B} \:\mathrm{d}t \:\hat{\mathbf{x}} \\
+    &= -\frac{1}{2} Q d \int_{B}^{0} \mathrm{d}B \:\hat{\mathbf{x}} \\
+    &= \frac{1}{2} B Q d \:\hat{\mathbf{x}}
+\end{align*}
+
+Where does this momentum come from? If we follow the same reasoning as the previous part of the question, then this should be from the electromagnetic momentum (\(\mathbf{P}_{EM} \to \mathbf{J}_{cap}\)). Meanwhile, the hidden momentum gets dumped on the coil, so momentum remains conserved (\(\mathbf{J}_{cap} + \mathbf{P}_{hid} = \mathbf{0}\)).
+
+\end{document}
