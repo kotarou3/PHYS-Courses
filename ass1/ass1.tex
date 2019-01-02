@@ -1,0 +1,359 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{siunitx}
+\usepackage{upgreek}
+\usepackage{listings, color}
+
+\usepackage{tikz, pgfplots}
+\pgfplotsset{compat = 1.12}
+
+\DeclareSIUnit\parsec{pc}
+\DeclareSIUnit\lightyear{ly}
+\DeclareSIUnit\year{yr}
+\DeclareSIUnit\solarmass{M_\odot}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{
+    basicstyle = \footnotesize,
+    commentstyle = \color{dkgreen},
+    frame = single,
+    keepspaces = true,
+    keywordstyle = \color{blue},
+    numbers = left,
+    numbersep = 5pt,
+    numberstyle = \tiny\color{gray},
+    rulecolor = \color{black},
+    stringstyle = \color{mauve},
+    showstringspaces = false
+}
+
+\begin{document}
+
+\title{PHYS3115: Assignment 1}
+\author{Donny Yang \\ z3470068}
+\date{2017-10-06}
+\maketitle
+
+Imagine a bunch of entirely fictional FLRW-universes that contain only radiation, (non-relativistic) matter and a cosmological constant. In all of these universes, the density parameters for radiation and matter are \(\Omega_{0, r} = 0.01\) and \(\Omega_{0, m} = 1.1\), and the Hubble parameter is \(H_0 = \SI{100}{\kilo\metre\per\second\per\mega\parsec}\).
+
+\section{Numerically integrating the Friedman equations}
+We have the two Friedman equations, written in terms of density parameters:
+\begin{align*}
+    \frac{H^2}{H_0^2} &= \frac{1}{H_0^2} \left(\frac{\dot{a}}{a}\right)^2 = \Omega_{0, r} a^{-4} + \Omega_{0, m} a^{-3} + \Omega_{0, \kappa} a^{-2} + \Omega_{0, \Lambda} \\
+    \frac{\dot{H}}{H_0^2} + \frac{H^2}{H_0^2} &= \frac{1}{H_0^2} \frac{\ddot{a}}{a} = \Omega_{0, \Lambda} - \Omega_{0, r} a^{-4} - \frac{1}{2} \Omega_{0, m} a^{-3} \\
+    1 &= \Omega_{0, r} + \Omega_{0, m} + \Omega_{0, \kappa} + \Omega_{0, \Lambda}
+\end{align*}
+
+While the two equations are equivalent, it is easier for a numerical integrator to solve the second equation, since the derivative term is not squared.
+
+Hence, we create the following Mathematica function that solves the second Friedman equation in terms of \(a\):
+\begin{lstlisting}[language = Mathematica, frame = single]
+friedmanSolve[
+    \[CapitalOmega]0r_, \[CapitalOmega]0m_, \[CapitalOmega]0\[CapitalLambda]_,
+    H0_, t0_, t1_
+] := Module[
+    {solution, domain},
+    solution = a /. NDSolve[
+        {
+            a''[t] / (a[t] H0^2) ==
+                \[CapitalOmega]0\[CapitalLambda] - \[CapitalOmega]0r a[t]^(-4)
+                - \[CapitalOmega]0m a[t]^(-3) / 2, 
+            a[0] == 1, a'[0] == H0,
+            WhenEvent[a[t] <= 10^(-5), "StopIntegration"]
+        },
+        a, {t, t0, t1},
+        "ExtrapolationHandler" -> {Indeterminate &, "WarningMessage" -> False}
+    ][[1]];
+    domain = solution["Domain"][[1]];
+    {
+        Plot[
+            Evaluate[solution[t]], {t, domain[[1]], domain[[2]]},
+            AxesLabel -> {t, a},
+            ImageSize -> 600
+        ],
+        domain,
+        Max@solution["ValuesOnGrid"]
+    }
+]
+\end{lstlisting}
+
+Take note that this function returns 3 things: A plot of the time evolution of \(a\), the domain of \(a\) (i.e., start and end of the universe, if they exist), and the maximum value of \(a\) within the domain.
+
+\section{Universe 1 is spatially flat (\(\Omega_\kappa = 0\)).}
+\subsection{What is the cosmological constant density parameter \(\Omega_\Lambda\)?}
+Using the density parameter constraint from above:
+\begin{align*}
+    1 &= \Omega_{0, r} + \Omega_{0, m} + \Omega_{0, \kappa} + \Omega_{0, \Lambda} \\
+    \therefore \Omega_{0, \Lambda} &= -0.11
+\end{align*}
+
+Since the cosmological constant does not evolve with time, \(\Omega_\Lambda = \Omega_{0, \Lambda} = -0.11\)
+
+\subsection{Calculate the redshift of matter-radiation equality.}
+We want to find an \(a\) such that:
+\begin{align*}
+    \Omega_{0, r} a^{-4} &= \Omega_{0, m} a^{-3} \\
+    \therefore a &= \frac{\Omega_{0, r}}{\Omega_{0, m}} \\
+    &= \frac{1}{110} \approx 0.0091
+\end{align*}
+
+Converting this to a redshift value:
+\begin{align*}
+    z &= \frac{1}{a} - 1 \\
+    &= 109
+\end{align*}
+
+\subsection{If one uses the redshift \(z\) as a time parameter in an expanding universe, events in the future can be assigned a negative \(z\). At what redshift is \(\Omega_m = |\Omega_\Lambda|\)?}
+Following the same procedure as above:
+\begin{align*}
+    \Omega_{0, m} a^{-3} &= |\Omega_\Lambda| \\
+    \therefore a &= \left(\frac{\Omega_{0, m}}{|\Omega_\Lambda|}\right)^{\frac{1}{3}} \\
+    &= 10^{\frac{1}{3}} \approx 2.2 \\
+    \therefore z &\approx -0.54
+\end{align*}
+
+\subsection{Will this universe ever be cosmological constant-dominated (i.e., \(|\Omega_\Lambda| \gg \Omega_m\))?}
+This is the same as saying, will:
+\[a \gg \left(\frac{\Omega_{0, m}}{|\Omega_\Lambda|}\right)^{\frac{1}{3}} \approx 2.2\]
+
+Solving the second Friedman equation in Mathematica:
+\begin{lstlisting}[language = Mathematica, frame = single]
+friedmanSolve[0.01, 1.1, -0.11, 100, -0.1, 0.1]
+\end{lstlisting}
+\begin{center}
+    \includegraphics[width = 12cm]{{2.4}.png}
+\end{center}
+
+From the plot, it is clear that this universe has a finite lifespan and maximum scale factor \(a \approx 2.2\). This means the universe will never become cosmological constant-dominated.
+
+In fact, if we rearrange the first Friedman equation for \(\dot{a}^2\) and substitute in any \(a \gtrsim 2.2\), we obtain \(\dot{a}^2 < 0\). Since \(a\), and consequently \(\dot{a}\) must be a real number, this means \(a \gtrsim 2.2\) does not satisfy the equation, and hence is not possible for our universe.
+
+\subsection{What is the ultimate fate of this universe?}
+Using the solution from the previous question, we see the scale factor \(a\) goes back to 0 after a finite amount of time, indicating a ``Big Crunch''.
+
+\section{Universe 2 has a zero cosmological constant (\(\Omega_\Lambda = 0\))}
+\subsection{What is the spatial geometry?}
+Using the density parameter constraint from above:
+\begin{align*}
+    1 &= \Omega_{0, r} + \Omega_{0, m} + \Omega_{0, \kappa} + \Omega_{0, \Lambda} \\
+    \therefore \Omega_{0, \kappa} &= -0.11 \\
+    \Omega_\kappa &= -\frac{\kappa c^2}{H_0^2} \\
+    \therefore \kappa &\approx \SI{1.2e-8}{\per\mega\parsec\squared}
+\end{align*}
+
+Since \(\kappa > 0\), this is positive curvature, or a hyperspherical geometry.
+
+\subsection{Calculate the age of the universe.}
+Solving the second Friedman equation in Mathematica:
+\begin{lstlisting}[language = Mathematica, frame = single]
+friedmanSolve[0.01, 1.1, 0, 100, -0.1, 1]
+\end{lstlisting}
+\begin{center}
+    \includegraphics[width = 12cm]{{3.2}.png}
+\end{center}
+
+This produces a domain of about \([-0.0065, 0.94]\), meaning the universe started \SI{0.0065}{\second\mega\parsec\per\kilo\metre} ago, or \SI{6.3e09}{\year} ago.
+
+\subsection{Show that the universe will eventually collapse into a singularity and determine when this will happen.}
+Using the results from above, it is quite obvious that there is a ``Big Crunch''. This happens at about \SI{0.94}{\second\mega\parsec\per\kilo\metre}, or \SI{9.2e11}{\year} in the future.
+
+\subsection{This universe is finite. What is its current volume and what is its maximum volume it will ever have?}
+Our FLRW line element and metric (with coordinates in spatial units) are:
+\begin{align*}
+    \:\mathrm{d} \tau &= \:\mathrm{d} t - a^2 (\mathrm{d} r^2 + r^2 \operatorname{sinc}^2(r \sqrt{\kappa}) (\mathrm{d} \theta^2 + \sin^2 \theta \:\mathrm{d} \phi^2)) \\
+    \therefore g_{\mu \nu} &= \operatorname{diag}(1, -a^2, -a^2 r^2 \operatorname{sinc}^2(r \sqrt{\kappa}), -a^2 r^2 \operatorname{sinc}^2(r \sqrt{\kappa}) \sin^2 \theta)
+\end{align*}
+
+To calculate the 4-volume given our metric:
+\begin{align*}
+    V &= \int \sqrt{|\det g_{\mu \nu}|} \:\mathrm{d} t \:\mathrm{d} r \:\mathrm{d} \theta \:\mathrm{d} \phi \\
+    \sqrt{|\det g_{\mu \nu}|} &= a^3 r^2 \operatorname{sinc}^2\left(r \sqrt{\kappa} \right) |\sin \theta|
+\end{align*}
+
+However, we do not actually want a 4-volume. We actually only want the instantaneous 3-volume at time \(t\), so we simply drop the integration over time. What are the remaining limits of integration? \(\theta\) and \(\phi\) are our usual polar and azimuthal angles respectively, so \(\theta \in [0, \pi], \phi \in [0, 2 \pi]\), while \(r\) is our comoving radial distance.
+
+Since we know the universe is a finite and ``loops around'', we need to find the bounds on \(r\) such that we don't double count any regions of the universe. Since spatially our universe is a 3-sphere, this distance would simply be the great circle distance between two antipodal points, or half the circumference of a great circle (which is always \(2 \pi\) times the radius of curvature). Since our radius of curvature is \(\frac{1}{\sqrt{\kappa}}\), then the antipodal distance is simply \(\frac{\pi}{\sqrt{\kappa}}\), producing our bounds on \(r\):
+\[r \in \left[0, \frac{\pi}{\sqrt{\kappa}}\right]\]
+
+Performing the integration leaves us with:
+\[V = 2 \pi^2 a^3 \kappa^{-\frac{3}{2}}\]
+
+We can see that \(\max(V(a)) = V(\max(a))\), since \(V\) is a monotonic increasing function in \(a\).
+
+Substituting our constant \(\kappa\), and values of \(a\) for the current time \(a_0 = 1\) and the time of maximum volume \(\max(a) \approx 10\):
+\begin{align*}
+    V(a_0) &\approx \SI{1.5e13}{\mega\parsec\cubed} \\
+    V(\max(a)) &\approx \SI{1.5e16}{\mega\parsec\cubed}
+\end{align*}
+
+\section{In universe 3, neutrinos are heavy and the radiation density is entirely made up of background radiation photons (\(\Omega_r = \Omega_\gamma\))}
+\subsection{What is the temperature of the background radiation in this universe?}
+From black body radiation, an equation relating the energy density of photons \(\rho_\gamma\) with its black body temperature \(T\) was derived to be:
+\[\rho_\gamma = \frac{4 \sigma}{c} T^4\]
+where \(\sigma\) is the Stefan--Boltzmann constant.
+
+What is \(\rho_\gamma\) for our universe? Well, it is related to \(\Omega_\gamma\) through the critical density \(\rho_c\):
+\begin{align*}
+    \Omega_\gamma &= \frac{\rho_\gamma}{\rho_c c^2} \\
+    \rho_c &= \frac{3 H_0^2}{8 \pi G}
+\end{align*}
+
+Substituting everything together and solving for \(T\):
+\begin{align*}
+    T^4 &= \frac{3 c^3 H_0^2 \Omega_\gamma}{32 \pi G \sigma} \\
+    \therefore T &\approx \SI{12}{\kelvin}
+\end{align*}
+
+\section{Universe 4 will expand forever.}
+\subsection{Find a lower limit on \(\Omega_\Lambda\).}
+For indefinite expansion to occur, \(\exists t_0, \forall t > t_0, \dot{a}(t) > 0\).
+
+Since our dynamics can be defined by a first order ODE that has no direct dependence on \(t\) (the first Friedman equation), this is the same as saying \(\exists a_0, \forall a > a_0, \dot{a} > 0\). However due to presence of the \(\dot{a}^2 \ge 0\) restriction in the equation, this adds another restriction to our condition, namely that \(a_0 \le a(t = 0) = 1\), since otherwise the system state will never ``reach'' the infinitely increasing state from our initial condition. Combining this with the codomain of \(a\), the positive reals, we arrive at a condition we can prove without solving the ODE:
+\[\exists a_0 \in (0, 1], \forall a > a_0, \dot{a} > 0\]
+
+Let us first examine the behaviour of \(\dot{a}\) by looking at its singularities and endpoints:
+\begin{align*}
+    \frac{1}{H_0^2} \left(\frac{\dot{a}}{a}\right)^2 &= \Omega_{0, r} a^{-4} + \Omega_{0, m} a^{-3} + \Omega_{0, \kappa} a^{-2} + \Omega_\Lambda \\
+    &= \Omega_{0, r} a^{-4} + \Omega_{0, m} a^{-3} + \left(1 - \Omega_{0, r} - \Omega_{0, m} - \Omega_\Lambda\right) a^{-2} + \Omega_\Lambda \\
+    \lim_{a \to 0^-} \dot{a} &= \pm\infty \sqrt{\Omega_{0, r}} \\
+    \lim_{a \to \infty} \dot{a} &= \pm\infty \sqrt{\Omega_\Lambda}
+\end{align*}
+
+Immediately pops out a lower bound, in that \(\Omega_{0, \Lambda} > 0\) or \(a\) cannot grow unbounded to \(\infty\). But this is not the tightest bound we can get. We can get a better bound, by noticing that there are no other singularities in \(\dot{a}\), so it must be continuous, and examining our condition more closely.
+
+There is a problem in the condition in that we can't directly reason about the sign of \(\dot{a}\), since only \(\dot{a}^2\) appears in our ODE. However, we can use our second initial condition, \(\dot{a}(t = 0) = \dot{a}(a = 1) = H_0\), and split into two cases:
+
+If \(H_0 > 0\), then \(a\) will start to increase, and since \(\dot{a}\) is continuous (it cannot ``jump'' to a negative value from a positive without passing 0), it will remain positive as long as \(\dot{a}^2 > 0\), then \(a\) will continue to increase:
+\[H_0 > 0 \implies \exists a_0 \in (0, 1], \forall a > a_0, \dot{a}^2 > 0\]
+
+If \(H_0 < 0\), then \(a\) will start to decrease, and as long as \(\dot{a}^2 > 0\) (using the same continuity argument as above), then \(a\) will continue to decrease. The only way for it to ``loop'' back around and start increasing again if there is a point that \(\exists a_0 < a(t = 0) = 1, \dot{a} = 0\), so that \(\dot{a}\) ``crosses'' from negative to positive:
+\[H_0 < 0 \implies \exists a_0 \in (0, 1], \dot{a}(a = a_0) = 0 \land \forall a > a_0, \dot{a}^2 > 0\]
+
+Both conditions can be proved by first examining the roots of \(\dot{a}\). If \(\dot{a}\) does not have any roots, then the \(H_0 > 0\) condition is trivially true due to the endpoints of \(\dot{a}\), while the \(H_0 < 0\) condition is trivially false. If \(\dot{a}\) does have a root \(a_0\), if any \(a_0 > 1\), then neither condition will hold, and the universe does not expand indefinitely; Otherwise all \(a_0 < 1\), then both conditions hold, and the universe \textbf{will} expand indefinitely.
+
+Let us consider the bounds on \(\Omega_\Lambda\) such that \(\forall a, \dot{a} \neq 0\) (\(\dot{a}\) does not have a root) first, by examining the image of \(\Omega\) as defined below:
+\begin{align*}
+    \forall a \in \mathbb{R}^+, 0 &\neq \Omega_{0, r} a^{-4} + \Omega_{0, m} a^{-3} + \left(1 - \Omega_{0, r} - \Omega_{0, m} - \Omega_\Lambda\right) a^{-2} + \Omega_\Lambda \\
+    \text{let } \Omega &= \frac{a^2 \Omega_{0, m} + a^2 \Omega_{0, r} - a^2 - a \Omega_{0, m} - \Omega_{0, r}}{a^2 \left(a^2 - 1\right)} \\
+    \therefore \forall a \in \mathbb{R}^+, \Omega_\Lambda &\neq \Omega
+\end{align*}
+
+To find what values \(\Omega\) can take, we have to examine its critical points in the domain \(a \in (0, \infty)\). Let us first examine the endpoints and singularities:
+\begin{align*}
+    \lim_{a \to 0^+} \Omega &= \infty \\
+    \lim_{a \to 1^-} \Omega &= \infty \\
+    \lim_{a \to 1^+} \Omega &= -\infty \\
+    \lim_{a \to \infty} \Omega &= 0
+\end{align*}
+
+Since \(\Omega\) is a continuous function, this means that it must take every negative value in the domain \(a \in (1, \infty)\):
+\[\mathbb{R}^- \subseteq \{\Omega(a) | a \in \mathbb{R}^+\}\]
+
+Let us now examine the stationary points of \(\Omega\):
+\begin{align*}
+    \frac{\mathrm{d} \Omega}{\mathrm{d} a} &= \frac{-2 a^4 (\Omega_{0, m} + \Omega_{0, r} - 1) + 3 a^3 \Omega_{0, m} + 4 a^2 \Omega_{0, r} - a \Omega_{0, m} - 2 \Omega_{0, r}}{a^3 \left(a^2 - 1\right)^2} \\
+    &= 0
+\end{align*}
+
+This is a quartic equation in \(a\), and while solvable analytically, is horribly nasty. So instead, we will say \(a_1\) belongs to the set of roots of the equation:
+\[a_1 \in \left\{a \in \mathbb{R}^+ \bigg| \frac{\mathrm{d} \Omega}{\mathrm{d} a} = 0\right\}\]
+
+There will always be at least one minima in \(a \in (0, 1)\), so we can say the image of \(\Omega\) there is:
+\begin{align*}
+    \{\Omega(a) \in \mathbb{R} | a \in (0, 1)\} &= [\min\circ\Omega(a_{1, (0, 1)}), \infty) \\
+    a_{1, (0, 1)} &\in \left\{a \in (0, 1) \bigg| \frac{\mathrm{d} \Omega}{\mathrm{d} a} = 0\right\}
+\end{align*}
+
+If there exists a stationary point in \(a \in (1, \infty)\), at least one of them must be a maxima or inflection point. If there is no stationary point (or only inflection points), then the maxima is 0. So we can say the image of \(\Omega\) there is:
+\begin{align*}
+    \{\Omega(a) \in \mathbb{R} | a \in (1, \infty)\} &= (-\infty, \max(0, \Omega(a_{1, (1, \infty)}))] \\
+    a_{1, (1, \infty)} &\in \left\{a \in (1, \infty) \bigg| \frac{\mathrm{d} \Omega}{\mathrm{d} a} = 0\right\}
+\end{align*}
+
+Thus we have \(\forall a \in \mathbb{R}^+, \Omega_\Lambda \neq \Omega\), or no roots exist in \(\dot{a}\), when:
+\begin{align*}
+    \Omega_\Lambda &\notin (-\infty, \max(0, \Omega(a_{1, (1, \infty)}))] \cup [\min\circ\Omega(a_{1, (0, 1)}), \infty) \\
+    \therefore \Omega_\Lambda &\in (\max(0, \Omega(a_{1, (1, \infty)})), \min\circ\Omega(a_{1, (0, 1)}))
+\end{align*}
+
+Remember that this is one possible bound on \(\Omega_\Lambda\) where the universe expands indefinitely, under the assumption that \(H_0 > 0\).
+
+For our specific universe, we obtain the following values:
+\begin{lstlisting}[language = Mathematica, frame = single]
+\[CapitalOmega]0r = 0.01;
+\[CapitalOmega]0m = 1.1;
+\[CapitalOmega] = (
+    -a^2 - a \[CapitalOmega]0m + a^2 \[CapitalOmega]0m
+    - \[CapitalOmega]0r + a^2 \[CapitalOmega]0r
+) / (a^2 (-1 + a^2));
+a1 = {ToRules@Reduce[D[\[CapitalOmega], a] == 0, a]};
+a101 = Select[a1, 0 < (a /. #) < 1 &]
+a11\[Infinity] = Select[a0, 1 < (a /. #) &]
+\[CapitalOmega] /. a101
+\[CapitalOmega] /. a11\[Infinity]
+\end{lstlisting}
+\begin{align*}
+    a_1 &\in \{0.591792..., 14.9899...\} \\
+    \therefore \Omega(a_{1, (0, 1)}) &\in \{2.73525...\} \\
+    \Omega(a_{1, (1, \infty)}) &\in \{0.000163492...\} \\
+    \therefore \Omega_\Lambda &\in (0.000163492..., 2.73525...)
+\end{align*}
+
+Let's do a quick sanity check of \(\Omega_\Lambda\) values slightly inside the bounds to see if they correctly expand indefinitely as expected:
+\begin{lstlisting}[language = Mathematica, frame = single]
+friedmannSolve[0.01, 1.1, 2.73524, 100, -0.1, 0.1]
+friedmannSolve[0.01, 1.1, 0.000163493, 100, -0.1, 10]
+\end{lstlisting}
+\begin{center}
+    \includegraphics[width = 12cm]{{5.1-2.73524}.png}
+    \includegraphics[width = 12cm]{{5.1-0.000163493}.png}
+\end{center}
+
+What about if we do have a root? As mentioned before, we simply have to find whether any of the roots are \(a_0 > 1\), and if and only if there are none, it means both our conditions hold. Otherwise, neither condition holds. Actually finding an analytic bound on \(\Omega_\Lambda\) for this would be very difficult, so let us only consider our specific universe, with \(\Omega_\Lambda\) values slightly outside of the range we found above, and extend the result in general:
+\begin{lstlisting}[language = Mathematica, frame = single]
+friedmannSolve[0.01, 1.1, 2.73526, 100, -0.1, 0.1]
+friedmannSolve[0.01, 1.1, 0.000163491, 100, -0.1, 10]
+\end{lstlisting}
+\begin{center}
+    \includegraphics[width = 12cm]{{5.1-2.73526}.png}
+    \includegraphics[width = 12cm]{{5.1-0.000163491}.png}
+\end{center}
+
+We can quite clearly see that even though \(\Omega_\Lambda > 2.73525...\), the universe still continues to expand indefinitely (albeit the universe no longer has a beginning), leading us to believe this is the \(a_0 < 1\) case, and thus there is no upper bound on \(\Omega_\Lambda\). However, when \(\Omega_\Lambda < 0.000163492...\), the lifespan of the universe is finite, so this is probably the \(a_0 > 1\) case, so our lower bound is a hard lower bound.
+
+We can then conclude that the bounds on \(\Omega_\Lambda\) in general are:
+\begin{align*}
+    H_0 > 0 \implies \Omega_\Lambda &\in (\max(0, \Omega(a_{1, (1, \infty)})), \infty) \\
+    H_0 < 0 \implies \Omega_\Lambda &\in (\min\circ\Omega(a_{1, (0, 1)}), \infty)
+\end{align*}
+
+Or in our specific universe:
+\[\Omega_\Lambda > 0.000163492...\]
+
+\section{In universe 5, all of the non-relativistic matter consists of mini black holes with mass \(m_{BH} = \SI{1e-10}{\solarmass}\).}
+\subsection{Calculate the expectation value for the distance between a randomly located observer and the closest mini black hole.}
+To calculate this, we need to find the number density \(n_{BH}\) of the black holes, and since all matter in the universe are these black holes, this is simply related to the matter density \(\rho_m\):
+\begin{align*}
+    \Omega_m &= \frac{\rho_m}{\rho_c} \\
+    \rho_c &= \frac{3 H_0^2}{8 \pi G} \\
+    n_{BH} &= \frac{\rho_m}{m_{BH}} \\
+    &= \frac{3 H_0^2 \Omega_m}{8 \pi G m_{BH}} \\
+    &\approx \SI{3100}{\per\parsec\cubed}
+\end{align*}
+
+Now, the average distance to the nearest mini black hole given a randomly located observer will depend on the specific velocity distribution and packing of the black holes, and the curvature of space.
+
+For our purposes, we assume that every black hole is stationary, and that they are packed in a 3D grid pattern, and that space is flat (equal packing in non-Euclidean space is a non-trivial problem). This divides up space into equally sized cubes of side length \(l = \sqrt[3]{n_{BH}^{-1}}\), with a black hole at each centre, indicating the closest black hole in the cube's volume. The expectation value of the distance to centre (the nearest black hole) is then:
+\begin{align*}
+    \langle r \rangle &= \frac{1}{V} \iiint r \:\mathrm{d} V \\
+    &= \frac{1}{l^3} \iiint_{-\frac{l}{2}}^{\frac{l}{2}} \sqrt{x^2 + y^2 + z^2} \:\mathrm{d} x \:\mathrm{d} y \:\mathrm{d} z \\
+    &\approx 0.48 l \\
+    &\approx \SI{0.033}{\parsec} \\
+    &\approx \SI{0.11}{\lightyear}
+\end{align*}
+
+\end{document}
