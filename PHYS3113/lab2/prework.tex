@@ -1,0 +1,76 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{siunitx}
+
+\usepackage{sectsty}
+\sectionfont{\large\selectfont}
+\subsectionfont{\normalsize\selectfont}
+
+\begin{document}
+
+\title{PHYS3113: Stirling Engine Prework}
+\author{ \\ \\ }
+\date{2017-05-08}
+\maketitle
+
+\section{Questions}
+\subsection{Theoretical}
+\subsubsection{Derive expressions for the heat and work change for each step of the Stirling cycle.}
+We only have isochoric and isothermal processes, so we only need the expressions for those.
+
+In an isochroic process, the volume change is zero, therefore no work is done (\(\Delta W = 0\)). All changes in internal energy are due to changes in heat. If we use the heat capacity at constant volume, then we have:
+\[\Delta U = \Delta Q = C_V \Delta T = \frac{n R \Delta T}{\gamma - 1}\]
+
+In an isothermal process, the internal energy change is zero, so work done is equal to heat gain:
+\begin{align*}
+    \Delta Q = \Delta W &= \int_{V_0}^{V_1} P \:\mathrm{d} V \\
+    &= n R T \int_{V_0}^{V_1} \frac{\mathrm{d} V}{V} \\
+    &= n R T \ln \frac{V_1}{V_0}
+\end{align*}
+
+So for each step of the Stirling cycle, we have:
+\begin{center}
+\begin{tabular}{c | c | c}
+    Step & \(\Delta Q\) & \(\Delta W\) \\
+    \hline
+    \(V_L \to V_H\) & \(n R T_H \ln \frac{V_H}{V_L}\) & \(n R T_H \ln \frac{V_H}{V_L}\) \\
+    \(T_H \to T_C\) & \(\frac{n R (T_C - T_H)}{\gamma - 1}\) & 0 \\
+    \(V_H \to V_L\) & \(n R T_C \ln \frac{V_L}{V_H}\) & \(n R T_C \ln \frac{V_L}{V_H}\) \\
+    \(T_C \to T_H\) & \(\frac{n R (T_H - T_C)}{\gamma - 1}\) & 0
+\end{tabular}
+\end{center}
+
+\subsubsection{Calculate the heat and work change for a Stirling engine with \(T_C = \SI{300}{\kelvin}\), \(T_H = \SI{400}{\kelvin}\), \(V_L = \SI{2}{\metre\cubed}\) and \(V_H = \SI{10}{\metre\cubed}\).}
+\begin{center}
+\begin{tabular}{c | c | c}
+    Step & \(\Delta Q\) & \(\Delta W\) \\
+    \hline
+    \(V_L \to V_H\) & \(n R (\SI{644}{\kelvin})\) & \(n R (\SI{644}{\kelvin})\) \\
+    \(T_H \to T_C\) & \(-\frac{n R}{\gamma - 1} (\SI{100}{\kelvin})\) & 0 \\
+    \(V_H \to V_L\) & \(-n R (\SI{483}{\kelvin})\) & \(-n R (\SI{483}{\kelvin})\) \\
+    \(T_C \to T_H\) & \(\frac{n R}{\gamma - 1} (\SI{100}{\kelvin})\) & 0 \\
+    \hline
+    Total & \(n R (\SI{161}{\kelvin})\) & \(n R (\SI{161}{\kelvin})\)
+\end{tabular}
+\end{center}
+
+\subsubsection{Calculate the efficiency for the above engine.}
+We have:
+\begin{align*}
+    Q_{in} &= n R T_H \ln \frac{V_H}{V_L} + \frac{n R (T_H - T_C)}{\gamma - 1} \\
+    &= n R \left(T_H \ln \frac{V_H}{V_L} + \frac{T_H - T_C}{\gamma - 1}\right) \\
+    W_{out} &= n R T_H \ln \frac{V_H}{V_L} + n R T_C \ln \frac{V_L}{V_H} \\
+    &= n R (T_H - T_C) \ln \frac{V_H}{V_L} \\
+    \therefore \eta &= \frac{W_{out}}{Q_{in}} \\
+    &= \frac{(T_H - T_C) \ln \frac{V_H}{V_L}}{T_H \ln \frac{V_H}{V_L} + \frac{T_H - T_C}{\gamma - 1}} \\
+    &\approx \frac{(\gamma - 1) (\SI{161}{\kelvin})}{\gamma  (\SI{644}{\kelvin}) - (\SI{544}{\kelvin})}
+\end{align*}
+
+For a diatomic gas (\(\gamma = 1.4\)), \(\eta \approx 0.180\).
+
+\subsection{Experimental}
+\subsubsection{Explain how the torque meter works.}
+The mass applies some torque on the shaft (due to the frictional coupling) that is proportional to \(\sin \theta\), where \(\theta\) is the displacement angle to the vertical, like the simple pendulum system. The mass will then rise or fall until it reaches equilibrium with the torque exerted by the shaft. This equilibrium position then gives an indication of the torque the shaft is generating.
+
+\end{document}

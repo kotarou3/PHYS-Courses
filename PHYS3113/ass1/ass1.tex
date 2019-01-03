@@ -1,0 +1,106 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{siunitx}
+\usepackage{graphicx, caption, subcaption}
+
+\begin{document}
+
+\title{PHYS3113: Assignment 1}
+\author{ \\ \\ }
+\date{2017-04-27}
+\maketitle
+
+\section{The Gibbs function of a certain gas, where \(A\), \(B\), \(C\) and \(D\) are constants, is:}
+\[G = n R T \ln P + A + B P + \frac{C P^2}{2} + \frac{D P^3}{3}\]
+
+\subsection{Find the other three thermodynamic potentials of the gas.}
+Since we already have a natural variables of \(G\) explicitly in the function, all we have to do is find their conjugates:
+\begin{align*}
+    S &= -\frac{\partial G}{\partial T} \\
+    &= -n R \ln P \\
+    V &= \frac{\partial G}{\partial P} \\
+    &= \frac{n R T}{P} + B + C P + D P^2
+\end{align*}
+
+Now we solve for \(U\) (since all the other potentials are derived from this), and then \(F\) and \(H\):
+\begin{align*}
+    U &= G - P V + T S \\
+    &= A - n R T - \frac{C P^2}{2} - \frac{2 D P^3}{3} \\
+    F &= U - T S \\
+    &= A - n R T (1 - \ln P) - \frac{C P^2}{2} - \frac{2 D P^3}{3} \\
+    H &= U + P V \\
+    &= A + B P + \frac{C P^2}{2} + \frac{D P^3}{3}
+\end{align*}
+
+Now, one would want to put the other potentials in terms of their natural variables, but inverting \(V\) to \(P\) (to substitute back) would result in a piecewise function (since in general it is not bijective) of multiple lines, and likewise trying to invert \(S\) to \(T\) (which would need the substitution of \(P\) in). Thus, putting the potential in terms of their natural variables are avoided in this answer.
+
+\subsection{Find the entropy.}
+The entropy is the \(S\) value from above:
+\[S = -n R \ln P\]
+
+\subsection{Find the equation of state of the gas.}
+All of the above equations are equations of state. But if we want one in the form of the gas laws (that is, \(f(P, V, T) = 0\)), then we simply rearrange the \(V\) equation:
+\[P V = n R T + B P + C P^2 + D P^3\]
+\[P V - n R T - B P - C P^2 - D P^3 = 0\]
+
+\section{Show that the Gibbs phase rule for a system with \(k\) constituents and \(\pi\) phases in which \(r\) chemical reactions occur can be generalised to \(f = k - \pi - r + 2\). What is the maximum number of coexisting phases in terms of \(k\), \(\pi\), and \(r\)? Justify your answer.}
+
+The standard non-reactive Gibbs phase rule is derived from knowing we have the following number of intensive variables:
+\begin{itemize}
+    \item 2 from the state postulate (Typically \(T\) and \(P\))
+    \item \(k \pi\) from \(k\) constituents for each state
+\end{itemize}
+and we have the following number of constraints:
+\begin{itemize}
+    \item \(\pi\) from the constituents of each state summing to 1
+    \item \(k (\pi - 1)\) from the equilibrium relations for each type of constituent
+\end{itemize}
+
+If chemical reactions are occurring, then another equilibrium relation is needed for each chemical reaction, hence increasing the number of constraints. This results in a phase rule of:
+\begin{align*}
+    f &= (2 + k \pi) - (\pi + k (\pi - 1) + r) \\
+    &= k - \pi - r + 2
+\end{align*}
+
+If we rearrange for the coexisting phases at equilibrium:
+\[\pi = k - r - f + 2\]
+we can see that it can increase when \(k\) increases, or \(r\) or \(f\) decreases. Since we want our answer in terms of \(k\) and \(r\), we can only decrease \(f\) arbitrarily. But since a negative degrees of freedom makes no sense, we can only reduce it to 0, or \(f = 0\), to maximise the phases:
+\[\pi = k - r + 2\]
+
+\section{Show that neither the ideal gas law nor the van der Waals equation of state is consistent with the third law of thermodynamics (i.e., they do not hold at \(T = 0\)).}
+The third law states that there is only one possible value for entropy when the temperature is absolute zero.
+
+Consider an isothermal process of a van der Waals gas at some temperature \(T\). This results in an entropy change of:
+\begin{align*}
+    \Delta S &= \frac{1}{T} \int_{V_0}^{V_1} P \:\mathrm{d} V \\
+    &= \frac{1}{T} \int_{V_0}^{V_1} \frac{n R T}{V - b n} - a \left(\frac{n}{V}\right)^2 \:\mathrm{d} V \\
+    &= n R \ln \frac{V_1 - b n}{V_0 - b n} + \frac{a n^2}{T} \left(\frac{1}{V_1} - \frac{1}{V_0}\right)
+\end{align*}
+
+This shows that the entropy change is non-zero (and in fact infinite for \(a \ne 0\)) if the volume is able to change at absolute zero.
+
+Is the volume able to change at absolute zero? Let's look at the van der Waals equation:
+\[\left(P - a \left(\frac{n}{V}\right)^2\right)(V - b n) = n R T = 0\]
+which means that either \(P - a \left(\frac{n}{V}\right)^2\) or \(V - b n\) can be zero while the other is free to vary. If \(P = a \left(\frac{n}{V}\right)^2\), then \(V\) is free to vary, and hence volume can change in a van der Waals gas at absolute zero.
+
+If we consider \(a = b = 0\) for an ideal gas, \(V\) is still free to vary, but \(P\) becomes fixed at 0.
+
+Hence both the van der Waals equation and ideal gas law contradict the third law of thermodynamics.
+
+A more mathematically rigorous proof would be to reword the above ``only one possible value of entropy'' as ``all isothermal processes at absolute zero are isoentropic''. That is:
+\[\left(\frac{\partial S}{\partial X}\right)_T = 0\]
+for any state variable \(X\).
+
+If we consider the state variable \(X = V\), from Maxwell's relations, this is equivalent to saying
+\[\left(\frac{\partial P}{\partial T}\right)_V = 0\]
+
+This can then be (almost) directly applied to the van der Waals equation to yield:
+\begin{align*}
+    \frac{\partial P}{\partial T} &= \frac{\partial}{\partial T} \left(\frac{n R T}{V - b n} - a \left(\frac{n}{V}\right)^2\right) \\
+    &= \frac{n R}{V - b n} \\
+    &\ne 0
+\end{align*}
+which gives us the same contradiction as before.
+
+\end{document}

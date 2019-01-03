@@ -1,0 +1,74 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{siunitx}
+
+\usepackage{sectsty}
+\sectionfont{\large\selectfont}
+\subsectionfont{\normalsize\selectfont}
+
+\begin{document}
+
+\title{PHYS3113: Heat Capacity of Gases Prework}
+\author{ \\ \\ }
+\date{2017-04-03}
+\maketitle
+
+\section{Questions}
+\subsection{The manometer measures pressure via the displacement of the oil in the reservoir so the volume changes. Does this volume change matter? How do we obtain the heat capacity at constant volume if we know that volume will change?}
+While the volume change will be tiny relative to the volume of the flask, and hence might not matter, it is still a good idea to factor it into the calculations regardless.
+
+To obtain the heat capacity at constant volume without a constant volume, we simply use one of the other (equivalent) definitions of heat capacity at constant volume: The change in internal energy per unit temperature:
+\begin{align*}
+    C_V &= \frac{\mathrm{d} U}{\mathrm{d} T} \\
+    &= \frac{\mathrm{\delta} Q}{\mathrm{d} T} - P \frac{\mathrm{d} V}{\mathrm{d} T} \\
+    &= p \frac{\mathrm{d} t}{\mathrm{d} T} - P \frac{\mathrm{d} V}{\mathrm{d} T}
+\end{align*}
+Where \(p\) is the power the heating element releases.
+
+\subsection{Since we know the volume is changing, we can't simply write \(\mathrm{d} P \propto \mathrm{d} T\). What is the correct form?}
+Consider a small change in both pressure and volume:
+\begin{align*}
+    (P + \mathrm{d} P) (V + \mathrm{d} V) &= n R (T + \mathrm{d} T) \\
+    P V + P \mathrm{d} V + V \mathrm{d} P + \mathrm{d} P \mathrm{d} V &= n R T + n R \mathrm{d} T \\
+    \therefore P \mathrm{d} V + V \mathrm{d} P + \mathrm{d} P \mathrm{d} V &= n R \mathrm{d} T
+\end{align*}
+
+Abusing the notation of differentials (fine as long as the differentials are finitely small), we can substitute directly into our equation for \(C_V\):
+\[C_V = n R \frac{p \mathrm{d} t - P \mathrm{d} V}{P \mathrm{d} V + V \mathrm{d} P + \mathrm{d} P \mathrm{d} V}\]
+
+\subsection{\(C_V\) now depends on both \(\mathrm{d} P\) and \(\mathrm{d} V\). How can we relate \(\mathrm{d} V\) to \(\mathrm{d} P\)?}
+Since the manometer is a linear pressure sensor, there is a linear relationship between pressure and volume. If we assume the manometer is a cylinder with radius \(r\) and length \(l\), we obtain:
+\[\frac{\mathrm{d} V}{\mathrm{d} P} = \frac{\mathrm{d} V}{\mathrm{d} l} \frac{\mathrm{d} l}{\mathrm{d} P} = \pi r^2 \frac{\mathrm{d} l}{\mathrm{d} P}\]
+or
+\[\mathrm{d} V = \pi r^2 \frac{\mathrm{d} l}{\mathrm{d} P} \mathrm{d} P\]
+where \(r\) and \(\frac{\mathrm{d} l}{\mathrm{d} P}\) are values to measure.
+
+We can substitute this in to \(C_V\):
+\[C_V = n R \frac{p \mathrm{d} t - \pi r^2 \frac{\mathrm{d} l}{\mathrm{d} P} P \mathrm{d} P}{\pi r^2 \frac{\mathrm{d} l}{\mathrm{d} P} (P + \mathrm{d} P) \mathrm{d} P + V \mathrm{d} P}\]
+
+We can simplify this a bit by observing that for our expected values of \(P \approx \SI{1013}{\milli\bar}\) and \(\mathrm{d} P \approx \SI{2}{\milli\bar}\), \(P \mathrm{d} P \approx \SI{2026}{\milli\bar\squared}\) is larger than \(\mathrm{d} P \mathrm{d} P \approx \SI{4}{\milli\bar\squared}\) by three orders of magnitude. The error in our results will probably be much larger than this, so this term can be neglected:
+\[C_V = n R \frac{p \mathrm{d} t - \pi r^2 \frac{\mathrm{d} l}{\mathrm{d} P} P \mathrm{d} P}{\pi r^2 \frac{\mathrm{d} l}{\mathrm{d} P} P \mathrm{d} P + V \mathrm{d} P}\]
+
+\subsection{For this experiment to work, the gas in the container needs to be in thermal equilibrium with the surroundings. You also don't want to heat the container. In light of this, what should your measurements be?}
+Short and quick
+
+\subsection{How does the manometer work? How can you change the scale?}
+A manometer is effectively two connected pressure heads, which obey the equation \(P = h g \rho\). A pressure differential would hence produce a height differential:
+\[\mathrm{d} P = g \rho \:\mathrm{d} h\]
+
+If we leave one end exposed to the atmosphere (or otherwise reference pressure), and the other end to the system we're measuring, the height difference would then be proportional to the pressure difference.
+
+To change the scale, one could change the density of the working fluid \(\rho\), or alternatively alter the height readout. One could change the gravity \(g\) too, but that is more difficult.
+
+\subsection{Do you need to zero the manometer before you being the experiment?}
+No (as long as the equilibrium reading is within the scale), but zeroing would make calculating the pressure difference easier (it's simply what you read). It could potentially reduce the error in measurement too, since zeroing to the equilibrium pressure can be more precise.
+
+\section{Experimental Plan}
+\begin{itemize}
+    \item Follow the method outlined in the student notes and operating instructions.
+    \item Try to keep heating time short.
+    \item Take more measurements in part 2 to reduce potential errors due to more human involvement.
+\end{itemize}
+
+\end{document}

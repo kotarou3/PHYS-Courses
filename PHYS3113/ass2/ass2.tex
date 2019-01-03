@@ -1,0 +1,176 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{siunitx}
+\usepackage{chemformula}
+
+\begin{document}
+
+\title{PHYS3113: Assignment 2}
+\author{ \\ \\ }
+\date{2017-05-24}
+\maketitle
+
+\section{Consider a gas of \ch{H2} molecules at \(T = \SI{2000}{\kelvin}\). The characteristic rotational temperature is \(\theta_{rot} = \SI{85}{\kelvin}\) and the characteristic vibrational temperature is \(\theta_{vib} = \SI{6200}{\kelvin}\). Neglect molecule dissociation since the dissociation energy \(E \approx \SI{55000}{\kelvin}\) is sufficiently high, at the given temperature \(T = \SI{2000}{\kelvin}:\)}
+\subsection{Which degrees of freedom are in the classical regime and which are in the quantum regime?}
+Translational and rotational degrees of freedom are in the classical regime, and vibrational is in the quantum.
+
+While not enough details are given in the question to prove the gas's translational degrees of freedom are in the classical regime (density would be needed), we can typically assume it to be true for all macroscopic volumes of gases found on Earth.
+
+For rotational freedom, it is clearly classical since \(T \gg \theta_{rot}\), while vibrational is still in the quantum regime since \(T \lesssim \theta_{vib}\).
+
+Note that only the rotations orthogonal to the \ch{H2} axis are in the classical regime. For the rotation parallel to the axis, it is still quantum, since the characteristic temperature of that axis is \(\frac{E}{k} \approx \frac{\hbar^2}{2 I k} l (l + 1) > \SI{1e5}{\kelvin} \gg T\) if we model each Hydrogen atom as a spherical electron shell at the Bohr radius and a single proton at the centre.
+
+\subsection{Calculate the contribution to specific heat (per molecule) at constant volume from:}
+\subsubsection{Translational degrees of freedom}
+Let us first derive the partition function with only translational degrees of freedom. The Hamiltonian per molecule for such a system would then be:
+\[H = \frac{\mathbf{p}^2}{2 m}\]
+
+At this point, one could just use the equipartition theorem and say that since \(H \propto \mathbf{p}^2\) has three quadratic degrees of freedom in phase space, the average energy per molecule and specific heat is:
+\begin{align*}
+    \frac{U}{N} &= 3 \times \frac{1}{2} k T = \frac{3}{2} k T \\
+    c_V &= \frac{1}{N} \frac{\partial U}{\partial T} = \frac{3}{2} k
+\end{align*}
+
+But let's ignore that for now and derive it from the partition function. Firstly, let us look at the partition function for a single molecule. For integrating over the entire momentum space, we will use spherical coordinates due to the presence of \(\mathbf{p}^2\) in the Hamiltonian:
+\begin{align*}
+    \zeta &= \frac{1}{h^3} \int e^{-\beta H} \:\mathrm{d} V \mathrm{d} \mathbf{p} \\
+    &= \frac{V}{h^3} \int_0^\infty \int_0^{2 \pi} \int_0^\pi \exp\left(-\beta \frac{p_r^2}{2 m}\right) p_r^2 \sin p_\theta \:\mathrm{d} p_\theta \mathrm{d} p_\phi \mathrm{d} p_r \\
+    &= \frac{4 \pi V}{h^3} \int_0^\infty \exp\left(-\beta \frac{p_r^2}{2 m}\right) p_r^2 \:\mathrm{d} p_r \\
+    &= \frac{V}{h^3} \left(\frac{2 \pi m}{\beta}\right)^{\frac{3}{2}}
+\end{align*}
+
+The total partition function and internal energy for this system is then:
+\begin{align*}
+    Z &= \frac{\zeta^N}{N!} \\
+    U &= -\frac{\partial \ln Z}{\partial \beta} \\
+    &= -\frac{\partial}{\partial \beta} \left(N \ln \frac{V (2 \pi m)^\frac{3}{2}}{h^3} - \frac{3}{2} N \ln \beta - \ln N!\right) \\
+    &= \frac{3}{2} N \frac{1}{\beta} = \frac{3}{2} N k T
+\end{align*}
+
+Its specific heat is then:
+\begin{align*}
+    c_V &= \frac{1}{N} \frac{\partial U}{\partial T} \\
+    &= \frac{3}{2} k
+\end{align*}
+
+\subsubsection{Rotational degrees of freedom}
+One could approach this from the classical physics point of view and have the Hamiltonian be:
+\[H = \frac{\mathbf{L}^2}{2 I}\]
+which has two quadratic degrees of freedom, corresponding to the two principal axes of rotation orthogonal to \ch{H2}'s axis (remember the third principal axis parallel to the molecule is frozen out and can be effectively ignored in this case).
+
+We can then use the equipartition theorem to immediately conclude:
+\begin{align*}
+    \frac{U}{N} &= 2 \times \frac{1}{2} k T = k T \\
+    c_V &= \frac{1}{N} \frac{\partial U}{\partial T} = k
+\end{align*}
+
+But let us derive a solution from quantum physics too, where the energy levels are:
+\[E = \frac{\mathbf{J}^2}{2 I} = \frac{\hbar^2}{2 I} J (J + 1)\]
+
+Summing all possible angular momenta (with the Euler--Machlaurin formula), and dividing by the rotational symmetry \(\sigma = 2\), gives us the partition function per molecule:
+\begin{align*}
+    \zeta &= \frac{1}{\sigma} \sum e^{-\beta E} \\
+    &= \frac{1}{2} \sum_{J = 0}^\infty \exp\left(-\beta \frac{\hbar^2}{2 I} J (J + 1)\right) \\
+    &= \frac{1}{2} \left(\frac{2 I}{\beta \hbar^2} + \frac{1}{3} + \mathcal{O}\left(\frac{\beta \hbar^2}{2 I}\right)\right) \\
+    &= \frac{1}{2} \left(\frac{2 I}{\beta \hbar^2} + \frac{1}{3} + \mathcal{O}\left(\frac{\theta_{rot}}{T}\right)\right) \\
+    &\approx \frac{I}{\beta \hbar^2} + \frac{1}{6} = \frac{6 I + \beta \hbar^2}{6 \beta \hbar^2}
+\end{align*}
+
+The total partition function, internal energy and specific heat for this system is then:
+\begin{align*}
+    Z &= \frac{\zeta^N}{N!} \\
+    U &= -\frac{\partial \ln Z}{\partial \beta} \\
+    &\approx -\frac{\partial}{\partial \beta} \left(N \ln\left(6 I + \beta \hbar^2\right) - N \ln \beta - N \ln 6 \hbar^2 - \ln N!\right) \\
+    &= N \left(\frac{1}{\beta} - \frac{\hbar^2}{6 I + \beta \hbar^2}\right) \\
+    &= N k T \left(1 - \left(1 + \frac{6 I k T}{\hbar^2}\right)^{-1}\right) \\
+    c_V &= \frac{1}{N} \frac{\partial U}{\partial T} \\
+    &= k \left(1 - \left(1 + \frac{6 I k T}{\hbar^2}\right)^{-2}\right)
+\end{align*}
+
+Modelling the \ch{H2} atom as simply two point hydrogen atoms separated by a bond length of \SI{0.74}{\angstrom}, this gives a moment of inertia of \(I \approx \SI{1.8e-47}{\kilo\gram\per\metre\squared}\). This results in a specific heat of:
+\[c_V \approx 0.9999\: k \approx k\]
+
+\subsubsection{Vibrational degrees of freedom}
+Since the vibrational degrees of freedom are in the quantum regime, we cannot use the equipartition theorem here. Since the temperature is a fair bit below the characteristic temperature, let's model each vibrational mode (of which \ch{H2} only has one) as quantum oscillators:
+\begin{align*}
+    E &= \hbar \omega (n + \frac{1}{2}) \\
+    \zeta &= \sum_{n = 0}^\infty \exp\left(-\beta \hbar \omega (n + \frac{1}{2})\right) \\
+    &= \exp\left(-\frac{\beta \hbar \omega}{2}\right) \sum_{n = 0}^\infty e^{-\beta \hbar \omega n} \\
+    &= \frac{\exp\left(-\frac{\beta \hbar \omega}{2}\right)}{1 - e^{-\beta \hbar \omega}}
+\end{align*}
+\begin{align*}
+    U &= -\frac{\partial}{\partial \beta} \left(-N \frac{\beta \hbar \omega}{2} - N \ln\left(1 - e^{-\beta \hbar \omega}\right) - \ln N!\right) \\
+    &= N \hbar \omega \left(\frac{1}{2} + \frac{1}{e^{\beta \hbar \omega} - 1}\right) \\
+    &= N k \theta_{vib} \left(\frac{1}{2} + \frac{1}{\exp \frac{\theta_{vib}}{T} - 1}\right) \\
+    c_V &= \frac{1}{N} \frac{\partial U}{\partial T} \\
+    &= \frac{k \theta_{vib}^2 \exp \frac{\theta_{vib}}{T}}{T^2 \left(\exp \frac{\theta_{vib}}{T} - 1\right)^2} \\
+    &= \frac{k \theta_{vib}^2}{4 T^2} \operatorname{csch}^2 \frac{\theta_{vib}}{2 T} \\
+    &\approx 0.47\: k
+\end{align*}
+
+\subsection{Hence calculate the total specific heat (per molecule).}
+Adding all the above \(c_V\) values gives:
+\[c_V = 2.97\: k\]
+
+\section{Consider a gas of sodium atoms with number density \(n = \SI{1e14}{\per\centi\metre\cubed}\). Assume the sodium atoms are bosons and all have the same spin state \(F = F_z = 1\), implying no spin degeneracy (\(g = 1\)).}
+\subsection{Derive a value for the Bose condensation temperature \(T_c\)}
+The number of particles above the ground state in a macroscopic volume of ideal Bose gas while considering only translational movement is:
+\[N_{\epsilon > 0} = \frac{1}{h^3} \int \frac{g}{\exp\left(\beta \frac{\mathbf{p}^2}{2 m} - \beta \mu\right) - 1} \:\mathrm{d} V \mathrm{d} \mathbf{p}\]
+
+Assuming no atoms are in the (momentum) ground state when \(T > T_c\), then:
+\[N = N_{\epsilon > 0}\]
+
+If we define the critical temperature \(T_c\) to be \(T\) when \(\mu \to 0\), we can integrate explicitly using spherical coordinates:
+\begin{align*}
+    N &= \frac{4 \pi V}{h^3} \int_0^\infty \frac{p_r^2}{\exp\left(\beta_c \frac{p_r^2}{2 m}\right) - 1} \:\mathrm{d} p_r \\
+    &= \frac{V}{h^3} \left(\frac{2 \pi m}{\beta_c}\right)^\frac{3}{2} \operatorname{\zeta}\left(\frac{3}{2}\right) \\
+    &= T_c^\frac{3}{2} \frac{(2 \pi m k)^\frac{3}{2} V}{h^3} \operatorname{\zeta}\left(\frac{3}{2}\right) \\
+    \therefore T_c &= \frac{h^2}{2 \pi m k} \left(\frac{N}{V \operatorname{\zeta}\left(\frac{3}{2}\right)}\right)^\frac{2}{3} \\
+    &= \frac{h^2}{2 \pi m k} \left(\frac{n}{\operatorname{\zeta}\left(\frac{3}{2}\right)}\right)^\frac{2}{3}
+\end{align*}
+
+Using a typical value for sodium's atomic mass of \(m \approx \SI{23}{\atomicmassunit}\), we obtain:
+\[T_c \approx \SI{1.5e-6}{\kelvin}\]
+
+\subsection{Derive the fraction of condensate atoms at \(T < T_c\) and calculate the fraction at \(T = \frac{T_c}{2}\)}
+At \(T < T_c\), \(\mu = 0\), so the number of atoms that have not condensed are exactly equal to \(N\) from above, but with \(T_c\) replaced by \(T\). This means the fraction of condensed atoms are:
+\[1 - \frac{N_{\epsilon > 0}}{N} = 1 - \left(\frac{T}{T_c}\right)^\frac{3}{2}\]
+
+At \(\frac{T}{T_c} = \frac{1}{2}\), we then get:
+\[1 - \left(\frac{1}{2}\right)^\frac{3}{2} \approx 0.65\]
+
+\section{The number density of protons in a certain nuclear matter is \SI{1e38}{\per\centi\metre\cubed}.}
+\subsection{Calculate the Fermi energy of the protons in \si{\mega\electronvolt}.}
+The Fermi energy is the energy in which no fermions exist at a higher energy level when \(T = 0\). To work this out, let us look at the Fermi--Dirac distribution as \(T \to 0\):
+\[n_i = \frac{1}{\exp\left(\frac{\epsilon_i - \mu}{k T}\right) + 1}\]
+
+One can observe two cases for this distribution as \(T \to 0\):
+\[\begin{cases}
+    n_i = 1 & \epsilon_i - \mu < 0 \\
+    n_i = 0 & \epsilon_i - \mu > 0
+\end{cases}\]
+
+Clearly when \(\epsilon_i = \mu\) is the turning point, so let us name define \(\mu\) at this point to equal the Fermi energy \(\epsilon_F\).
+
+How can we relate this back to number density? Let us work out the total number of particles in the system at \(T = 0\):
+\begin{align*}
+    N &= \frac{1}{h^3} \int \frac{g}{\exp\left(\frac{\epsilon_i - \epsilon_F}{k T}\right) + 1} \:\mathrm{d} V \mathrm{d} \mathbf{p} \\
+    &= \frac{8 \pi V}{h^3} \int_0^\infty \frac{p_r^2}{\exp\left(\frac{p_r^2 - p_F^2}{2 m k T}\right) + 1} \:\mathrm{d} p_r \\
+    &= \frac{8 \pi V}{h^3} \int_0^{p_F} p_r^2 \:\mathrm{d} p_r \\
+    &= \frac{8 \pi V}{3 h^3} p_F^3 \\
+    &= \frac{8 \pi V}{3 h^3} (2 m \epsilon_F)^\frac{3}{2} \\
+    \therefore \epsilon_F &= \frac{h^2}{2 m} \left(\frac{3 N}{8 \pi V}\right)^\frac{2}{3} \\
+    &= \frac{h^2}{8 m} \left(\frac{3 n}{\pi}\right)^\frac{2}{3}
+\end{align*}
+
+For a proton of mass \(m \approx \SI{1.7e-27}{\kilo\gram}\), this is a Fermi energy of:
+\[\epsilon_F \approx \SI{43}{\mega\electronvolt}\]
+
+\subsection{Compare the Fermi energy with the rest energy of the proton.}
+The rest energy of a proton (with the above mass value) is:
+\[m c^2 \approx \SI{940}{\mega\electronvolt}\]
+
+This is still an order of magnitude greater than the Fermi energy, so it is not much of a concern to us.
+
+\end{document}
