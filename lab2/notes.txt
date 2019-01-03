@@ -1,0 +1,137 @@
+Everything was done according to the instructions, unless otherwise noted.
+
+Parts done on 2017-08-18 was before the "new" notes were released, so they were done using the old notes along with suggestions of extra things to do from the demonstrator.
+
+===
+4.1
+===
+2017-08-18
+
+Spectral Measurements (Dark spectra removed)
+0.20A.txt: 25ms integration time; Average over 50 scans; Approx 9cm from laser
+0.40A.txt: 5ms integration time; Average over 50 scans; Approx 9cm from laser
+0.60A.txt: 5ms integration time; Average over 50 scans; ND1 Filter; Approx 12cm from laser
+0.80A.txt: 1ms integration time; Average over 50 scans; ND2 + ND1 Filter; Approx 15cm from laser
+1.00A.txt: 1ms integration time; Average over 50 scans; ND4 Filter; Approx 25cm from laser
+1.20A.txt: 1ms integration time; Average over 50 scans; ND4 Filter; Approx 25cm from laser
+1.40A.txt: 5ms integration time; Average over 50 scans; ND4 + ND1 Filter; Approx 25cm from laser
+
+Current vs Output Power
+I (A)	P (W)
+2.00	1.66
+1.40	0.91
+1.20	0.66
+1.00	0.40
+0.80	0.155
+0.75	0.090
+0.70	0.0370
+0.65	0.00686
+0.60	0.00437
+0.40	0.00151
+0.20	0.00052
+0.03	0.000056
+0.00	0
+
+===
+4.2
+===
+2017-08-18
+
+Spectral Measurements (Dark spectra removed)
+lamp.txt: Reference spectrum; 20 ms integration time; Averaged over 50 scans
+lamp-with-yag.txt: Nd:YAG crystal in front of detector; 20 ms integration time; Averaged over 50 scans
+lamp-with-yag-absorption.txt: Same as lamp-with-yag_*.txt, but absorption spectrum
+
+===
+4.3
+===
+2017-08-18
+
+Could not get any other beam profile than a spot (gaussian?). Either it would lase and produce a spot, or it does not lase.
+
+===
+4.4
+===
+2017-08-25
+
+Cavity size/length measured from the Nd:YAG crystal face furthest from the pumping laser, to the surface of the mirror closest to the pumping laser.
+
+Spectral Measurements (Dark spectra removed; Cavity size 21(1) mm)
+yag-without-filter.txt: ND4 filter; 1ms integration time; Averaged over 50 scans
+yag-with-filter.txt: 1000nm pass filter + ND4 filter; 1ms integration time; Averaged over 50 scans
+
+Current vs Output Power (Cavity size 21(1) mm)
+I (A)	P (mW)
+2.00	6.9
+1.75	5.1
+1.50	3.8
+1.25	2.4
+1.10	1.3
+1.05	1.1
+1.00	0.82
+0.95	0.48
+0.90	0.26
+0.85	0.06
+0.80	0
+0.50	0
+
+Current vs Output Power (Cavity size 25(1) mm)
+I (A)	P (mW)
+2.00	5.8
+1.75	4.3
+1.50	2.9
+1.25	1.67
+1.00	0.37
+0.95	0.09
+0.90	0
+0.50	0
+
+Current vs Output Power (Cavity size 10(1) mm)
+I (A)	P (mW)
+2.00	13
+1.75	9.9
+1.50	7.1
+1.25	4.2
+1.15	3.1
+1.08	2.4
+1.00	1.8
+0.90	0.9
+0.85	0.6
+0.80	0.2
+0.75	0
+0.5	0
+
+===
+4.5
+===
+2017-08-25
+
+Power meter set to 532 nm, IR blocker put in place
+~2.8 mW read on power meter despite no frequency doubling crystal in the cavity
+Safety goggles had to be removed to see the green dot
+~2.0 mW read with frequency doubling crystal in cavity regardless of crystal alignment (aligned = beam visible; unaligned = beam invisible to eye), so measurement is completely dominated by the IR, so pointless using the power meter to measure the power of the frequency doubled beam
+Beam power also too unstable: significant changes in brightness over time just by leaving the laser on
+
+SHG.txt: Spectrum measurement with dark spectrum removed; OD1 + IR absorber; 1ms integration time; Averaged over 50 scans
+
+Cannot get green light emission if SHG crystal is placed outside the cavity
+
+===
+4.6
+===
+2017-09-01
+
+Very consistent pulse widths, while fairly evenly well spaced repetitions.
+
+Quite clear green light emission from the SHG crystal outside the cavity, even not in the path of the beam. Still requires removal of safety glasses to see though.
+
+CavityL: Cavity length in mm (error = 1 mm)
+PulseW: Pulse FWHM in ns (error = 0.2 ns)
+PulseT: Pulse period (time until next pulse) in us
+
+CavityL	PulseW	PulseT	DPulseT
+26	12.9	184	16
+
+Was unable to align laser for other cavity lengths.
+
+Should have saved the raw data points for the above measurements, but already changed the alignment and could not restore it, by the time I realised I forgot...

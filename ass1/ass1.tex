@@ -1,0 +1,277 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb}
+\usepackage{siunitx}
+
+\usepackage{sectsty}
+\sectionfont{\large\selectfont}
+\subsectionfont{\normalsize\selectfont}
+
+\begin{document}
+
+\title{PHYS3117: Laser Safety Assignment}
+\author{ \\ \\ }
+\date{2017-08-18}
+\maketitle
+
+\section{Define the following terms}
+\subsection{Maximum permissible exposure:}
+level of laser radiation to which, under normal circumstances, persons may be exposed without suffering adverse effects (60825.1:2014 3.59)
+
+\subsection{Optical density}
+logarithm to base ten of the reciprocal of the transmittance \(\tau\) (\(D = -\log_{10} \tau\)) (60825.1:2014 3.88)
+
+\subsection{Extended source viewing}
+viewing conditions whereby the apparent source at a distance of \SI{100}{\milli\metre} or more subtends an angle at the eye greater than the minimum angular subtense (\(\alpha_{min}\)) (60825.1:2014 3.36)
+
+\subsection{Diffuse reflection}
+change of the spatial distribution of a beam of radiation by scattering in many directions by a surface or medium (60825.1:2014 3.31)
+
+\subsection{Continuous wave}
+laser operating with a continuous output for a duration equal to or greater than \SI{0.25}{\second} (60825.1:2014 3.28)
+
+\subsection{Pulsed laser}
+laser which delivers its energy in the form of a single pulse or a train of pulses. (Note 1 to entry: In this Part 1, the duration of a pulse is less than \SI{0.25}{\second}) (60825.1:2014 3.70)
+
+\subsection{Nominal ocular hazard distance}
+distance from the output aperture beyond which the beam irradiance or radiant exposure remains below the appropriate corneal maximum permissible exposure (MPE) (60825.1:2014 3.65)
+
+\section{Construct a table outlining the safety classification system for lasers (i.e. Class 1, 1M, 2, 2M, 3R, 3B, 4). One column should outline the definitions of the laser classes, and another column should outline the appropriate safety precautions. Include the most important distinguishing characteristic of each class.}
+The definitions of each laser class depends on many properties of the laser, but primarily on its AEL (accessible emission limit) multiplied by constants based on the specifications of the laser, and whether it is below the maximum AEL for the wavelengths it emits in the appropriate viewing/pulse times. The full details can be found in sections 4 and 5 of AS/NZS IEC 60825.1:2014.
+
+Since there are way too much detail to quickly summarise in a small table, let us only consider a continuous wave laser emitting well collimated beam in a single spectral line of \SI{632.8}{\nano\metre}, typical of HeNe lasers.
+
+The class of the laser is the ``lowest'' class it is able to fit into. That is, while a ``real'' Class 1 laser can fit into both Class 1 and 2 according to the table below, it goes in Class 1.
+
+The appropriate safety precautions are summarised from the content found in Annex C of AS/NZS IEC 60825.1:2014 and section 4.1.2 of AS/NZS IEC 60825.14:2011.
+
+\begin{center}
+    \begin{tabular}{c | p{9cm} | p{7cm}}
+        Class & Definition & Safety Precautions \\
+        \hline
+        1 & AEL of less than or equal to \SI{0.39}{\milli\watt} (Under both Condition 1 and 3) & None (Safe for long-term viewing, even with optical instruments), though may still cause dazzling \\
+        1M & AEL of less than Class 3B under Condition 1, but less than or equal to Class 1 under Condition 3 & Do not view with optical instruments with a aperture exceeding Condition 3 \\
+        2 & AEL of less than or equal to \SI{1}{\milli\watt} (Under both Condition 1 and 3) & Do not view the beam for longer than \SI{0.25}{\second}. Actively avoid viewing the beam. \\
+        2M & AEL of less than Class 3B under Condition 1, but less than or equal to Class 2 under Condition 3 & Same as Class 2, but especially do not use optical instruments. \\
+        3R & AEL of less than or equal to \SI{5}{\milli\watt} & Same as Class 2/2M, but should only be used where intrabeam viewing is unlikely. \\
+        3B & AEL of less than or equal to \SI{500}{\milli\watt} & Prevent eye (and in some cases skin) exposure to the beam. Guard against unintentional beam reflections.\\
+        4 & AEL exceeding that of Class 3B & Prevent eye and skin exposure to the beam, and to diffuse reflections (scattering) of the beam. Protect against beam interaction hazards such as fire and fume.
+    \end{tabular}
+\end{center}
+
+It is implied that visible lasers of classes of 3R and less are low-power enough for the blink reflex to prevent eye damage, due to the \SI{0.25}{\second} time base used for measuring them (60825.1:2014 4.3.e).
+
+What are conditions 1 and 3? They refer to how the AEL of the laser is measured (60825.1:2014 5.4). Once again, this differs depending on the laser, but for our example laser:
+\begin{itemize}
+    \item \textbf{Condition 1:} Measurement with a \SI{50}{\milli\metre} aperture stop at a distance of \SI{2000}{\milli\metre} from the source.
+    \item \textbf{Condition 3:} Measurement with a \SI{7}{\milli\metre} aperture stop at a distance of \SI{100}{\milli\metre} from the source.
+\end{itemize}
+
+Condition 1 is mainly concerned with viewing of the beam with telescopic optics (such as binoculars), while Condition 3 is concerned with naked eye viewing.
+
+\section{Classify the following lasers}
+Since Condition 1 and 3 both specify measurement aperture sizes and certain distance, we need to determine the beam width at said distances. In practice, such a thing would be just measured, but since I don't have access to the equipment below, calculating it is the next best thing.
+
+Assuming a diffraction limited beam (Correction Factor \(C_6\) = 1.0):
+\[W = w \sqrt{1 + \frac{d^2 \tan^2 \frac{\lambda}{\pi w}}{w^2}}\]
+where \(W\) is the beam radius, \(w\) is the source aperture radius, \(d\) is the distance away from the source aperture, and \(\lambda\) the wavelength.
+
+If the resulting beam width is smaller than the measurement aperture size, then we can directly use the power output of the laser as the AEL.
+
+For simplicity, we will also ignore the fact that pulsed lasers will have a large frequency spread, and that the lasers are fired in a vacuum.
+
+\subsection{\SI{1}{\milli\watt} HeNe laser at \SI{633}{\nano\metre}, CW, \SI{1}{\milli\metre} aperture}
+\begin{tabular}{l | l}
+    Condition 1 & \SI{1.9}{\milli\metre} beam width \\
+    Condition 3 & \SI{1}{\milli\metre} beam width \\
+    Resulting Class & 2
+\end{tabular}
+
+\subsection{\SI{6}{\milli\joule} Nd:YAG laser at \SI{1.06}{\micro\metre}, \SI{10}{\nano\second} pulses at \SI{5}{\hertz}, \SI{2}{\milli\metre} aperture}
+\begin{tabular}{l | l}
+    Correction Factor \(C_5\) & 1.0, since 500 pulses per \SI{100}{\second} \\
+    Correction Factor \(C_7\) & 1.0, since \SI{1.06}{\micro\metre} wavelength \\
+    Condition 1 & \SI{2.4}{\milli\metre} beam width \\
+    Condition 3 & \SI{2}{\milli\metre} beam width \\
+    Resulting Class & 3B
+\end{tabular}
+
+\subsection{\SI{300}{\milli\joule} KrF excimer laser at \SI{248}{\nano\metre}, \SI{30}{\nano\second} pulses at \SI{100}{\hertz}, \SI{10}{\milli\metre} aperture}
+\begin{tabular}{l | l}
+    Correction Factor \(C_5\) & 1.0, since \SI{248}{\nano\metre} wavelength \\
+    Condition 1 & \SI{10}{\milli\metre} beam width \\
+    Condition 3 & \SI{10}{\milli\metre} beam width \\
+    Resulting Class & 4
+\end{tabular}
+
+\subsection{\SI{4}{\watt} argon ion laser at \SI{514.5}{\nano\metre}, CW, \SI{1}{\milli\metre} aperture}
+\begin{tabular}{l | l}
+    Condition 1 & \SI{1.6}{\milli\metre} beam width \\
+    Condition 3 & \SI{1}{\milli\metre} beam width \\
+    Resulting Class & 4
+\end{tabular}
+
+\subsection{\SI{7}{\kilo\watt} CO2 laser at \SI{10.6}{\micro\metre}, CW, \SI{5}{\milli\metre} aperture}
+\begin{tabular}{l | l}
+    Condition 1 & \SI{7.4}{\milli\metre} beam width \\
+    Condition 3 & \SI{5}{\milli\metre} beam width \\
+    Resulting Class & 4
+\end{tabular}
+
+\subsection{\SI{2}{\milli\watt} laser diode at \SI{670}{\nano\metre}, CW, \SI{5}{\milli\metre} aperture}
+\begin{tabular}{l | l}
+    Condition 1 & \SI{5}{\milli\metre} beam width \\
+    Condition 3 & \SI{5}{\milli\metre} beam width \\
+    Resulting Class & 3R
+\end{tabular}
+
+\section{What is the blink reflex and what time period is it?}
+The blink reflex is a blink caused by external stimuli, such as a bright flash of light.
+
+Random sources on the internet indicate the reflex occurs on the order of \SI{0.1}{\second}. AS/NZS IEC 60825.14:2011 appears to use a value of \SI{0.25}{\second} for this (Section 8.4.5.2.5.c, ``natural aversion response'').
+
+\section{List the sequence of optical structures that light must pass through prior to reaching the retina.}
+Cornea, Aqueous Humour, Pupil, Lens, Vitreous Humour, Retina (60825.1:2014 D.1)
+
+\section{Name the ocular structure which is the principal absorber of the laser radiation from}
+Summarised from 60825.1:2014 D.2.2 and Table D.1
+
+\subsection{A HeNe laser at \SI{632.8}{\nano\metre}, at \SI{1.15}{\micro\metre} and at \SI{3.39}{\micro\metre}}
+\SI{632.8}{\nano\metre}, \SI{1.15}{\micro\metre}: Retina \\
+\SI{3.39}{\micro\metre}: Cornea
+
+\subsection{An Ar ion laser at \SI{488}{\nano\metre}}
+Retina
+
+\subsection{A CO2 laser at \SI{10.6}{\micro\metre}}
+Cornea
+
+\subsection{A N2 molecular laser at \SI{337}{\nano\metre}}
+Lens
+
+\section{Why do lasers, specifically, have a safety problem compared to other strong light sources?}
+Laser radiation is distinguished from most other known types of radiation by its high radiance and beam collimation. This, together with an initial high energy content, results in excessive amounts of energy being transmitted to biological tissues. (60825.1:2014 D.2.1)
+
+\section{What are some of the biological problems associated with exposure to ultraviolet light?}
+\textbf{Eye:} Photokeratitis, Photochemical cataract \\
+\textbf{Skin:} Erythema (sunburn), Accelerated skin ageing process, Increased pigmentation, Pigment darkening, Photosensitive reactions, Skin burn
+
+(60825.1:2014 Table D.1)
+
+\section{What are the 7 CIE spectral bands and why are they useful?}
+As defined by 60825.1:2014 Table D.1:
+
+\begin{center}
+    \begin{tabular}{l | c}
+        Band & Wavelength \\
+        \hline
+        Ultra-violet C & \SI{180}{\nano\metre} to \SI{280}{\nano\metre} \\
+        Ultra-violet B & \SI{280}{\nano\metre} to \SI{315}{\nano\metre} \\
+        Ultra-violet A & \SI{315}{\nano\metre} to \SI{400}{\nano\metre} \\
+        Visible & \SI{400}{\nano\metre} to \SI{780}{\nano\metre} \\
+        Infra-red A & \SI{780}{\nano\metre} to \SI{1 400}{\nano\metre} \\
+        Infra-red B & \SI{1.4}{\micro\metre} to \SI{3.0}{\micro\metre} \\
+        Infra-red C & \SI{3.0}{\micro\metre} to \SI{1}{\milli\metre}
+    \end{tabular}
+\end{center}
+
+They are short-hand notations useful in describing biological effects.
+
+\section{Determine the safe viewing distance for the diffuse reflected radiation from a \SI{10}{\watt} CO2 laser (at \SI{10.6}{\micro\metre}) with a beam diameter of \SI{1}{\centi\metre} at the target, for periods greater than \SI{10}{\second}. Assume the reflectivity of the surface is \SI{100}{\percent}.}
+MPE is \SI{1}{\kilo\watt\per\metre\squared} (60825.1:2014 Table A.5)
+
+Assuming worst case Lambertian reflectance (\(\theta = 0\)):
+\begin{align*}
+    E &= \frac{P \rho \cos \theta}{\pi r^2} \\
+    \therefore r_{NOHD} &= \sqrt{\frac{P \rho \cos \theta}{\pi E_{MPE}}} \\
+    &\approx \SI{5.6}{\centi\metre}
+\end{align*}
+
+\section{Is it safe to view the diffuse reflection of a frequency doubled Nd:YAG laser at \SI{532}{\nano\metre}, with pulse energy \SI{1}{\milli\joule} and pulse length \SI{100}{\nano\second}? You are viewing the reflection from a matte target at a distance great enough to be able to consider the reflection as a point source.}
+MPE is \SI{2e-3}{\joule\per\metre\squared} (60825.1:2014 Table A.1)
+
+Assuming worst case Lambertian reflectance (\(\theta = 0\), \(\rho = 1\)):
+\begin{align*}
+    H &= \frac{Q \rho \cos \theta}{\pi r^2} \\
+    \therefore r_{NOHD} &= \sqrt{\frac{Q \rho \cos \theta}{\pi H_{MPE}}} \\
+    &\approx \SI{0.4}{\metre}
+\end{align*}
+
+So as long as you are \(r_{NOHD}\) away, it is safe (except, nothing is a perfect Lambertian reflector, so this value should actually be a lot higher).
+
+\section{At what distance would you have to be standing from a 3B HeNe laser (emitting at \SI{633}{\nano\metre}, beam diameter = \SI{0.65}{\milli\metre}), beam divergence = \SI{1.6}{\milli\radian}) for the blink reflex to save your eye from permanent damage?}
+In other words, if we were allowed to change the distance for Condition 3 in laser classification, what is the distance such that it becomes Class 3R (or more conservatively, Class 2M)?
+
+For simplicity in calculations, let's assume the laser emits uniform intensity across its beam cross section (in reality it would be closer to a Gaussian). This means for a \SI{7}{\milli\metre} limiting aperture, the irradiance would have to be \SI{130}{\watt\per\metre\squared} for Class 3R or \SI{26}{\watt\per\metre\squared} for Class 2M. 
+
+Beam radius can be calculated from beam divergence \(\Theta\) with:
+\[W = w \sqrt{1 + \frac{d^2 \tan^2 \frac{\Theta}{2}}{w^2}}\]
+using the same variable definitions as Question 3.
+
+Finding the irradiance is then simply:
+\[E = \frac{P}{\pi W^2}\]
+
+If we rearrange for \(d\):
+\[d = \sqrt{\frac{P}{\pi E} - w^2} \cot \frac{\Theta}{2}\]
+
+Assuming maximum CW Class 3B power of \(P = \SI{500}{\milli\watt}\), and our target irradiances \(E\), we obtain \SI{44}{\metre} for Class 3R and \SI{98}{\metre} for Class 2M.
+
+\section{Why should a laser environment be well lit?}
+Dazzle, flash-blindness and afterimages may be caused by a beam from a laser product, particularly under low ambient light conditions. This may have indirect general safety implications resulting from temporary disturbance of vision or from startle reactions. Such visual disturbances could be of particular concern if experienced while performing safety-critical operations such as working with machines or at height, with high voltages or driving. (60825.1:2014 C.2)
+
+\section{Ti:sapphine lasers, Nd:YAG lasers, some HeNe lasers and many diode lasers are commercial lasers that emit light in the range \SI{700}{} to \SI{1400}{\nano\metre}. Why do they present a particular safety problem?}
+Visible and near infra-red laser beams are a special hazard to the eye because the very properties necessary for the eye to be an effective transducer of light result in high radiant exposure being presented to highly pigmented tissues. The increase in irradiance from the cornea to the retina is approximately the ratio of the pupil area to that of the retinal image. This increase arises because the light which has entered the pupil is focused to a ``point'' on the retina. The pupil is a variable aperture but the diameter may be as large as \SI{7}{\milli\metre} when maximally dilated in the young eye. The retinal image corresponding to such a pupil may be between \SI{10}{\micro\metre} and \SI{20}{\micro\metre} in diameter. With intra-ocular scattering and corneal aberrations considered, the increase in irradiance between the cornea and the retina is of the order of \SI{2e5}{}. (60825.1:2014 D.2.2)
+
+\section{Briefly discuss some other hazards associated with lasers.}
+\begin{itemize}
+    \item \textbf{Electrical Shock:} Many lasers utilise high voltages, and pulsed lasers frequently employ capacitors that can store significant amounts of electric charge.
+    \item \textbf{Collateral Radiation:} Potentially hazardous levels of radiation other than laser radiation may be produced by the laser equipment, and by the plasma that can be generated by interaction of the laser beam with target materials.
+    \item \textbf{Other Laser Radiation:} Laser radiation can be emitted at wavelengths other than the principal emission wavelength in the case of certain lasers, especially where optical frequency-shifting techniques (e.g., frequency doubling), and optical pumping are used.
+    \item \textbf{Hazardous Substances:} The material used as the active medium in many lasers (especially laser dyes and the gases used in excimer lasers) can be toxic and carcinogenic.
+    \item \textbf{Fume:} Many applications of Class 4 lasers, especially in industrial materials processing and in laser surgery, can release hazardous particulate and gaseous by-products into the atmosphere through the interaction of the laser beam with the target material.
+    \item \textbf{Noise:} The discharge of capacitor banks within the laser power supply can generate noise levels high enough to cause ear damage.
+    \item \textbf{Mechanical Hazards:} Mechanical hazards can arise from the bulk of the laser equipment itself; including ancillary items such as gas cylinders, especially if the equipment is not properly secured or is moved manually.
+    \item \textbf{Fire:} The laser emission from lasers can ignite target materials.
+    \item \textbf{Explosion:} Various lasing and optical components can explode or shatter due to the energies they deal with.
+    \item \textbf{Temperature:} The internal parts of some lasers may be hot, and the beam-steering mirrors used in conjunction with high-power processing lasers can reach high temperatures. In addition, cryogenic cooling is sometimes used with or in conjunction with laser equipment.
+\end{itemize}
+
+(60825.14:2011 6.2)
+
+\section{Provide some general precautions for safe working practice with lasers.}
+The feasibility of using a laser of a lower class should always be considered as the first option in controlling hazards. The need to use a hazardous laser should therefore be justified prior to purchase and use.
+
+Consideration of the proposed use of a laser in relation to the level of risk may indicate that it is possible to achieve the intended purpose with a lesser degree of hazard (and consequent lower level of risk). This may be possible, for example, by reducing the laser emission, by increasing the beam diameter, or by using a different wavelength. The user should always ensure that the minimum degree of hazard commensurate with the intended application is achieved.
+
+The use of enclosures to completely contain the laser beam should always be considered as a means of preventing human access to hazardous levels of laser radiation. Such enclosures include those intended to prevent the emission of laser radiation from the equipment, as well as those intended to prevent human access into areas where laser radiation might exist.
+
+Human access to a laser hazard should be prevented by engineering means as far as is reasonably practicable. Where this level of protection is not achieved, then human access to hazardous levels of laser radiation or to other laser hazards should be prevented to the extent that is reasonably practicable by appropriate use of barriers, beam tubes, and local enclosures, and by ensuring that access into the hazard area is limited to those persons for whom such access is necessary.
+
+A laser controlled area should be established wherever there is a reasonably foreseeable risk of harm arising from the use of laser equipment. At its simplest, a laser controlled area is an area within which laser beam hazards can exist and over which there is some level of effective hazard control. Such areas should be clearly delineated, and access to them limited to nominated persons who have received adequate safety training and to persons under their control.
+
+Within all laser controlled areas, steps should be taken to reduce the risk of injury to persons authorised to work within them. These steps should include:
+\begin{itemize}
+    \item adequate training of all personnel involved;
+    \item sufficient levels of room illumination;
+    \item uncluttered environment and well-organised working layout;
+    \item secure control of laser operating keys;
+    \item the secure fixing of the laser and all components along the path of the beam;
+    \item safe method of beam alignment;
+    \item a beam stop at the end of the useful path of the laser beam, where appropriate;
+    \item use of the beam attenuator or beam stop fitted to Class 3B and Class 4 laser products to temporarily terminate laser emission whenever such emission is not required for short periods. Whenever laser emission is not required for longer periods, the laser should be turned off;
+    \item enclosure of as much of the beam as is reasonably practicable;
+    \item keeping the beam above or below eye level where practicable;
+    \item confinement of the beam within well-defined areas, which are as small as reasonably practicable (e.g., keeping the beam within the confines of an optical table; placing barriers preventing human access where an open beam crosses the floor);
+    \item the use of screens, blinds, or curtains to contain the laser radiation (see IEC 60825-4 for guidance on selection of suitable materials);
+    \item use of checklists where appropriate.
+\end{itemize}
+
+Particular care should be taken to prevent the unintentional specular (i.e. mirror-like) reflection of laser radiation. Mirrors, lenses, and beam splitters should be rigidly mounted and should be subject to only controlled movements while the laser is emitting.
+
+PPE (such as laser protective eyewear) should be worn, where appropriate, by individuals working in laser controlled areas in order to provide protection against laser hazards. Such protection should, however, only be used where it is not reasonably practicable to ensure adequate protection by other means, preferably by total enclosure of the laser radiation, and where it has been ascertained that personal protective equipment is able to provide sufficient protection.
+
+In some cases it may be necessary to provide other protective clothing for work in laser controlled areas. This is most likely to take the form of masks or gloves, but may very occasionally require the use of whole body protection.
+
+(60825.14:2011 8)
+
+\end{document}

@@ -1,0 +1,116 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{siunitx}
+
+\usepackage{tikz, pgfplots}
+\pgfplotsset{compat = 1.12}
+
+\begin{document}
+
+\title{PHYS3117: Holography}
+\author{Donny Yang \\ z3470068}
+\date{2017-10-13}
+\maketitle
+
+\section{Materials and Methods}
+Please refer to the student notes of the experiment.
+
+For the Michelson interferometry part, we were not using the same laser as for the hologram, so we could not get any measurements on the coherence length of the hologram laser.
+
+Our photometer has a \SI{1}{\centi\metre\squared} capture area, and gives a power reading in \si{\micro\watt}, meaning it effectively reads an intensity value in \si{\micro\watt\per\centi\metre\squared}. Meanwhile, the specifications for our holographic plates state that the recommended exposure is 150-\SI{300}{\micro\joule\per\centi\metre\squared}, so working out our exposure time is as simple as dividing the recommended exposure by the intensity.
+
+For the reflection holograms part, Denisyuk holograms (no beam splitter) were made instead of what the student notes says to do, due to claims that it is more reliable in producing a good result. The reference beam was sent into the holographic plate, and the object to image was placed right behind the plate.
+
+\section{Results}
+For all holography attempts, the object and the plate was not uniformly illuminated by the laser (probably not far enough from the diverging lens), which might effect our results.
+
+\subsection{Michelson Interferometer}
+We could only get two or three interference lines to appear.
+
+Bumping the table lightly did not move the fringes significantly. No movement in the fringes at all was observed from bumping things not on the table, talking or opening the shutter. However, if one lightly blew on the optics, the fringes moved significantly.
+
+\subsection{Transmission Holograms}
+\subsubsection{Matte Dolphin Statuette}
+Our first attempt was in making a hologram of the dolphins statuette.
+
+We measured a reference beam average intensity of about \SI{8}{\micro\watt\per\centi\metre\squared}, and object intensity of \SI{2.0}{\micro\watt\per\centi\metre\squared}, so we aimed for a \SI{20}{\second} exposure time for a \SI{200}{\micro\joule\per\centi\metre\squared} exposure.
+
+We exposed half of the plate for \SI{21.1}{\second}, while the other half for \SI{40.6}{\second}.
+
+Both resulting holograms were visible, but quite faint (with the second one being brighter and more visible). We were unable to project nor view any real image.
+
+Illuminating the holograms with red LED light instead of laser light produced a blurred image. Under sunlight, no image was visible, but just a streak of rainbow colours.
+
+\subsubsection{Glossy Key}
+Our second attempt was of a glossy key on a white background.
+
+The reference beam was \SI{10}{\micro\watt\per\centi\metre\squared} and object beam was \SI{2.4}{\micro\watt\per\centi\metre\squared}. Due to our poor visibility results from our previous attempt, we attempted to increase the exposure to between 300-\SI{400}{\micro\joule\per\centi\metre\squared}, so we used a \SI{30}{\second} exposure time for this for approximately \SI{370}{\micro\joule\per\centi\metre\squared} exposure.
+
+Actual exposure time was \SI{29.9}{\second}, with a very clear resulting hologram (of the white background, at least). The key resulted to be much darker than the background, but with clear specular highlights. The highlights would move if you changed your viewing angle as well, as if the object was actually there. At certain angles, one can read out the engraved text on the key!
+
+No real image was able to be viewed or projected like before, and viewing under red LED or sunlight produced the same effects as before (blurriness, dispersion).
+
+\subsection{Double-exposure Holographic Interferometry}
+Using the same set-up as for transmission holograms, we take the image of a white can with a weight on top, but halfway through the exposure, we remove the weight.
+
+As before, the reference beam was \SI{10}{\micro\watt\per\centi\metre\squared} and object beam was \SI{2.4}{\micro\watt\per\centi\metre\squared}, with an intended total \SI{30}{\second} exposure time.
+
+The plate was exposed for \SI{15.0}{\second} with the weight, then \SI{14.9}{\second} without the weight. The resulting image was very clear, but has interference fringes throughout the entire body of the can.
+
+\subsection{Reflection Holograms}
+\subsubsection{Matte Pig Statuette}
+Our first attempt at a reflection hologram was of a pig statuette.
+
+The statuette was placed as close as possible to behind the plate, such that the laser beam hit the entire object (rather than being cut off at the edges).
+
+The reference beam intensity was \SI{25}{\micro\watt\per\centi\metre\squared}, while the object intensity was hard to measure without blocking the beam. Instead, we took a perpendicular-to-the-plate behind-the-plate reading of \SI{2}{\micro\watt\per\centi\metre\squared}, and assumed that the parallel reflected beam was about \(4\times\) stronger at \SI{8}{\micro\watt\per\centi\metre\squared}. This means we expect an exposure time of about \SI{10}{\second} for a \SI{330}{\micro\joule\per\centi\metre\squared} exposure.
+
+We exposed one half of the plate for \SI{9.5}{\second}, and the other half for \SI{15.9}{\second}. The resulting holograms were visible under bright white LED lighting and direct sunlight, though were rather dim. The second exposure was slightly brighter. The real image was also observed floating in front of the plate, though it was blurrier than the virtual image.
+
+The image was always reddish-orange in colour, and no dispersion was observed.
+
+The image was not viewable if we did not use a bright light source.
+
+\subsubsection{Glossy Key}
+Once again, we try with the good old glossy key, though this time there is no white background, and we removed the attenuator on the laser.
+
+Since the cross sectional area of the key is so small, as well as it being glossy, we assume the majority of the light hitting the plate will be from the reference beam and not the reflection, so we use the reference beam intensity as the total beam intensity. The reference beam intensity was \SI{200}{\micro\watt\per\centi\metre\squared}, giving us a \SI{2}{\second} exposure time for a \SI{400}{\micro\joule\per\centi\metre\squared} exposure.
+
+Once again, we exposed the two halves with different times --- \SI{2.0}{\second} and \SI{3.9}{\second} respectively.
+
+The resulting hologram was only partially visible under bright white LED lighting and sunlight, where the key shaft was visible, but the bow and ward were not. Furthermore, only it's specular highlights were particularly visible.
+
+Like the previous attempt, the image was always reddish-orange, and no dispersion was observed.
+
+However, even without a bright light source (e.g., using diffuse room lighting), one could still see the image of the key, albeit not as brightly.
+
+\section{Discussion}
+\subsection{Michelson Interferometer}
+The difficulty in getting the fringes to move seem to indicate the table is quite isolated from external vibrations (as the table was designed to do).
+
+Blowing on the optics, however, is much more ``powerful'' than vibrations, so was detected. This would mean that ideally while taking the holograms, to minimise air movement (such as from a moving human, or from an exhaust fan).
+
+\subsection{Transmission Holograms}
+The lack of visibility in our dolphin hologram was likely due to underexposure (since our second exposure was meant to be overexposed but turned out fine) --- probably due to overestimating how much actual light was hitting the plate. Our good results for the key seems to confirm this.
+
+The key likely was much darker than the background simply because it is a specular reflector rather than diffuse, meaning reflected light is only directed at specific angles, and outside of those angles (almost) nothing would be seen. The hologram simply records that information but amplifies its effects due to the exposure requirements.
+
+Despite the ``goodness'' of the key's hologram, we could not produce a real image, and we don't know why. Perhaps our laser was simply not powerful enough?
+
+The dispersion of the image under LED light or sunlight is simply because a transmission hologram acts like a transmission diffraction grating (just one that is engineered to direct light at very specific angles and phases). It is no surprise that passing non-monochromatic light through it causes it to disperse.
+
+\subsection{Double-exposure Holographic Interferometry}
+Since holography basically ``saves'' the light field information at the plate, our set-up basically saves two very slightly different sets of light fields on top of each other. Very slightly different in that removing the weight does not visibly change anything about the can, but small differences actually exist due to the stresses from the weight.
+
+Both our light fields are spatially coherent, but not coherent with each other. What happens when you align two coherent light sources together, but aren't coherent between each other? You get interference fringes, which is exactly what we see here.
+
+\subsection{Reflection Holograms}
+\subsubsection{Pig Statuette}
+Once again, our overexposed exposure of the pig produced the better of the two. This probably means we overestimated the beam intensity again, or alternatively the reflected beam was much lower in brightness than needed.
+
+Using our super-overexposed exposure of the key, we managed to get it visible under non-bright lighting, probably confirming the previous hypothesis. Though we still got the same issues as the transmission hologram version of it where only the specular highlights were visible, once again probably due to it not being a diffuse reflector.
+
+% TODO: Work out why there's no dispersion
+
+\end{document}

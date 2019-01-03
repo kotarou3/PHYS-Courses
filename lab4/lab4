@@ -1,0 +1,29 @@
+2017-09-22
+
+SQUID with orange dot used
+
+CH1: Current
+CH2: Voltage
+Mr SQUID x-axis: uA
+Mr SQUID y-axis: uV
+
+ALL**** data is saved directly from the oscilloscope (TBS 1072B-EDU)
+ALL****-squid.tsv data is the same settings, but saved using Mr SQUID software instead
+
+No numerical (easy) readout for flux and bias offsets (nor a way to set them with precision), so can't really include their settings in these notes.
+
+Quite difficult to maximise the modulation depth voltage for part 2 - would jump up and down despite not touching the bias offset.
+
+Part 1 readings:
+ALL0000: Average 128, 500mV CH1&CH2 scale, 2.5ms time scale, Flux and Bias offset approximately vertical
+ALL0003{,-squid.tsv}: Same as above, though adjusted to maximise positive knee
+
+Part 2 readings:
+ALL0001{,-squid.tsv}: Average 128, 500mV CH1 scale, 20mV CH2 scale, 2.5ms time scale
+ALL0002{,-squid.tsv}: Same settings as above, but adjusted bias offset slightly
+
+Part 3 readings:
+All readings done at 14.01 GHz
+ALL0004{,-squid.tsv}: Average 4, 500mV CH1&CH2 scale, 2.5ms time scale; Relatively clear 3 steps (<-6 dBm)
+ALL0005{,-squid.tsv}: Save as above, but relatively clear 7 steps (-2.00 dBm)
+ALL0006{,-squid.tsv}: Save as above, but relatively clear 9 steps (1.00 dBm)

@@ -1,0 +1,156 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{siunitx}
+
+\usepackage{tikz, pgfplots}
+\pgfplotsset{compat = 1.12}
+
+\begin{document}
+
+\title{PHYS3117: Mr. SQUID}
+\author{Donny Yang \\ z3470068}
+\date{2017-09-22}
+\maketitle
+
+\section{Materials and Methods}
+Please refer to the student notes of the experiment.
+
+The SQUID with the orange dot was used.
+
+All data was exported directly from the Mr. SQUID software, rather than from the oscilloscope. This was simply due to the higher resolution of the software than the scope.
+
+We assume that the SQUID was kept at a constant temperature \(T = \SI{77.355}{\kelvin}\) equal to liquid nitrogen's boiling point.
+
+\section{Results}
+\subsection{Voltage-Current Characteristics}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel = Input Current (\si{\micro\ampere}),
+            ylabel = Voltage Drop (\si{\micro\volt})
+        ]
+            \addplot +[only marks, mark size = 0.1pt] table {ALL0003-squid.tsv};
+            \addplot +[no marks, domain = -200:200] {2.81178 + 0.864777 * x};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Voltage-current graph with positive knee maximised, with a linear fit on the ends}
+    \label{fig:p1-curve}
+\end{figure}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel = Input Current (\si{\micro\ampere}),
+            ylabel = Voltage Drop (\si{\micro\volt}),
+            restrict x to domain = -20:60
+        ]
+            \addplot +[only marks, mark size = 0.5pt] table {ALL0003-squid.tsv};
+            \addplot [no marks, red, domain = -20:40.0847] {3.12797 + 0.0308501 * x};
+            \addplot [no marks, black, domain = -20:40.0847] {3.12797 + 0.0308501 * x - 1.97824 * sqrt(0.0144156 - 0.00082343 * x + 0.0000323199 * x^2)};
+            \addplot [no marks, black, domain = -20:40.0847] {3.12797 + 0.0308501 * x + 1.97824 * sqrt(0.0144156 - 0.00082343 * x + 0.0000323199 * x^2)};
+            \addplot [no marks, red, domain = 40.0847:60] {-54.6806 + 1.47301 * x};
+            \addplot [no marks, black, domain = 40.0847:60] {-54.6806 + 1.47301 * x - 1.97824 * sqrt(2.24255 - 0.08931 * x + 0.000901565 * x^2)};
+            \addplot [no marks, black, domain = 40.0847:60] {-54.6806 + 1.47301 * x + 1.97824 * sqrt(2.24255 - 0.08931 * x + 0.000901565 * x^2)};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Same as Figure \ref{fig:p1-curve}, but zoomed in on the positive knee with a bilinear fit and \SI{95}{\percent} CI}
+    \label{fig:p1-curve-closeup}
+\end{figure}
+
+The flux offset was adjusted to maximise the positive knee in the voltage-current graph, to produce the results in Figure \ref{fig:p1-curve}. Zooming in on the positive knee and performing a bilinear fit on the \(I \in [-20, 60]\) points (where both sides of the curve were approximately linear) produces Figure \ref{fig:p1-curve-closeup}, with a knee current of \(2 I_c = \SI{40.1 \pm 6.0}{\micro\ampere}\).
+
+If we only use the points where \(|I| \ge 150\) (another linear region) and perform a linear fit (also shown in Figure \ref{fig:p1-curve}), we get a gradient of \(\frac{R_N}{2} = \SI{0.865 \pm 0.018}{\ohm}\).
+
+\subsection{Voltage-Flux Characteristics}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel = Coil Current (\si{\micro\ampere}),
+            ylabel = Voltage Drop (\si{\micro\volt}),
+            samples = 500
+        ]
+            \addplot +[only marks, mark size = 0.1pt] table {ALL0002-squid.tsv};
+            \addplot +[no marks, domain = -100:100] {9.8048 + 3.22955 * cos(deg(0.149254 + 0.0655617 * x))};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Voltage-flux graph with a sinusoidal fit}
+    \label{fig:p2-curve}
+\end{figure}
+
+Following the instructions, we get the data shown in Figure \ref{fig:p2-curve}. Performing a sinusoidal fit gave a angular velocity of \(\omega = \SI{0.0656 \pm 0.0096}{\per\micro\ampere}\) and amplitude of \(A = \SI{3.2 \pm 1.6}{\micro\volt}\).
+
+This corresponds to the following values:
+\begin{align*}
+    \Delta I_\Phi &= \frac{2 \pi}{\omega} \approx \SI{96 \pm 14}{\micro\ampere} \\
+    \Delta V_\Phi &= 2 A \approx \SI{6.4 \pm 3.2}{\micro\volt} \\
+    M &= \frac{\Phi_0}{\Delta I_\Phi} \approx \SI{21.6 \pm 3.2}{\pico\henry}
+\end{align*}
+
+Solving the provided system of equations:
+\begin{align*}
+    \beta_L &= \frac{4 I_c R_N}{\pi \Delta V_\Phi} \left(1 - 3.57 \frac{\sqrt{k_B T L}}{\Phi_0}\right) - 1 \\
+    \beta_L &= \frac{2 I_c L}{\Phi_0}
+\end{align*}
+we get a quadratic in both \(\beta_L\) and \(L\) (due to the presence of a square root). This permits two independent solutions of:
+\begin{align*}
+    \beta_{L_1} &= \SI{17 \pm 14}{} \\
+    L_1 &= \SI{90 \pm 69}{\pico\henry} \\
+    \beta_{L_2} &= \SI{1.96 \pm 0.81}{} \\
+    L_2 &= \SI{101 \pm 38}{\pico\henry}
+\end{align*}
+
+\subsection{Shapiro Steps}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel = Coil Current (\si{\micro\ampere}),
+            ylabel = Voltage Drop (\si{\micro\volt})
+        ]
+            \addplot +[only marks, mark size = 0.1pt] table {ALL0004-squid.tsv};
+            \addplot +[only marks, mark size = 0.1pt] table {ALL0005-squid.tsv};
+            \addplot +[only marks, mark size = 0.1pt] table {ALL0006-squid.tsv};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Shapiro steps from different microwave powers. Blue = < \SI{-6}{\decibel m}, Red = \SI{-2}{\decibel m}, Brown = \SI{1}{\decibel m}}
+    \label{fig:p3-curve}
+\end{figure}
+\begin{table}
+    \centering
+    \begin{tabular}{c | c | c | c | c | c}
+    Colour & Lowest Step (\si{\micro\volt}) & Highest Step (\si{\micro\volt}) & Steps & Average Height (\si{\micro\volt}) & \(\frac{h}{e}\) (\si{\kilo\gram\metre\squared\per\second\squared\per\ampere}) \\
+    \hline
+    Blue & \SI{-26 \pm 5}{} & \SI{33 \pm 3}{} & 2 & \SI{29.5 \pm 2.9}{} & \SI{4.21 \pm 0.42e-15}{} \\
+    Red & \SI{-54 \pm 4}{} & \SI{91 \pm 3}{} & 5 & \SI{29 \pm 1}{} & \SI{4.14 \pm 0.14e-15}{} \\
+    Brown & \SI{-112 \pm 5}{} & \SI{149 \pm 3}{} & 9 & \SI{29 \pm 0.6}{} & \SI{4.14 \pm 0.09e-15}{}
+    \end{tabular}
+    \caption{Average height and corresponding \(\frac{h}{e}\) of the Shapiro steps from Figure \ref{fig:p3-curve}}
+    \label{tab:p3-steps}
+\end{table}
+
+Setting the microwave generator to \SI{14.01}{\giga\hertz} and varying the power, we obtain Shapiro steps as shown in Figure \ref{fig:p3-curve}. Since the Shapiro steps are the solution to a non-analytically solvable differential equation, it is not easy to get a computer to fit the curve, so we will instead do so by eye.
+
+We simply find the highest and lowest steps, and divide by the number of steps in between, to get the values shown in Table \ref{tab:p3-steps}.
+
+\section{Discussion}
+\subsection{Voltage-Current Characteristics}
+Our knee (critical) current of \(2 I_c = \SI{40.1 \pm 6.0}{\micro\ampere}\) is quite a fair bit lower than the \SI{60}{\micro\ampere} from the datasheet, but our normal resistance of \(\frac{R_N}{2} = \SI{0.865 \pm 0.018}{\ohm}\) is pretty much spot on with \SI{0.85}{\ohm}. The lower critical current is probably due to some magnetic field ``leaking'' into the SQUID (e.g., magnetic shielding not fully blocking Earth's magnetic field), hence lowering the critical current.
+
+Our graph also differs slightly from the ideal, in that the knee is smooth (as opposed to having a ``corner'') and that the flat section is not exactly flat. Most likely, this is due to thermal effects causing some electrons to have higher currents than the critical current, causing the non-superconducting region to ``spill over'' into the superconducting region.
+
+\subsection{Voltage-Flux Characteristics}
+Our modulation depth of \(\Delta V_\Phi = \SI{6.4 \pm 3.2}{\micro\volt}\) is also lower than the quoted \SI{8.9}{\micro\volt} (albeit technically it's within the tail end of the error). The reason is likely the same as before, with extra ``leaked'' magnetic field.
+
+Our mutual inductance of \(M = \SI{21.6 \pm 3.2}{\pico\henry}\) matches quite well with the quoted \SI{21.56}{\pico\henry}, however.
+
+Of the two independent \(\beta_L\) and \(L\) values gotten from the calculations, \(\beta_{L_2} = \SI{1.96 \pm 0.81}{}\) and \(L_2 = \SI{101 \pm 38}{\pico\henry}\) matches the quoted \(\beta_L = \SI{2.1}{}\) and \(L = \SI{73}{\pico\henry}\) the closest.
+
+\subsection{Shapiro Steps}
+The commonly accepted value for \(\frac{h}{e}\) is \SI{4.1357}{\kilo\gram\metre\squared\per\second\squared\per\ampere}, which all our measurements in Table \ref{tab:p3-steps} agree with.
+
+However, performing part of the measurement by eye severely limits the accuracy of the experiment. Instead, one could fit the curve with multiple piecewise linear functions, and get a result that way. Writing the code to do so is much more time consuming than ``regular'' fits, so was avoided for this experiment.
+
+\end{document}

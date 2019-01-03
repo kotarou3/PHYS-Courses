@@ -1,0 +1,12 @@
+Spectrum: XR-LB-thick-support-data.txt
+
+El AN  Series  unn. C norm. C Atom. C Error (1 Sigma)
+               [wt.%]  [wt.%]  [at.%]          [wt.%]
+-----------------------------------------------------
+Ni 28 K-series  53.43   53.89   34.57            1.36
+Fe 26 K-series  29.37   29.63   19.97            0.78
+C  6  K-series   9.09    9.17   28.73            1.98
+O  8  K-series   6.59    6.65   15.64            1.21
+Na 11 K-series   0.66    0.66    1.08            0.11
+-----------------------------------------------------
+        Total:  99.13  100.00  100.00
