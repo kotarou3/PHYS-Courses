@@ -1,0 +1,222 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{siunitx}
+
+\usepackage{tikz, pgfplots}
+\pgfplotsset{
+    compat = 1.12,
+    plot-scatter/.style = {
+        only marks,
+        error bars/.cd,
+        x dir = both, y dir = both,
+        x explicit, y explicit
+    }
+}
+
+\begin{document}
+
+\title{PHYS3114: Transmission Lines}
+\author{ \\ \\ }
+\date{2017-08-07}
+\maketitle
+
+\section{Materials and Methods}
+Please refer to the operating instructions of the experiment and the prework.
+
+\subsection{Delay Using a Pulse Input}
+Each test point A were assumed to be spaced equally apart from each other along the transmission line.
+
+Given the following formulae, we can solve for \(L'\) and \(C'\), assuming no resistive losses:
+\begin{align*}
+    Z_0 &= \sqrt{\frac{Z'}{Y'}} = \sqrt{\frac{L'}{C'}} \\
+    \Delta t' &= v^{-1} = \sqrt{L' C'} \\
+    \therefore L' &= Z_0 \Delta t' \\
+    C' &= \frac{\Delta t'}{Z_0}
+\end{align*}
+
+\subsection{Continuous Wave Excitation and Standing Waves}
+Since there seemed to be no clear definition for ``full/half/quarter'' standing waves, it was assumed they meant the appearance of only two/one/half of a full ``wave packet'' on the entire length of the transmission line. For example, a ``full'' standing wave on an open line is shown in Figure \ref{fig:full-standing-wave-open}.
+
+This would mean a ``full'' standing wave would have:
+\[2 \beta l = \frac{2 \omega l}{v} = 4 \pi\]
+
+If \(\Delta t = \frac{l}{v}\) is the pulse delay of the entire line, then we simply get:
+\[\omega \Delta t = 2 \pi\]
+
+Due to the attenuation of the signal as it travels down the line, the \(V_{max}\) and \(V_{min}\) values were measured at the first (amplitude) maxima and minima of the ``wave packet''. Since the signal itself is not stationary like a ``real'' standing wave, \(V_{max}\) was taken as the maximum voltage seen at the maxima amplitude point in a window of about \SI{10}{\second}, and correspondingly minima for \(V_{min}\).
+
+\section{Results}
+\subsection{Delay Using a Pulse Input}
+\begin{figure}
+    \centering
+    \includegraphics[width = 15cm]{data/ALL0001/F0001TEK.png}
+    \caption{The square pulse becoming distorted upon being connected to the transmission line}
+    \label{fig:pulse-distortion}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel = Test Point A,
+            ylabel = \(\Delta t\) (\si{\micro\second})
+        ]
+            \addplot +[plot-scatter] table [
+                skip first n = 8,
+                x = TPA,
+                y = delay
+            ] {data/4.1};
+            \addplot +[no marks, domain = 0:26] {-0.0295513 + 0.193718 * x};
+            \addplot +[no marks, black, domain = 0:26] {-0.23177 + 0.206394 * x};
+            \addplot +[no marks, black, domain = 0:26] {0.172667 + 0.181042 * x};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Signal delays along the transmission line}
+    \label{fig:delays}
+\end{figure}
+
+Upon connecting the square pulse generator to the transmission line, both the input (CH1) and output (CH2) pulse became noticeably distorted and somewhat attenuated (Figure \ref{fig:pulse-distortion}). To reliably measure the pulse delay, we instead measure from the first CH1 maximum to the first CH2 maximum. These values are plotted in Figure \ref{fig:delays}. Uncertainty in the delay time \(\Delta t\) were all around \SI{0.01}{\micro\second}.
+
+Performing a linear regression results in a \(\Delta t' = \SI{0.193 \pm 0.013}{\micro\second}\) delay per section. Combined with our known \(Z_0 = \SI{50}{\ohm}\), this results in:
+\begin{align*}
+    L' &= \SI{9.69 \pm 0.63}{\micro\henry} \\
+    C' &= \SI{3.87 \pm 0.25}{\nano\farad}
+\end{align*}
+
+\subsection{Reflections and Impedance Matching}
+\begin{figure}
+    \centering
+    \includegraphics[width = 15cm]{data/ALL0003/F0003TEK.png}
+    \caption{Pulse reflection on an open line. CH2: A25}
+    \label{fig:open-line}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width = 15cm]{data/ALL0004/F0004TEK.png}
+    \caption{Pulse reflection on an shorted line. CH2: A25}
+    \label{fig:shorted-line}
+\end{figure}
+
+\begin{table}
+    \centering
+    \begin{tabular}{c | c | c | c}
+        Load State & Tx (\si{\volt}) & Rx (\si{\volt}) & \(\rho\) \\
+        \hline
+        Open & \SI{2.38 \pm 0.04}{} & \SI{1.68 \pm 0.04}{} & \SI{0.706 \pm 0.021}{} \\
+        Shorted & \SI{2.20 \pm 0.04}{} & \SI{-1.20 \pm 0.04}{} & \SI{-0.545 \pm 0.021}{}
+    \end{tabular}
+    \caption{Transmitted (Tx) and Reflected (Rx) voltages, and their corresponding reflection coefficients}
+    \label{tab:reflection-coefficients}
+\end{table}
+
+\begin{figure}
+    \centering
+    \includegraphics[width = 15cm]{data/ALL0005/F0005TEK.png}
+    \caption{Intermediate pulse reflection on an open line. CH2: A13}
+    \label{fig:intermediate-open-line}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width = 15cm]{data/ALL0007/F0007TEK.png}
+    \caption{Intermediate pulse reflection on an shorted line. CH2: A13}
+    \label{fig:intermediate-shorted-line}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width = 15cm]{data/ALL0008/F0008TEK.png}
+    \caption{Impedance matched line}
+    \label{fig:impedance-matched-line}
+\end{figure}
+
+Figures \ref{fig:open-line} and \ref{fig:shorted-line} show the recorded pulses on a open and shorted line respectively. CH1 is connected to test point A1, while CH2 is to A25, representing the input and output signals respectively.
+
+One can see two pulses recorded at the input end. Obviously the first is the actual input, while the second (arriving \SI{9.3 \pm 0.1}{\micro\second} later) is assumed to correspond to the same pulse but reflected from the output end, and hence is used to calculate the reflection coefficient. Since the signal becomes distorted, we measure the amplitudes of the pulses by their first maximum. Table \ref{tab:reflection-coefficients} summarises this information.
+
+If instead of probing at test point A25, but at intermediate test points, one can see the two pulses at A1 slowly being added together to produce the pulse (or lack of one) at A25. For example, the signal seen at test point A13 is shown as CH2 in Figures \ref{fig:intermediate-open-line} and \ref{fig:intermediate-shorted-line} for the open and shorted lines, respectively.
+
+If we instead connect the line to a \SI{50}{\ohm} resistive load, we get no reflected signal, as can be seen in Figure \ref{fig:impedance-matched-line}. Though due to noise and imperfections in the line, one can seemingly still get no reflected signal in a \SI{10}{\ohm} neighbourhood of the \SI{50}{\ohm} load. Connecting a capacitor in parallel reintroduces the reflection, and no amount of adjusting the resistive load is able to remove the reflection.
+
+\subsection{Continuous Wave Excitation and Standing Waves}
+\begin{figure}
+    \centering
+    \includegraphics[width = 15cm]{data/ALL0009/F0009TEK.png}
+    \caption{Snapshot of the voltages along the line with input frequency \SI{100}{\kilo\hertz}}
+    \label{fig:100kHz-line}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width = 15cm]{data/ALL0012/F0012TEK.png}
+    \caption{Snapshot of the voltages along the line with input frequency \SI{250}{\kilo\hertz}}
+    \label{fig:250kHz-line}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width = 15cm]{data/ALL0016/F0016TEK.png}
+    \caption{``Full'' standing wave with an open line}
+    \label{fig:full-standing-wave-open}
+\end{figure}
+
+\begin{table}
+    \centering
+    \begin{tabular}{c | c | c | c}
+        Load State & SW Type & Input Frequency & VSWR \\
+        \hline
+        Shorted & Full & \SI{230 \pm 10}{\kilo\hertz} & \SI{7.25 \pm 0.30}{} \\
+        Shorted & Half & \SI{115 \pm 10}{\kilo\hertz} & \SI{4.58 \pm 0.12}{} \\
+        Shorted & Quarter & \SI{60 \pm 10}{\kilo\hertz} & \SI{13.2 \pm 1.1}{} \\
+        Open & Full & \SI{230 \pm 10}{\kilo\hertz} & \SI{4.61 \pm 0.13}{} \\
+        Open & Half & \SI{115 \pm 10}{\kilo\hertz} & \SI{6.38 \pm 0.25}{} \\
+        Open & Quarter & \SI{60 \pm 10}{\kilo\hertz} & \SI{4.40 \pm 0.11}{}
+    \end{tabular}
+    \caption{Input Frequency and VSWRs for different line states}
+    \label{tab:vswr}
+\end{table}
+
+On the impedance matched load, as we increase the frequency of the input signal, the voltage difference between the largest and smallest amplitude areas become larger and larger. For example, Figures \ref{fig:100kHz-line} and \ref{fig:250kHz-line} show the differences between a \SI{100}{\kilo\hertz} and \SI{250}{\kilo\hertz} signal respectively.
+
+If we now look towards the open/shorted lines, and find their ``full/half/quarter'' standing wave frequencies and calculate their corresponding VSWRs, we get the results in Table \ref{tab:vswr}. An representative example of one of the measurements can be seen in Figure \ref{fig:full-standing-wave-open}, where the ``full'' standing wave type on an open line is being measured.
+
+\section{Discussion}
+\subsection{Delay Using a Pulse Input}
+Our values of \(L'\) and \(C'\) seem to be reasonable.
+
+The attenuation can be simply due to resistive losses on the line, which any real line will have a significant value of. The distortion is reminiscent of a low pass filter on the signal, which can also be explained by the transmission line having resistance and hence creating a low pass RLC filter. Distortion of the input signal as well could be explained by small impedance mismatches between each individual section of the simulated transmission line, causing early but small reflections.
+
+One can improve the measurements of the line by taking the resistance of the line into account.
+
+\subsection{Reflections and Impedance Matching}
+If indeed the second pulse is the reflected pulse, it should arrive approximately two times later than at the receiving end. Indeed half of its delay time is \SI{4.65 \pm 0.05}{\micro\second}, which is close to the value recorded at test point A25 (the receiving end) \SI{4.76 \pm 0.01}{\micro\second}. Furthermore, if we scan the voltage across the line, we can see the two pulses adding into a single pulse (one traveling forwards in time, and one backwards), like a transmitted and reflected pulse. The signs of the reflected pulse also correctly reflect the expected behaviour on an open and shorted line.
+
+The reflection coefficients are, however, not perfectly 1 and -1, due to the attenuation on the line, and not measuring ``exactly'' at the end of the line. If we knew the resistance of the line, we could calculate the predicted values of the reflection coefficients at our measurement locations and see if they match. One could work backwards from the reflection coefficient to calculate the resistance, but it is significantly harder to do so, due to the frequency dependent reactance.
+
+Connecting the capacitor is parallel shows the expected behaviour, since now our load now has a reactance component, so is no longer impedance matched. No amount of adjusting of the resistor can ``fix'' this since reactance is orthogonal to resistance.
+
+\subsection{Continuous Wave Excitation and Standing Waves}
+The frequency dependent standing wave ratio is consistent with a transmission line that has finite resistance, especially of one that has a design frequency of around \SI{100}{\kilo\hertz}, so that the impedance mismatch will increase as frequency increases from the design frequency and hence the SWR as well.
+
+Ideally one could plot how the SWR or reflection coefficient changes with frequency, but our equipment is not automated, so taking the number of measurements required to get a good graph would be too tedious.
+
+The frequency of the ``half'' and ``quarter'' standing wave frequencies are half and quarter that of the ``full'' standing wave, as we expect. Given our measured pulse delay of \SI{4.76 \pm 0.01}{\micro\second}, this gives a predicted ``full'' standing wave frequency of \SI{210.1 \pm 0.5}{\kilo\hertz}. This is quite close to our measured value of \SI{230 \pm 10}{\kilo\hertz}.
+
+The values of VSWR are more unusual, however. One would expect the value to mostly stay the same regardless of frequency. Most likely, the reason for the weird VSWR would be both the same reasons as the inaccurate reflection coefficients from above (attenuation, and not measuring at the end), as well as that there may be aliasing effects and we are unable to probe exactly at the minima and maxima amplitude areas.
+
+In fact, the VSWR should be infinity, but since there is attenuation on the line, the reflected signal does not have enough voltage to to completely reduce the minima amplitude to 0.
+
+\section{Conclusion}
+Our simulated transmission line has a characteristic impedance of \SI{50}{\ohm}, with corresponding per-second inductance and capacitance of \(L' = \SI{9.69 \pm 0.63}{\micro\henry}\) and \(C' = \SI{3.87 \pm 0.25}{\nano\farad}\), if we assume it to be a lossless line.
+
+Pulses have a \(\Delta t' = \SI{0.193 \pm 0.013}{\micro\second}\) delay per section, which predicts a ``full'' standing wave frequency of \SI{210.1 \pm 0.5}{\kilo\hertz}, which closely matches our measured \SI{230 \pm 10}{\kilo\hertz}.
+
+However, due to imperfections of the line (such as finite resistance), our measured values for the reflection coefficient \(\rho\) and VSWR are less than ideal.
+
+One could improve on all the shortcomings by:
+\begin{itemize}
+    \item Using a real transmission line, such as long lengths of coaxial. This would minimise small impedance matches between sections of the line.
+    \item Properly consider resistance of the line, rather than pretend it is 0.
+    \item Automate the measurements, so more data points can be collected (especially on frequency dependence).
+\end{itemize}
+
+\end{document}
