@@ -1,0 +1,114 @@
+Instructions in the notes were followed, unless otherwise stated in these notes.
+
+Table is a special stabilised table.
+Photometer capture area is ~1 cm^2, so uW reading is also the uW cm^-2 reading.
+
+Photographic plate requires 150~300 uJ cm^-2 of exposure
+
+Experiment 1
+============
+2017-10-06
+
+Not using the same laser for the inteferometry as the holography laser, so can't do any coherence length tests.
+
+Could not get 6 inteference fringes to show up - only 1 or 2.
+Bumping the table lightly does not move the fringes significantly - table is probably quite stabilised.
+Cannot see any movement at all from bumping things not on the table, talking, opening the shutter.
+Blowing near the optics (and possible beam path?) moves the fringes significantly.
+
+Experiment 2
+============
+2017-10-06
+
+Using dolphin statuette as the object to image.
+
+Object isn't uniformly illuminated (probably not far enough from the diverging lens), but hopefully that won't effect the image too much.
+Some areas are in shadow - maybe they won't show up in the hologram?
+
+Since we only need an approximate 4:1 reference:object intensities, averaging the intensities from the photometer was done by eye. Intensities adjusted to:
+Object intensity: ~2.0 uW
+Reference intensity: ~8 uW
+
+Total intensity of ~10 uW, so exposure time of 20 seconds needed for ~200 uJ cm^-2 of exposure.
+Each half of the plate was exposed to the same object/reference setup with different times.
+First exposure: 21.1 s
+Second exposure: 40.6 s
+
+Both holograms were viewable, but both were faint, with the second one being brighter and more visible.
+I was unable to see or project a real image of the hologram.
+Viewing them under LED lighting produced a blurred image.
+
+Maybe doubling the exposure time to 80 s might produce a better result?
+
+Experiment 3
+============
+2017-10-06
+
+Forgot to close the shutter before removing photographic plate from its dark box. Probably already unintentionally exposed the entire plate by the time I realised (was readying to put the plate in the holder when I realised the laser was not shuttered)
+
+Intensity values were similar to the previous values, so optics remain unchanged.
+One weight was put on the can after the first half of the first exposure.
+
+Attempted to image the dolphins again for the second exposure.
+
+First half first exposure: 40.6 s
+Second half first exposure: 40.1 s
+Second exposure: 80.1 s
+
+Some faint interference fringes on the first exposure (the can) can be seen.
+The dolphins in the second exposure were unable to be seen at all.
+Probably not overexposure (since that should produce an oversaturated image), but rather the earlier unintentional exposure probably destroyed the possibility of an image.
+
+2017-10-13
+Attempting again with same setup, but second exposure is now a key on the can as background
+
+Reference intensity: ~10 uW
+Object intensity: ~2.4 uW
+=> Total needed exposure time of ~30 s
+
+First half first exposure: 15.0 s
+Second half first exposure: 14.9 s
+Second exposure: 29.9 s
+
+Very clear hologram this time around (maybe the new box of plates contributed to this?).
+Clear inteference fringes on the first exposure (the can) that extend throughout the entire can.
+The image on the second exposure is also very clear, though the key is a lot darker than the can, probably because it reflects specularly rather than diffusely. By moving the plate or your head around, one can also see the specular reflections moving as well, as if the object was actually there.
+
+Still unable to find the real image.
+
+Under direct sunlight, the image becomes a blob of dispersed colours, with barely any detail able to be seen.
+
+Experiment 4
+============
+2017-10-13
+
+Making a Denisyuk hologram (no beam splitter) instead of a normal reflection hologram, since I heard it's easier to get better results.
+
+Using pig as object.
+
+Difficult to measure object intensity without blocking the beam, so instead we measure the intensity perpendicular to the plate aperture on the object's side
+Reference intensity: ~25 uW
+Object (perpendicular) intensity: ~2 uW
+
+Guessing actual reflected 4x that value (~8 uW) => total intensity 33 uW => exposure time of ~10 s
+First exposure: 9.5 s
+Second exposure: 15.9 s
+
+Hologram was viewable under white light, though it was a bit dim.
+Second exposure was brighter, so maybe longer exposure is better? (16 s should be producing an overexposed image...)
+TODO: View under sunlight and find colours
+
+Trying again with a key, this time with no attenuator on the beam.
+Key area is so tiny that no point measuring the intensity reflected off it => using reference beam as the total intensity
+Reference intensity: ~200 uW
+
+Exposure time of ~2 s would probably be a good idea.
+First exposure: 2.0 s
+Second exposure: 3.9 s
+
+Visibility of the key a lot better than the previous pig, though the handle and actual key bit itself are difficult to see, probably due to them being on the corners of the plate, where the beam intensity was significantly lower. Also contributing may be that the key reflects specularly, so capturing surface detail would be more difficult.
+TODO: Compare exposures
+
+Viewable even when not under direct sunlight! Though obviously not as brightly.
+
+Real images of both the pig and the key are visible, though they are not as clear as the virtual images.

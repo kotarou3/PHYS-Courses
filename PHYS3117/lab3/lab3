@@ -1,0 +1,37 @@
+2017-09-08
+
+Resistance and lengths measured from contact to contact (to electrode)
+60W Bulb: 65 Ohms; Scan of filament on 1mm grid saved to 60W-filament.tif
+
+SEM Measurements
+---
+2017-09-14
+
+Areas focused on for a while become brighter than other areas. Is the area being charged up?
+Uncoated areas definitely charge up faster than coated areas. Uncoated areas seem to start deflecting electrons after a while, moving the recorded image.
+
+At 5 kV, the styrofoam significantly distorted the image, almost acting like a "black hole"
+
+Abbreviations:
+ - SE: Secondary Electrons
+ - xNN: NN times magnification
+ - WD: Working Distance
+SE-filament-low.tif: LB Filament; x50; 15 kV; 63.4mm WD: Overview of clamped and free section
+SE-filament-medium.tif: LB Filament; x200; 15 kV; 63.4mm WD: Coil detail
+SE-filament-high.tif: LB filament; x2.3k; 15 kV; 63.4mm WD: Wire detail
+SE-copper-grid.tif: Copper Grid: x200; 15 kV; 63.4mm WD: Photo of a few grid holes to check calibration
+SE-paper-5kV.tif: Graph Paper: x600; 5 kV; 15mm WD: Sample 1/3 of graph paper near ripped edge at different voltages
+SE-paper-15kV.tif: Graph Paper: x600; 15 kV; 15mm WD: Sample 2/3 of graph paper near ripped edge at different voltages
+SE-paper-30kV.tif: Graph Paper: x600; 30 kV; 15mm WD: Sample 3/3 of graph paper near ripped edge at different voltages
+SE-hair.tif: Human Hair: x1.2k; 5 kV; 15mm WD: Photo is width of the hair, with "scales" easily visible
+SE-grass.tif: Grass: x1k; 5 kV; 15mm WD: Centred on grain-wise scapel cut wound (?) on the grass
+SE-styro.tif: Styrofoam: x270; 15 kV; 50.5mm WD: Some place interesting inside the styrofoam
+
+X-ray measurements
+---
+All measurements done at a working distance of 11mm (?) and 30 kV at > x5k magnification
+
+XR data saved in three formats (all have similar file names to the SE measurements):
+- XR-<name>-data.txt: Raw spectroscope data
+- XR-<name>.png: Plot of the spectroscope data along with overlaid spectral lines
+- XR-<name>-elements.txt: Computed elemental composition data

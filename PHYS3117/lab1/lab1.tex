@@ -1,0 +1,299 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{siunitx}
+\usepackage[backend = biber, style = numeric-comp]{biblatex}
+
+\usepackage{tikz, pgfplots}
+\pgfplotsset{
+    compat = 1.12,
+    plot-scatter/.style = {
+        only marks,
+        error bars/.cd,
+        x dir = both, y dir = both,
+        x explicit, y explicit
+    }
+}
+
+\begin{filecontents}{\jobname.bib}
+@article{Moser1994,
+    doi = {10.1063/1.111514},
+    url = {https://doi.org/10.1063/1.111514},
+    year  = {1994},
+    month = {jan},
+    publisher = {{AIP} Publishing},
+    volume = {64},
+    number = {2},
+    pages = {235--237},
+    author = {M. Moser and R. Winterhoff and C. Geng and I. Queisser and F. Scholz and A. D\"{o}rnen},
+    title = {Refractive index of ({AlxGa}1-x)0.5In0.5P grown by metalorganic vapor phase epitaxy},
+    journal = {Applied Physics Letters}
+}
+\end{filecontents}
+\addbibresource{\jobname.bib}
+
+\begin{document}
+
+\title{PHYS3117: Injection Laser Diodes}
+\author{ \\ \\ }
+\date{2017-08-11}
+\maketitle
+
+\section{Materials and Methods}
+Please refer to the student notes of the experiment.
+
+\subsection{MQW diode laser output characteristics}
+Laser LDB was broken, and was replaced with HL6322G.
+
+Due to the large dynamic range between minimum and maximum output powers, the \(1000 \times\) attenuator on the power meter had to be removed for some of the lower power measurements. Specifically, input currents of around \SI{50}{\milli\ampere} and less were done without the attenuator.
+
+\subsection{Spectral characteristics of a diode laser}
+The power supply for laser LDC refused to work at any current above the lasing threshold, so LDB was used instead.
+
+The ramp duration was set to \SI{50}{\milli\second}, and every oscilloscope reading was averaged over 16 samples.
+
+\section{Results}
+\subsection{Spatial characteristics of an edge-emitting diode laser}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel = Distance (\si{\milli\metre}),
+            ylabel = Minor Axis Diametre (\si{\milli\metre})
+        ]
+            \addplot +[plot-scatter] table [
+                skip first n = 8,
+                x = dist,
+                x error = Ddist,
+                y = mDiam,
+                y error = DmDiam
+            ] {3.2};
+            \addplot +[no marks, domain = 0:170] {1.99704 + 0.184535 * x};
+            \addplot +[no marks, black, domain = 0:170] {1.99704 + 0.184535 * x - 4.30265 * sqrt(0.0560004 - 0.00342443 * x + 0.000143728 * x^2)};
+            \addplot +[no marks, black, domain = 0:170] {1.99704 + 0.184535 * x + 4.30265 * sqrt(0.0560004 - 0.00342443 * x + 0.000143728 * x^2)};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Spatial spread of the laser with linear fit and \SI{95}{\percent} CI}
+    \label{fig:3.2}
+\end{figure}
+
+Measurement of the minor axis diametre of the laser beam from LDA is shown in Figure \ref{fig:3.2}. The major axis could not be measured properly, since it has such a large spread that the laser housing cut off the beam.
+
+A simple linear fit was performed on the data (rather than a proper hyperbolic fit, due to lack of data points), producing a fitted gradient of \SI{0.185 \pm 0.047}{}. This corresponds to a beam divergence of \(\Theta = \SI{0.184 \pm 0.047}{\radian}\). Compared to a proper hyperbolic fit, this value would be an underestimate of the real value.
+
+\subsection{MQW diode laser output characteristics}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel = Current (\si{\milli\ampere}),
+            ylabel = Power (\si{\milli\watt})
+        ]
+            \addplot +[plot-scatter] table [
+                x = Iin,
+                y = Pout,
+                y error = DPout
+            ] {3.3-data};
+            \addplot [no marks, red, domain = 0:53.5426] {-0.109954 + 0.00953807 * x};
+            \addplot [no marks, black, domain = 0:53.5426] {-0.109954 + 0.00953807 * x - 2.306 * sqrt(0.0558049 - 0.00266733 * x + 0.0000449803 * x^2)};
+            \addplot [no marks, black, domain = 0:53.5426] {-0.109954 + 0.00953807 * x + 2.306 * sqrt(0.0558049 - 0.00266733 * x + 0.0000449803 * x^2)};
+            \addplot [no marks, red, domain = 53.5426:100] {-51.0673 + 0.961255 * x};
+            \addplot [no marks, black, domain = 53.5426:100] {-51.0673 + 0.961255 * x - 2.306 * sqrt(0.311238 - 0.00816543 * x + 0.0000565082 * x^2)};
+            \addplot [no marks, black, domain = 53.5426:100] {-51.0673 + 0.961255 * x + 2.306 * sqrt(0.311238 - 0.00816543 * x + 0.0000565082 * x^2)};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Output power of LDB against input current, with bilinear fit and \SI{95}{\percent} CI}
+    \label{fig:3.3}
+\end{figure}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel = Wavelength (\si{\nano\metre}),
+            ylabel = Counts (a.u.),
+            width = 15cm,
+            height = 10cm,
+            xmin = 610,
+            xmax = 660
+        ]
+            \addplot +[thin, no marks] table [
+                skip first n = 17,
+                comment chars = >
+            ] {3.3 spectra/50.0mA.tsv};
+            \addplot +[thin, no marks] table [
+                skip first n = 17,
+                comment chars = >
+            ] {3.3 spectra/60.6mA.tsv};
+            \addplot +[thin, no marks] table [
+                skip first n = 17,
+                comment chars = >
+            ] {3.3 spectra/99.7mA.tsv};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Spectra of LDB at different input currents. Blue = \SI{50.0}{\milli\ampere}, Red = \SI{60.6}{\milli\ampere}, Brown = \SI{99.7}{\milli\ampere}}
+    \label{fig:3.3-spectrum}
+\end{figure}
+
+The ambient temperature was around 20 to \SI{25}{\degreeCelsius}. The dark readings for the power meter at the time was \SI{0.5}{\milli\watt} with the \(1000 \times\) attenuator, and \SI{1.1}{\micro\watt} without.
+
+At a stable input current, the output power of the laser seemed to fluctuate right after adjusting the input current, in that after increasing the current, output power slowly decreased (after the initial jump), and after decreasing the current, output power slowly increased. To get a reliable human measurement, the output power was waited on to stabilise, such that it did not change in over \SI{10}{\second}, before taking a measurement.
+
+The resulting measurements (with dark reading subtracted) can be seen in Figure \ref{fig:3.3}. A bilinear fit was also performed, producing slopes of \SI{0.001 \pm 0.045}{\watt\per\ampere} before the knee and \SI{0.961 \pm 0.051}{\watt\per\ampere} after the knee, with a knee (or threshold) current of \SI{53.54 \pm 0.29}{\milli\ampere}. Combining the after-the-knee slope with the \SI{2.7}{\volt} voltage drop quoted from the datasheet, this results in an slope efficiency of \SI{35.6 \pm 1.9}{\percent}.
+
+The spectra was taken of the laser at the two currents \SI{50.0}{\milli\ampere} and \SI{60.6}{\milli\ampere} around the threshold current, as well as one near the maximum at \SI{99.7}{\milli\ampere}, with the results shown in Figure \ref{fig:3.3-spectrum}. Each measurement was done with a different spectrometer setting, to account for the large dynamic range:
+\begin{itemize}
+    \item \SI{50.0}{\milli\ampere}: \SI{1}{\milli\second} integration time, averaged over 50 readings.
+    \item \SI{60.6}{\milli\ampere}: \(1000 \times\) attenuator, \SI{20}{\milli\second} integration time, averaged over 50 readings.
+    \item \SI{99.7}{\milli\ampere}: \(1000 \times\) attenuator, \SI{3}{\milli\second} integration time, averaged over 50 readings.
+\end{itemize}
+
+One thing of note is that for the \SI{60.6}{\milli\watt} spectrum, the output is dominated by two modes at \SI{634.10 \pm 0.05}{\nano\metre} and \SI{634.59 \pm 0.05}{\nano\metre} (a separation of \SI{0.49 \pm 0.06}{\nano\metre}, or \SI{365 \pm 47}{\giga\hertz})), while the \SI{99.7}{\milli\watt} is dominated by just a single mode at \SI{635.67 \pm 0.05}{\nano\metre}.
+
+\subsection{Spectral characteristics of a diode laser}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel = Time (\si{\second}),
+            ylabel = Reading (a.u.),
+            width = 15cm,
+            height = 8cm
+        ]
+            \addplot +[thin, no marks] table [
+                skip first n = 18,
+                col sep = comma,
+                x index = 3,
+                y index = 4
+            ] {3.5 data/ALL0020/F0020CH2.CSV};
+            \addplot +[thin, no marks] table [
+                skip first n = 18,
+                col sep = comma,
+                x index = 3,
+                y index = 4
+            ] {3.5 data/ALL0020/F0020CH1.CSV};
+        \end{axis}
+        \begin{axis}[
+            axis x line = bottom,
+            hide y axis,
+            xlabel = Frequency Offset (\si{\giga\hertz}),
+            xmin = -700, xmax = 1650,
+            x dir = reverse,
+            yshift = -1.5cm,
+            width = 15cm
+        ]
+            \addplot[draw = none]{1};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Scanned FPI readings of LDB at \SI{99.7}{\milli\ampere}, and corresponding frequency offsets assuming FSR of \SI{1}{\tera\hertz}. Blue: Ramp signal, Red: Photodiode signal}
+    \label{fig:3.5-0020}
+\end{figure}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel = Time (\si{\second}),
+            ylabel = Reading (a.u.),
+            width = 15cm,
+            height = 8cm
+        ]
+            \addplot +[thin, no marks] table [
+                skip first n = 18,
+                col sep = comma,
+                x index = 3,
+                y index = 4
+            ] {3.5 data/ALL0021/F0021CH2.CSV};
+            \addplot +[thin, no marks] table [
+                skip first n = 18,
+                col sep = comma,
+                x index = 3,
+                y index = 4
+            ] {3.5 data/ALL0021/F0021CH1.CSV};
+        \end{axis}
+        \begin{axis}[
+            axis x line = bottom,
+            hide y axis,
+            xlabel = Frequency Offset (\si{\giga\hertz}),
+            xmin = -410, xmax = 670,
+            x dir = reverse,
+            yshift = -1.5cm,
+            width = 15cm
+        ]
+            \addplot[draw = none]{1};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Same settings as Figure \ref{fig:3.5-0020}, but zoomed in}
+    \label{fig:3.5-0021}
+\end{figure}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel = Time (\si{\second}),
+            ylabel = Reading (a.u.),
+            width = 15cm,
+            height = 8cm
+        ]
+            \addplot +[thin, no marks] table [
+                skip first n = 18,
+                col sep = comma,
+                x index = 3,
+                y index = 4
+            ] {3.5 data/ALL0022/F0022CH2.CSV};
+            \addplot +[thin, no marks] table [
+                skip first n = 18,
+                col sep = comma,
+                x index = 3,
+                y index = 4
+            ] {3.5 data/ALL0022/F0022CH1.CSV};
+        \end{axis}
+        \begin{axis}[
+            axis x line = bottom,
+            hide y axis,
+            xlabel = Frequency Offset (\si{\giga\hertz}),
+            xmin = -650, xmax = 1700,
+            x dir = reverse,
+            yshift = -1.5cm,
+            width = 15cm
+        ]
+            \addplot[draw = none]{1};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Same settings as Figure \ref{fig:3.5-0020}, but at a current of \SI{60}{\milli\ampere}}
+    \label{fig:3.5-0022}
+\end{figure}
+
+The spectrum readings of LDB at maximum power are shown in Figures \ref{fig:3.5-0020} and \ref{fig:3.5-0021}, with an assumed \SI{1}{\tera\hertz} FSR overlaid. There are quite the number of peaks, with no obvious overall envelope pattern. One could interpret the peaks as 7 evenly spaced peaks \SI{51.1 \pm 0.6}{\giga\hertz} apart, with some peaks being split into doublets.
+
+Reducing the input current down to near the threshold current, we obtain the reading shown in Figure \ref{fig:3.5-0022}. Now the spectrum looks quite different, seemingly of three ``main'' peaks (separated by \SI{206 \pm 28}{\giga\hertz}), with each ``main'' peak being split into multiple smaller peaks (separated by \SI{40.3 \pm 9.2}{\giga\hertz}).
+
+\section{Discussion}
+\subsection{Spatial characteristics of an edge-emitting diode laser}
+The datasheet for our laser LDA claims that it has a parallel beam divergence of between 6 and \SI{10}{\degree}. If we assume that ``parallel'' corresponds to the minor axis of the resulting elliptical beam, then our parallel beam divergence in degrees is \SI{10.5 \pm 2.7}{\degree}, which comfortably fits within the quoted values (though on the upper end), indicating our measurement was somewhat accurate.
+
+Since we have \(\Theta \approx \frac{2 \lambda}{\pi w_0}\) (as derived from Gaussian beam analysis), where \(\lambda\) is the centre frequency of the emitted light and \(w_0\) the beam waist, it means for our laser LDA, it has an approximate beam waist of \(w_0 \approx \SI{2.20 \pm 0.56}{\micro\metre}\) in the minor axis (or ``parallel'') direction.
+
+Since we were unable to obtain a beam diametre measurement in the major axis direction, we will use the ``perpendicular'' value quoted from the datasheet of \(\Theta = \SI{30 \pm 5}{\degree}\). This corresponds to a beam waist of \(w_0 \approx \SI{0.77 \pm 0.13}{\micro\metre}\).
+
+These values should also roughly indicate the exit aperture dimensions of the diode's lasing cavity. This is tiny compared to more ``regular'' lasers, such as a typical HeNe of which would have cavity apertures dimensions on the order of millimetres.
+
+\subsection{MQW diode laser output characteristics}
+The output power fluctuations seems to point to thermal effects, since the datasheet claims a decrease in output power with increased temperature. Most likely, as input current is increased, so does the heat produced by the diode, so temperature also slowly increases, causing the observed gradual drop in output power. The opposite happens when current is decreased.
+
+An unusual thing noted from our measurements is that the maximum output power (at the absolute maximum input current of \SI{100}{\milli\ampere}) was close to \SI{50}{\milli\watt}, despite the datasheet claiming a maximum of \SI{15}{\milli\watt}. Our slope of \SI{0.961 \pm 0.051}{\watt\per\ampere} is also much greater than the quoted maximum of \SI{0.7}{\watt\per\ampere} from the datasheet. This probably indicates either the power meter or datasheet was inaccurate. However, the typical threshold current of \SI{55}{\milli\ampere} from the datasheet matches quite closely with our \SI{53.54 \pm 0.29}{\milli\ampere}.
+
+The measured spectra in \ref{fig:3.3-spectrum} shows pretty much what one would expect, with the \SI{50}{\milli\watt} spectra (below the lasing threshold) having quite a large frequency spread, while ones past the lasing threshold having a narrow width. Additionally, the centre frequency seemed to also increase with output power, which agrees with the datasheet.
+
+The modes noted in the spectra are most likely longitudinal modes, since a longitudinal mode separation of \SI{0.49 \pm 0.06}{\nano\metre} (or \SI{365 \pm 47}{\giga\hertz}) is pretty typical of a laser diode. The resolution of the spectrometer is likely too low to separate out the transverse modes. Using a refractive index of \SI{3.4 \pm 0.1}{} \cite{Moser1994}, this corresponds to a cavity length of \SI{121 \pm 16}{\micro\metre}.
+
+\subsection{Spectral characteristics of a diode laser}
+Firstly, the ramp signal is a bit concerning, since it is only partially linear, instead of like a true triangle or sawtooth wave. This is likely why the first occurrence of the spectrum is slightly narrower than the second. The finesse of the FPI could also be improved, since the peaks look like they are overlapping with each other significantly.
+
+If we first look at the low power reading in Figure \ref{fig:3.5-0022} first, the ``main'' peaks (separated by \SI{206 \pm 28}{\giga\hertz}) most likely corresponds to longitudinal modes, while the lesser peaks (separated by \SI{40.3 \pm 9.2}{\giga\hertz}) are the transverse modes of each longitudinal mode. Using a refractive index of \SI{3.4 \pm 0.1}{} \cite{Moser1994}, this corresponds to a cavity length of \SI{214 \pm 30}{\micro\metre}. This contradicts the value found above, which probably indicates at least one of these measurements was wrong. One cannot say for certain which one is ``more'' correct, since the spectrometer measurement was on a calibrated spectrometer but had a lack of resolution, while the FPI measurement has finesse and ramp signal issues, as well as the fact that we are assuming a FSR of \SI{1}{\tera\hertz}, which may be wildly inaccurate.
+
+If we now look at the maximum power reading in Figures \ref{fig:3.5-0020} and \ref{fig:3.5-0021}, we can now see that despite it looking like a single ``main'' peak (longitudinal mode) with multiple smaller peaks (transverse modes), it is more likely two longitudinal modes, with their transverse modes overlapping with each other. To resolve these features better, we would of course need better finesse.
+
+As for actually comparing these two measurements, we see three longitudinal modes at low power, while only two at maximum power, indicating narrower line width beam at maximum power. This, at least, agrees with our spectrometer measurement above.
+
+\printbibliography
+
+\end{document}

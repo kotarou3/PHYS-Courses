@@ -1,0 +1,40 @@
+2017-08-04
+
+Ambient temperature: 20-25 C
+
+Spectrum readings (dark spectrum subtracted):
+50.0 mA with 1 ms integration time and averaged over 50 readings
+60.0 mA with 1000x attenuator and 20 ms integration time and averaged over 50 readings
+99.7 mA with 1000x attenuator and 3 ms integration time and averaged over 50 readings
+
+Power meter dark reading with 1000x attenuator: 0.5 mW
+Power meter dark reading without 1000x attenuator: 1.1 uW
+Errors less than decimal place
+
+Output power seems to slowly decrease over time when increasing power, and increase when decreasing power. Waited for it to "mostly" stabilise before taking measurement (not change over 10 seconds).
+
+HL6322G datasheet says absolute maximum optical output power is 15 mW, but I measured up to 50 mW?
+
+Iin = input current in mA
+Pout = output power in mW
+
+With attenuator
+Iin	Pout
+0.4	0.5
+25.0	0.5
+50.0	0.8
+52.5	0.8
+53.8	1.6
+55.0	2.4
+62.5	9.1
+75.0	21.1
+87.5	33.6
+99.7	45.5
+
+Without attenuator
+0.4	0.0011
+12.5	0.0139
+25.0	0.0342
+37.5	0.0675
+50.0	0.237
+52.5	0.69
