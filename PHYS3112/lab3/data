@@ -1,0 +1,62 @@
+# Q1
+1st order to 1st order distance: 80mm +- 1mm
+Grating to plane distance: 92.5mm +- 0.5mm
+Grating type: 16000 lines per inch
+
+# Q3
+d +- 0.5cm
+FWHM values in um
+At least 100 frames of measurements per line
+d	FWHMM	σFWHMM	FWHMm	σFWHMm
+10	649	5	629	4
+12	642	4	634	5
+14	637	5	627	7
+16	645	5	622	8
+18	660	5	622	5
+20	661	5	628	4
+22	667	6	637	7
+24	674	6	643	6
+26	681	6	662	5
+28	689	6	675	6
+30	696	5	688	5
+35	736	6	730	5
+40	785	6	777	6
+45	834	7	824	6
+50	894	7	878	6
+55	952	8	926	7
+60	1006	11	980	8
+65	1066	9	1042	7
+70	1139	12	1095	7
+75	1184	9	1148	8
+80	1256	9	1203	10
+85	1318	9	1258	9
+90	1384	11	1313	10
+95	1447	11	1370	11
+100	1517	10	1432	13
+
+# Q4
+- Total and peak counts taken by summing the entire captured frame
+- Total counts should be proportional to power
+
+# Q5
+Decreasing aperture size decreases the size and occurence of the speckles, as I would expect.
+
+Lens held very close to the eye (eye < focal length)
+Opposite: Speckles move opposite to head movement
+Same: Speckles move same direction as head movement
+Lens    Comments
+None    Opposite (with and without apertures)
+Yellow  Same (with glasses); Opposite (without glasses)
+Red     Opposite
+Blue    Opposite
+Green   Opposite
+Brass   Same
+
+# Q7
+2 peaks at approx 75-95
+maxima at 85, 170 +- 5
+minima at 310, 220 +- 1
+
+# Q8
+## p1
+Moving slits closer makes diffraction pattern go wider and lower intensity

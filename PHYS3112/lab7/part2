@@ -1,0 +1,8 @@
+180+-1cm to diode
+31.8+-1mm diode separation
+
+diode current mA
+order   background  with mod    without mod AC P-P without mod  SnR
+0       44+-2       471+-1      471+-1      1.9+-0.1            11+-1 dB
+1 left  56+-1       66+-1       66+-1       8.3+-0.1            40+-1 dB
+1 right 63+-1       316+-1      316+-1      25.6+-0.0           48+-1 dB

@@ -1,0 +1,58 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{siunitx}
+
+\usepackage{sectsty}
+\sectionfont{\large\selectfont}
+\subsectionfont{\normalsize\selectfont}
+
+\begin{document}
+
+\title{PHYS3112: Electron Diffraction Prework}
+\author{ \\ \\ }
+\date{2017-03-06}
+\maketitle
+
+\section{Questions}
+\subsection{Does the particle-wave duality apply to all particles? Calculate \(\lambda\) of a pitched baseball with mass \(m = \SI{0.15}{\kilo\gram}\) and velocity \(v = \SI{60}{\metre\per\second}\). What can you conclude from the result?}
+The baseball has the following theoretical wavelength: \(\lambda = \frac{h}{m v} \approx \SI{7.36e-35}{\metre}\)
+
+This is a tiny value, and to date has not been experimentally verified. As such, it is currently unknown whether the particle-wave duality applies to macroscopic objects. Realistically, this means we only ever observe the baseball's particle-like effects.
+
+\subsection{Calculate \(\lambda\) of \SI{7.0}{\kilo\volt} electrons and compare it to the wavelength range of visible light. What is the advantage of an electron microscope compared to a microscope that uses visible light?}
+A stationary electron accelerated through a voltage has energy:
+\[E = m_e c^2 + e V = \sqrt{m_e^2 c^4 + p^2 c^2}\]
+Solving for momentum:
+\begin{align*}
+    p &= \frac{\sqrt{e V (2 m_e c^2 + e V)}}{c} \\
+    &\approx \sqrt{2 m_e e V} + \frac{(e V)^\frac{3}{2}}{2 \sqrt{2 m_e} c^2} + \mathcal{O}\left(V^\frac{5}{2}\right) \\
+    &\approx \SI{4.5e-23}{\kilo\gram\metre\per\second}
+\end{align*}
+This is equivalent to a wavelength of:
+\[\lambda = \frac{h}{\lambda} \approx \frac{h}{\sqrt{2 m_e e V}} \approx \SI{0.15}{\angstrom}\]
+
+Meanwhile, visible light has wavelengths of about \SI{3900}{\angstrom} to \SI{7000}{\angstrom}.
+
+As such, electrons provide much higher resolutions than visible light, since it is much less affected by diffraction.
+
+Note the higher order terms only contributes \SI{0.015e-23}{\kilo\gram\metre\per\second} to the momentum, which is about \SI{0.34}{\percent}. This is much smaller than the expected accuracy of our experiment, so those terms can be safely ignored.
+
+\subsection{Derive the relationship between the radii of the rings \(r_1\) and \(r_2\) and the accelerating potential \(V\). Explain how you can obtain the principal spacings of the graphite lattice, \(d_1\) and \(d_2\), from the plot of \(r_1\), \(r_2\) and \(V\).}
+Assuming a spherical container of radius \(R\), the circles will subtend an angle of \(4 \theta = \sin^{-1} \frac{r}{R}\) to the opposite surface.
+
+Meanwhile, the Bragg condition states that there will be maxima at angles satisfying \(2 d \sin \theta = n \lambda\). Substituting the above equations together gives:
+\[2 d \sin \frac{\sin^{-1} \frac{r}{R}}{4} = \frac{n h}{\sqrt{2 m_e e V}}\]
+
+If we let
+\[x = 2 \sin \frac{\sin^{-1} \frac{r}{R}}{4}\]
+\[y = \frac{n h}{\sqrt{2 m_e e V}}\]
+then \(d\) will be the gradient of the linear regression between these two variables.
+
+\section{Experimental Plan}
+\begin{itemize}
+    \item Follow the method outlined in the operating instructions.
+    \item Vary G3 approximately linearly in a bisection pattern
+\end{itemize}
+
+\end{document}

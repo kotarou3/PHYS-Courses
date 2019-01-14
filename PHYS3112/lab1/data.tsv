@@ -1,0 +1,30 @@
+Electron Diffration
+2017-03-06
+
+- phosphorescent layer is on a curved surface, not flat
+   - will probably cause significant errors in the results
+   - surface looks like an oblate spheroid with axes 2a ~ 130mm, 2c ~ 125mm
+   - layer is on the c-axis
+   - since our ruler is flat (no point using calipers for this inaccurate experiment), we measure the lengths projected to the tangent plane to the centre dot, such that the projection lines intersect the plane at right angles
+- two clear rings and a centre dot
+- rings are blurry (wider than at least 1mm)
+- measure diametre multiple times at different orientations
+- perform the same measurements for line width
+- all voltages set to same values as listed in operating instructions (except G3)
+- vary G3 approximately linearly in a bisection pattern
+- G3 in kV
+- d1 and d1w in mm, and are the diametre and (approximate) line width of the inner ring
+- d2 and d2w as above, but for outer ring
+- assuming the centre dot is actually a centre dot, so we measure diametre by making sure the ruler intersects the centre dot
+- hope there is no hysteresis in the G3-to-diametre relationship (checked by redoing certain voltages)
+- G3 seemed to fluctuate on the first decimal place by 1 -> 0.1 kV accuracy on G3
+- diametre and width measurements rounded to nearest mm, since too blurry to give anything more accurate
+
+G3	d1	d1	d1	d1w	d1w	d1w	d2	d2	d2	d2w	d2w	d2w
+4.0	28	28	27	2	2	2	46	47	47	3	3	3
+7.5	20	20	20	1	1	1	34	33	33	3	3	3
+5.4	23	23	23	2	2	2	39	39	39	3	3	3
+6.4	21	21	21	1	1	1	37	37	36	3	3	3
+4.8	25	25	24	2	2	2	42	42	41	3	3	3
+4.0	27	27	27	2	2	2	46	46	46	3	3	3
+7.5	20	20	20	1	1	1	34	34	33	3	3	3
