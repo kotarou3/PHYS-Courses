@@ -1,0 +1,79 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{tikz}
+\usepackage{siunitx}
+\usepackage{cancel}
+
+\usepackage{sectsty}
+\sectionfont{\large\selectfont}
+\subsectionfont{\normalsize\selectfont}
+
+\begin{document}
+
+\title{PHYS2113: Kater's Pendulum Prework}
+\author{ \\ \\ }
+\date{2016-05-10}
+\maketitle
+
+\section{Questions}
+\subsection{Theoretical}
+\subsubsection{Derive the equations for the period of the compound pendulum, \(T = 2 \pi \sqrt{\frac{l^2 + k_0^2}{g l}}\), as illustrated in the middle diagram in Figure 1.}
+Let \(I_{CoM}\) be the moment of inertia around the centre of mass parallel to the pivot axis of the pendulum, and \(k_0\) be the radius of gyration around the centre of mass. Then by the parallel axis theorem, the moment of inertia around the pivot point is \(I = m l + I_{CoM} = m (l^2 + k_0^2)\).
+
+The radius of oscillation of a pendulum is where if it is replaced by a simple pendulum of the same length, the period would remain the same. It can be shown that this radius is \(\frac{I}{m l}\).
+
+Thus substituting in the radius of oscillation to the simple pendulum's period of \(T = 2 \pi \sqrt{\frac{l}{g}}\) produces \(T = 2 \pi \sqrt{\frac{l^2 + k_0^2}{g l}}\) for the compound pendulum.
+
+\subsubsection{Suppose that \(T_1 = T_2\). What does equation (1) then imply for the determination of \(g\) when using Kater's pendulum?}
+One does not need to know where the centre of mass of the pendulum to determine \(g\), since only \(l_1 + l_2\) would remain of the \(l\)s, and it is just the pivot-to-pivot distance.
+
+\subsection{By setting \(L = l_1 + l_2\) show the relevant partial derivatives of \(g\) for the error analysis in Kater's pendulum.}
+\begin{align*}
+    g &= 8 \pi^2 \left(\frac{T_1^2 + T_2^2}{L} + \frac{T_1^2 - T_2^2}{2 l_1 - L}\right)^{-1} \\
+    \therefore \frac{\partial g}{\partial T_1} &= -8 \pi ^2 \left(\frac{2 T_1}{2 l_1 - L} + \frac{2 T_1}{L}\right) \left(\frac{T_1^2 + T_2^2}{L} + \frac{T_1^2 - T_2^2}{2 l_1 - L}\right)^{-2} \\
+    &= \frac{g^2}{8 \pi^2} \frac{4 T_1 l_1}{L (L - 2 l_1)}
+\end{align*}
+Continuing with similar substitution techniques:
+\begin{align*}
+    \frac{\partial g}{\partial T_2} &= -\frac{g^2}{8 \pi^2} \frac{4 T_2 (L - l_1)}{L (L - 2 l_1)} \\
+    \frac{\partial g}{\partial L} &= \frac{g^2}{8 \pi^2} \left(\frac{T_1^2 + T_2^2}{L^2} - \frac{T_1^2 - T_2^2}{(L - 2 l_1)^2}\right) \\
+    \frac{\partial g}{\partial l_1} &= \frac{g^2}{8 \pi^2} \left(2 \frac{T_1^2 - T_2^2}{(L - 2 l_1)^2}\right)
+\end{align*}
+
+\subsection{Experimental}
+\subsubsection{How best to measure the periods of oscillation in order to minimise errors?}
+Record the oscillations with a camera for about a minute each. Count the number of frames between the first and last peaks of oscillation, then divide by the number of peaks and the frame rate.
+
+Image stabilisation software could be used if it isn't possible to place the camera on a stable surface.
+
+Using a typical camera's 30 frames per second and a pendulum's period of approximately \SI{2}{\second} (that is, a total of 30 oscillations in the minute), this puts the error in period at around \SI{0.1}{\percent}.
+
+This should be repeated a few times to determine a second error estimate.
+
+\subsubsection{How best to measure the lengths in order to minimise errors?}
+Unfortunately, only rulers and micrometres are available for use in the second year lab for measuring distances.
+
+Unless we have a fancy laser rangefinder available for use, measuring pivot-to-pivot distance (\(L\)) will only be possible with a ruler. Since the pivots pivot on a knife's edge, the distance to measure would be from one knife edge to the other.
+
+Assuming a pendulum length of approximately \SI{1}{\metre}, this would place the error at around \SI{0.1}{\percent} with a millimetre labelled ruler.
+
+If the distance to the centre of mass (\(l_1\)) is close enough to one of the pivots, a micrometre could be used, but otherwise only a ruler can be used.
+
+Finding the centre of mass would be done by placing the pendulum sideways on a knife's edge (without allowing it to roll) until it is parallel to the ground. Then the distance would be measured to one of the pivots' knife edge.
+
+This should be repeated for multiple rotational orientations around the pendulum's axis to get an estimate on the error, since the pendulum is not perfectly symmetrical along its axis.
+
+\section{Experimental Plan}
+\begin{itemize}
+    \item Follow as written in the operating instructions and student notes, as well as the above prework
+    \item Use a (much more accurate) camera rather than a stopwatch for period measurement
+    \item The stopwatch can also be used simultaneously for a second set of measurements, to be compared to the camera's measurements
+    \item Define \(T_1\) to be the period when oscillating on the pivot closest to the mass (Pivot 1), and \(l_1\) the distance from that pivot to the centre of mass
+    \item Take measurements again after adjusting the masses on the pendulum so that the difference between the two periods are as small as possible
+    \begin{itemize}
+        \item If \(T_2 < T_1\), or \(T_2 > T_1\), move the weight away from, or towards Pivot 2, respectively (``down'', or ``up'' the rod, when hanging from Pivot 2)
+    \end{itemize}
+\end{itemize}
+
+\end{document}

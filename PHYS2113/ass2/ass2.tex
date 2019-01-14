@@ -1,0 +1,265 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{tikz}
+
+\usepackage{sectsty}
+\sectionfont{\large\selectfont}
+\subsectionfont{\normalsize\selectfont}
+
+\begin{document}
+
+\title{PHYS2113: Assignment 2}
+\author{ \\ \\ }
+\date{2016-06-01}
+\maketitle
+
+Note: Simplifications, substitutions, taking derivatives, etc, between steps of the answers have been done through the \emph{Mathematica} package to avoid algebra errors, and thus no ``working out steps'' are shown for those operations.
+
+\section{Question 1: A pendulum system consists of a massless rod of length \(l\), and a bob of mass \(m\) at the bottom end which is free to move in a vertical plane. The top end of the rod is forced to move vertically, so that its displacement at any time \(t\) is given by \(y = -h(t)\), where \(h\) is some known function. If \(\theta\) is the angle the rod makes with the downward vertical direction, the position of the bob in Cartesian coordinates is \(x = l \sin \theta\), and \(y = -h -l \cos \theta\).}
+\subsection{Find the Lagrangian of this system in terms of \(\theta\).}
+\begin{align*}
+    \mathbf{r} &= x \mathbf{\hat{x}} + y \mathbf{\hat{y}} = l \sin \theta \mathbf{\hat{x}} + (-h - l \cos \theta) \mathbf{\hat{y}} \\
+    \therefore \dot{\mathbf{r}} &= l \dot{\theta} \cos \theta \mathbf{\hat{x}} + \left(l \dot{\theta} \sin \theta - \dot{h}\right) \mathbf{\hat{y}} \\
+    T &= \frac{1}{2} m \dot{\mathbf{r}} \cdot \dot{\mathbf{r}} = \frac{1}{2} m \left(l^2 \dot{\theta}^2 - 2 l \dot{\theta} \dot{h} \sin \theta + \dot{h}^2\right) \\
+    V &= m g y = -m g (h + l \cos \theta) \\
+    \mathcal{L} &= T - V \\
+    \therefore \mathcal{L} &= \frac{1}{2} m \left(l^2 \dot{\theta}^2 - 2 l \dot{\theta} \dot{h} \sin \theta + \dot{h}^2 + 2 g (h + l \cos \theta)\right)
+\end{align*}
+
+\subsection{Find the corresponding canonical momentum/momenta and the Hamiltonian.}
+Let our generalised coordinate be \(q = \theta\). Then:
+\begin{align*}
+    p &= \frac{\partial \mathcal{L}}{\partial \dot{q}} = m l \left(l \dot{q} - \dot{h} \sin q\right) \\
+    \therefore \dot{q} &= \frac{m l \dot{h} \sin q + p}{m l^2} \\
+    \mathcal{H} &= \dot{q} p - \mathcal{L} \\
+    \therefore \mathcal{H} &= \frac{p^2}{2 m l^2} + \frac{p \dot{h} \sin q}{l} - \frac{1}{2} m \dot{h}^2 \cos^2 q - m g (h + l \cos q)
+\end{align*}
+
+\subsection{Is the Hamiltonian for this system conserved? Is it the total energy?}
+The Hamiltonian is conserved if and only if it is not explicitly dependent on time \(t\).
+
+Assuming \(h\) is explicitly dependent on time (i.e., it is not constant), our Hamiltonian then depends explicitly on time through it, and thus it is not conserved.
+
+The Hamiltonian is the total energy if and only if it can be written as \(\mathcal{H} = T + V\) of the system.
+
+Using our previous values of \(T\) and \(V\), and substituting in our generalised velocity \(\dot{q}\), we can find:
+\begin{align*}
+    T &= \frac{p^2}{2 m l^2} + \frac{1}{2} m \dot{h}^2 \cos^2 q \\
+    V &= -m g (h + l \cos q) \\
+    \therefore \mathcal{H} - T - V &= \frac{p \dot{h} \sin q}{l} - m \dot{h}^2 \cos^2 q \\
+    &\neq 0
+\end{align*}
+
+So clearly \(\mathcal{H} \neq T + V\), and thus our Hamiltonian is not the total energy of our system.
+
+\subsection{Derive Hamilton's equations for this system.}
+(Derivation taken from Wikipedia)
+
+If we take the total differential of the Lagrangian \(\mathcal{L}(q, \dot{q}, t)\) and applying the chain rule, we get:
+\[\mathrm{d} \mathcal{L} = \frac{\partial \mathcal{L}}{\partial q} \mathrm{d} q + \frac{\partial \mathcal{L}}{\partial \dot{q}} \mathrm{d} \dot{q} + \frac{\partial \mathcal{L}}{\partial t} \mathrm{d} t\]
+
+Substituting in the definition of canonical momenta \(p = \frac{\partial \mathcal{L}}{\partial \dot{q}}\) and rearranging:
+\begin{align*}
+    \mathrm{d} \mathcal{L} &= \frac{\partial \mathcal{L}}{\partial q} \mathrm{d} q + p \mathrm{d} \dot{q} + \frac{\partial \mathcal{L}}{\partial t} \mathrm{d} t \\
+    \mathrm{d} \mathcal{L} &= \frac{\partial \mathcal{L}}{\partial q} \mathrm{d} q + \mathrm{d}(p \dot{q}) - \dot{q} \mathrm{d} p + \frac{\partial \mathcal{L}}{\partial t} \mathrm{d} t \\
+    \mathrm{d}(p \dot{q}) - \mathrm{d} \mathcal{L} &= -\frac{\partial \mathcal{L}}{\partial q} \mathrm{d} q + \dot{q} \mathrm{d} p - \frac{\partial \mathcal{L}}{\partial t} \mathrm{d} t
+\end{align*}
+
+Now note that \(\mathrm{d}(p \dot{q}) - \mathrm{d} \mathcal{L} = \mathrm{d}(p \dot{q} - \mathcal{L}) = \mathrm{d} \mathcal{H}\) using the definition of the Hamiltonian, and thus:
+\[\mathrm{d} \mathcal{H} = -\frac{\partial \mathcal{L}}{\partial q} \mathrm{d} q + \dot{q} \mathrm{d} p - \frac{\partial \mathcal{L}}{\partial t} \mathrm{d} t\]
+
+If we take the total differential of the Hamiltonian \(\mathcal{H}(q, p, t)\) and applying the chain rule, as we did for the Lagrangian above, we get:
+\[\mathrm{d} \mathcal{H} = \frac{\partial \mathcal{H}}{\partial q} \mathrm{d} q + \frac{\partial \mathcal{H}}{\partial p} \mathrm{d} p + \frac{\partial \mathcal{H}}{\partial t} \mathrm{d} t\]
+
+By ``equating differential coefficients'' from our two expressions of \(\mathrm{d} \mathcal{H}\), we obtain:
+\begin{align*}
+    \frac{\partial \mathcal{H}}{\partial q} &= -\frac{\partial \mathcal{L}}{\partial q} \\
+    \frac{\partial \mathcal{H}}{\partial p} &= \dot{q} \\
+    \frac{\partial \mathcal{H}}{\partial t} &= -\frac{\partial \mathcal{L}}{\partial t}
+\end{align*}
+
+So far, all the working we have done has been purely mathematical, but we can now introduce some physics in the form of the Euler-Lagrange equation and using our definition of \(p\) again as specified above:
+\begin{align*}
+    \frac{\partial \mathcal{L}}{\partial q} &= \frac{\mathrm{d}}{\mathrm{d} t} \frac{\partial \mathcal{L}}{\partial \dot{q}} \\
+    &= \frac{\mathrm{d} p}{\mathrm{d} t} = \dot{p}
+\end{align*}
+
+Using this, we can now arrive at Hamilton's equations (when applied to only a single \(q\) and \(p\)):
+\begin{align*}
+    \frac{\partial \mathcal{H}}{\partial q} &= -\dot{p} \\
+    \frac{\partial \mathcal{H}}{\partial p} &= \dot{q}
+\end{align*}
+
+To apply this to our system specifically, we just substitute in the actual Hamiltonian we derived in the previous questions to obtain:
+\begin{align*}
+    -\dot{p} &= m \left(g l + \dot{h}^2 \cos q\right) \sin q + \frac{p \dot{h} \cos q}{l} \\
+    \dot{q} &= \frac{m l \dot{h} \sin q + p}{m l^2}
+\end{align*}
+
+For clarity, we will substitute back \(\theta = q\):
+\begin{align*}
+    -\dot{p} &= m \left(g l + \dot{h}^2 \cos \theta\right) \sin \theta + \frac{p \dot{h} \cos \theta}{l} \\
+    \dot{\theta} &= \frac{m l \dot{h} \sin \theta + p}{m l^2}
+\end{align*}
+
+\subsection{Show that the equations of motion for \(\theta(t)\) can be written as \(\ddot{\theta} = \frac{1}{l} \left(\ddot{h} - g\right) \sin \theta\). What is the physical meaning of the terms on the right-hand side of this equation?}
+We can combine the two coupled equations from the previous question by taking the time derivative of the second equation, and substituting the first in to it:
+\begin{align*}
+    \ddot{\theta} &= \frac{m l \ddot{h} \sin \theta + m l \dot{\theta} \dot{h} \cos \theta + \dot{p}}{m l^2} \\
+    &= \frac{\dot{h} \left(m l^2 \dot{\theta} - p + m l \dot{h} \sin \theta\right) \cos \theta}{m l^3} + \frac{1}{l} \left(\ddot{h} - g\right) \sin \theta
+\end{align*}
+
+Now, from a previous question, we know a definition of \(p\):
+\[p = m l \left(l \dot{\theta} - \dot{h} \sin \theta\right)\]
+
+Substituting this in to \(\ddot{\theta}\), we find the first half of becomes 0, leaving us with the desired equation:
+\[\ddot{\theta} = \frac{1}{l} \left(\ddot{h} - g\right) \sin \theta\]
+
+\(l\) and \(\ddot{h}\) are quite obviously the length and the acceleration of the rod's pivot, respectively, as defined from the question. \(g\) is the acceleration due to gravity. Together as \(\frac{1}{l} \left(\ddot{h} - g\right)\), this is the total force acting on the mass in the \(y\) direction.
+
+However, due to the constraints on the system, only the torque effects the dynamics of the system, which only depends on the force perpendicular to the mass' direction from the pivot, which is what the \(\sin \theta\) term represents.
+
+Furthermore, the \(\ddot{h} - g\) term means only the acceleration of the rod's pivot matters in the dynamics of the system, and it is equivalent to modifying the ``effective'' gravity the mass experiences by that amount.
+
+\subsection{Taking \(m = 1\), \(l = 1\), and \(g = 1\), and assuming the initial conditions \(\theta = 1\), \(\dot{\theta} = 0\), plot the phase space diagram of this system for:}
+For the first plot, the initial momentum \(p(0)\) was swept between -4 and 4 with an increment of 2 (which effectively varies the initial velocity of the rod \(\dot{h}(0)\)). Time was taken from -10 to 10.
+
+The (extra) second plot is where the \(\dot{h}\) term in \(p\) was ignored (i.e., set to zero) to more clearly show the periodicity of \(\theta\). This happens to be equivalent to the configuration space, since \(p\) becomes \(\dot{\theta}\) with our constants. Note this also leaves no variables left to sweep, so only a single line is plotted.
+
+\subsubsection{\(\ddot{h} = \frac{g}{2}\)}
+\begin{center}
+    \includegraphics[height = 0.25 \textheight]{{1.6.1.1}.png}
+    ~
+    \includegraphics[height = 0.25 \textheight]{{1.6.1.2}.png}
+\end{center}
+
+\subsubsection{\(\ddot{h} = 2 g\)}
+\begin{center}
+    \includegraphics[height = 0.25 \textheight]{{1.6.2.1}.png}
+    ~
+    \includegraphics[height = 0.25 \textheight]{{1.6.2.2}.png}
+\end{center}
+
+\subsubsection{\(\ddot{h} = -g\)}
+\begin{center}
+    \includegraphics[height = 0.25 \textheight]{{1.6.3.1}.png}
+    ~
+    \includegraphics[height = 0.25 \textheight]{{1.6.3.2}.png}
+\end{center}
+
+\section{Question 2}
+\subsection{A thin disc that is round and has radius \(R\) in its own rest frame \(\mathcal{S}'\) moves at a constant speed \(v\) in frame \(\mathcal{S}\) in a direction parallel to its plane. How does the area of the disk transform from \(\mathcal{S}'\) to \(\mathcal{S}\)?}
+All affine transformations on an ellipse produces an ellipse. The Lorentz transform is affine (in fact, linear). Therefore the disk under a Lorentz transformation will simply become a differently sized ellipse, where its area is solely defined by its semi-major and semi-minor axes.
+
+In frame \(\mathcal{S}'\), let the disk's axes be parallel to \(x\) and \(y\). They are currently both \(R\) in length, giving an area of \(\pi R^2\).
+
+We now transform to the \(\mathcal{S}\) frame such that all movement is along the \(x\) direction. The axis parallel to the \(y\) direction remains the same length \(a = R\), since there is no movement along that direction. Meanwhile, the axis parallel to the \(x\) direction experiences Lorentz contraction, where its new length is:
+\[b = R \sqrt{1 - \frac{v^2}{c^2}}\]
+
+This corresponds to an ellipse area of:
+\[\pi a b = \pi R^2 \sqrt{1 - \frac{v^2}{c^2}}\]
+
+\subsection{Now consider a closed container that is spherical and has radius \(R\) in its own rest frame \(\mathcal{S}'\). If it moves at a constant speed \(v\) in the frame \(\mathcal{S}\), how does the volume transform?}
+We can extend the same argument as above to 3D with an ellipsoid. It has the same property as an ellipse under an affine transformation - that is, it transforms to another ellipsoid, where its area is solely defined by its semi-principal axes.
+
+In frame \(\mathcal{S}'\), let the ellipsoid's axes be parallel to the coordinate axes. They are all the same length \(R\), giving a volume of \(\frac{4}{3} \pi R^3\).
+
+Transforming to frame \(\mathcal{S}\), the axes parallel to the \(y\) and \(z\) axes stay the same length at \(a = b = R\), while the axis parallel to the \(x\) axis becomes:
+\[c = R \sqrt{1 - \frac{v^2}{c^2}}\]
+
+This corresponds to an ellipsoid volume of:
+\[\frac{4}{3} \pi a b c = \frac{4}{3} \pi R^3 \sqrt{1 - \frac{v^2}{c^2}}\]
+
+\subsection{Inside the container are \(N\) identical particles. How is the particle number density observed in \(\mathcal{S}\) related to the density in \(\mathcal{S}'\)?}
+From the volume formulae above, this means a average particle density in frame \(\mathcal{S}'\) of:
+\[\rho' = \frac{N}{\frac{4}{3} \pi R^3 \sqrt{1 - \frac{v^2}{c^2}}}\]
+and in frame \(\mathcal{S}\) of:
+\[\rho = \frac{N}{\frac{4}{3} \pi R^3}\]
+
+Substituting \(\rho\) into \(\rho'\) and solving for \(\rho\), we obtain:
+\[\rho = \rho' \sqrt{1 - \frac{v^2}{c^2}}\]
+
+\section{Question 3}
+\subsection{Particle \(A\) decays at rest into particles \(B\) and \(C\). Of the outgoing particles, find in terms of the rest masses of the three particles the:}
+\subsubsection{Energy}
+Particles \(A\), \(B\) and \(C\) have the following energies, respectively:
+\begin{align*}
+    E_A &= m_A c^2 \\
+    E_B &= \sqrt{m_B^2 c^4 + p_B^2 c^2} \\
+    E_C &= \sqrt{m_C^2 c^4 + p_C^2 c^2}
+\end{align*}
+
+Rearranging \(E_B\) and \(E_C\) to their momenta squared component respectively gives:
+\begin{align*}
+    p_B^2 c^2 &= E_B^2 - m_B^2 c^4 \\
+    p_C^2 c^2 &= E_C^2 - m_C^2 c^4
+\end{align*}
+
+Now since the momentum of \(A\) was zero, by the conservation of momentum, \(p_B + p_C = 0\), thus the two equations must equal each other. Further rearranging gives:
+\begin{align*}
+    E_B^2 - m_B^2 c^4 &= E_C^2 - m_C^2 c^4 \\
+    E_B^2 - E_C^2 &= (m_B^2 - m_C^2) c^4 \\
+    (E_B - E_C) (E_B + E_C) &= (m_B^2 - m_C^2) c^4
+\end{align*}
+
+Now by the conservation of energy, \(E_A = E_B + E_C\), which can also be coerced into the form, \(2 E_B - E_A = E_B - E_C\):
+\begin{align*}
+    (2 E_B - E_A) E_A &= (m_B^2 - m_C^2) c^4 \\
+    2 E_B &= E_A + \frac{m_B^2 - m_C^2}{E_A} c^4 \\
+    &= m_A c^2 + \frac{m_B^2 - m_C^2}{m_A} c^2 \\
+    \therefore E_B &= \frac{m_A^2 + m_B^2 - m_C^2}{2 m_A} c^2
+\end{align*}
+
+Similarly,
+\[E_C = \frac{m_A^2 + m_C^2 - m_B^2}{2 m_A} c^2\]
+
+\subsubsection{Magnitudes of the 3-momenta}
+Using the equation found for \(p_B^2 c^2\) and \(E_B\) from the previous question, we can directly substitute them together and rearrange:
+\begin{align*}
+    p_B^2 c^2 &= \left(\frac{m_A^2 + m_B^2 - m_C^2}{2 m_A}\right)^2 c^4 - m_B^2 c^4 \\
+    p_B^2 &= \frac{m_A^4 - 2 m_A^2 m_B^2 + m_B^4 - 2 m_A^2 m_C^2 - 2 m_B^2 m_C^2 + m_C^4}{4 m_A^2} c^2 \\
+    \therefore |p_B| &= \frac{\sqrt{(m_A - m_B - m_C) (m_A + m_B - m_C) (m_A - m_B + m_C) (m_A + m_B + m_C)}}{2 m_A} c
+\end{align*}
+Then by the conservation of momentum, \(p_C\) easily falls out:
+\[|p_C| = |-p_B| = \frac{\sqrt{(m_A - m_B - m_C) (m_A + m_B - m_C) (m_A - m_B + m_C) (m_A + m_B + m_C)}}{2 m_A} c\]
+
+\subsubsection{Speeds}
+We can write energy in yet another form, in terms of the Lorentz factor \(\gamma\):
+\begin{align*}
+    E_B &= m_B \gamma_B c^2 = \frac{m_B c^2}{\sqrt{1 - \frac{v_B^2}{c^2}}} \\
+    E_C &= m_C \gamma_C c^2 = \frac{m_B c^2}{\sqrt{1 - \frac{v_C^2}{c^2}}}
+\end{align*}
+
+Substituting in our previously obtained equation for \(E_B\) and solving for \(v_B\):
+\begin{align*}
+    \frac{m_B c^2}{\sqrt{1 - \frac{v_B^2}{c^2}}} &= \frac{m_A^2 + m_B^2 - m_C^2}{2 m_A} c^2 \\
+    \sqrt{1 - \frac{v_B^2}{c^2}} &= \frac{2 m_A m_B}{m_A^2 + m_B^2 - m_C^2} \\
+    \therefore |v_B| &= c \sqrt{1 - \left(\frac{2 m_A m_B}{m_A^2 + m_B^2 - m_C^2}\right)^2}
+\end{align*}
+
+Similarly:
+\[|v_C| = c \sqrt{1 - \left(\frac{2 m_A m_C}{m_A^2 + m_C^2 - m_B^2}\right)^2}\]
+
+\subsection{Suppose now particle \(A\) decays into three or more particles, \(A \rightarrow B + C + D + ...\), and again the decay happens at rest. Show that the outgoing particle \(B\) can now take on a range of energies, and express its minimum and maximum energies in terms of the various particle masses.}
+For each new particle \(i \in \{B, C, D, ...\}\), they will have an unconstrained energy:
+\[E_i = \sqrt{m_i^2 c^4 + p_i^2 c^2}\]
+
+Meanwhile, with conservation of energy and momentum alone, we will have these two equality (``holonomic'' in the absence of time-dependent variables) constraints:
+\[\sum_i p_i = 0\]
+\[\sum_i E_i = m_A c^2\]
+
+Since we have three or more new particles (\(\operatorname{card}(i) \ge 3\)), we have more unconstrained energy variables than constraints, and thus at least one energy is unconstrained in general. That means at least one energy can take on a range of values. Let this be \(E_B\), meaning particle \(B\) is the particle that can take on a range of energies.
+
+To find the possible range of energies, let's first consider the lower bound. Since total particle energies are at least their rest mass, the lower bound is simply:
+\[m_B c^2 \leq E_B\]
+
+For the upper bound, consider all the remaining particles \(j \in \{C, D, ...\}\) together to be one single bigger particle \(\Sigma j\). The maximum of \(E_B\) occurs when all these remaining particles are travelling together as a big ``clump'' (so no momenta are directed in a lateral direction), equivalent to a mass of \(m_{\Sigma j} = \sum_j m_j\).
+
+Using the final energy equation derived for \(E_B\) in the energy question, but substituting \(m_C\) for \(m_{\Sigma j}\), we obtain the maxima for \(E_B\):
+\[E_B \leq \frac{m_A^2 + m_B^2 - \left(\sum_j m_j\right)^2}{2 m_A} c^2\]
+
+Together, this is:
+\[m_B c^2 \leq E_B \leq \frac{m_A^2 + m_B^2 - \left(\sum_j m_j\right)^2}{2 m_A} c^2\]
+
+\end{document}

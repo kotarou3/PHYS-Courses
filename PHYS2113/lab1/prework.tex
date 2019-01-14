@@ -1,0 +1,88 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{tikz}
+\usepackage{siunitx}
+\usepackage{cancel}
+
+\usepackage{sectsty}
+\sectionfont{\large\selectfont}
+\subsectionfont{\normalsize\selectfont}
+
+\begin{document}
+
+\title{PHYS2113: Speed of Light Prework}
+\author{ \\ \\ }
+\date{2016-03-22}
+\maketitle
+
+\section{Questions}
+\subsection{Prove that \(\Delta S = c \Delta t\), and state your assumptions.}
+Suppose that light travels at a constant speed \(c\), then by basic mechanics:
+\begin{align*}
+    S &= c t \\
+    S_k &= c t_k
+\end{align*}
+%
+Combining this with equations (7):
+\begin{align*}
+    \cancel{S_k} + \Delta S &= \cancel{c t_k} + c \Delta t \\
+    \Delta S &= c \Delta t
+\end{align*}
+
+\subsection{Sketch the plot of \(\Delta t\) vs \(\Delta S\).}
+\begin{center}
+    \begin{tikzpicture}
+        \draw [->] (0, 0) -- (6, 0) node [midway, below] {\(\Delta t\) (Arb.)};
+        \draw [->] (0, 0) -- (0, 4) node [midway, left] {\(\Delta S\) (Arb.)};
+        \draw [-stealth, red] (0, 0) -- (5, 3) node [midway, left] {\(m = c\)};
+    \end{tikzpicture}
+\end{center}
+
+\subsection{Derive the equation \(c_m = \frac{c_a l_m}{\Delta x + l_m}\) using the optical path length.}
+First equate the two optical path lengths:
+\[OPL = n_a (\cancel{x_1} + \Delta x) = n_m l_m + n_a (\cancel{x_1} - l_m)\]
+\[\therefore \frac{n_a}{n_m} = \frac{l_m}{\Delta x + l_m}\]
+%
+Then consider refractive indices \(n_m\) and \(n_a\) in terms of the speed of light:
+\[n_a = \frac{c}{c_a} \qquad n_m = \frac{c}{c_m}\]
+\[\therefore \frac{n_a}{n_m} = \frac{c_m}{c_a}\]
+%
+Combining the two equations yields:
+\[c_m = \frac{c_a l_m}{\Delta x + l_m}\]
+
+\subsection{Prove that the optical path lengths in Measurements 1 and 2 are identical, despite the different physical distances travelled by the light.}
+Since the same equation was derived using both the same optical path length condition and the non-optical path length conditions stated in Measurements 1 and 2, and since both are completely reversible, we can conclude that the conditions in Measurements 1 and 2 imply identical optical path lengths, despite the different physical distances.
+
+\subsection{The intensity of the laser light is modulated periodically at a frequency of \SI{50}{\mega\hertz}. Why is the modulation necessary?}
+The laser's actual emission frequency in the visible frequencies is much too high to be detected directly (i.e., without interferometry), so a low frequency modulation is used so that it can be detected by a cheap photodiode. Additionally \SI{50}{\mega\hertz} was chosen since its wavelength (\SI{6}{\metre}) is of the right order of magnitude to be used in the scales of mediums used in the experiment (~\SI{1}{\metre}).
+
+\subsection{The output signals from the speed of light meter have their frequencies reduced by a factor of 1000 in order for them to be displayed on a simple oscilloscope such as that used in the experiment. Why not just modulate the intensity of the laser light itself at a frequency of \SI{50}{\kilo\hertz} then?}
+\SI{50}{\kilo\hertz} has a wavelength of \SI{6}{\kilo\metre}, so detecting and correcting for the phase shift would be very difficult at the scales of our experiment.
+
+\subsection{Suppose in addition to water and acrylic glass, you are supplied with a \SI{1.9}{\meter}-long tube of Titanium Dioxide for Part 2 of the experiment (ignore the fact that the optical bench scale only goes up to \SI{1.7}{\meter}). Now, the refractive index of Titanium Dioxide can be as high as \SI{2.6}{} in the visible frequencies. Would out equipment and the experimental set-up depicted in Figure 3 yield the correct speed of light in this material? From this consideration, discuss the limitations of this experiment and how you might get around them.}
+The optical path length of the tube would be \(2.6 \times \SI{1.9}{\meter} \approx \SI{4.9}{\metre}\), producing a phase shift delay of \(2 \times 2 \pi \frac{(\SI{4.9}{\metre}) - (\SI{1.9}{\metre})}{\SI{6}{\metre}} = 2 \pi\), which would be indistinguishable from a phase shift of \(0\), and thus would produce a refractive index result of \(1\) from this experiment alone, which is obviously wrong.
+
+From this, we can see that this experiment can only reliably measure refractive indices when the phase shift is \(< 2 \pi\). Since the phase shift is determined directly by the wavelength of the modulation and the optical path length difference (\(\varphi = 2 \times 2 \pi \frac{\Delta OPL}{\nu}\)), the problem can be resolved by decreasing the sample length (reducing \(\Delta OPL\)), or decreasing the modulation frequency (increasing \(\nu\)).
+
+\section{Experimental Plan}
+\begin{itemize}
+    \item Follow the method outlines in the operating instructions.
+    \item Measurement 1:
+    \begin{itemize}
+        \item Repeat with different \(\Delta S\) as many times as reasonable.
+        \item Trying extrema then halving distances should make optimal use of time, since the expected speed of light result will be linear in \(\Delta S\) and \(\Delta t\).
+        \item Speed of light result can be found by taking the linear regression of \(\Delta t\) vs \(\Delta S\) as the value, and \SI{95}{\percent} confidence intervals as the error.
+    \end{itemize}
+    \item Measurement 2:
+    \begin{itemize}
+        \item Repeat with different \(x_1\) as many times as reasonable.
+        \item Trying extrema then halving distances should make optimal use of time, since \(\Delta x\) and refractive index should be constant regardless of \(x_1\).
+        \item Relative refractive index result would be better found with \(n = \frac{\Delta x + l_m}{l_m}\) and assuming it close enough to the absolute refractive index rather than introducing our value and error in \(c_a\).
+    \end{itemize}
+    \item Errors will most likely be introduced in the measurement of \(\Delta S\), \(\Delta t\) and \(\Delta x\), assuming reliable equipment.
+    \item A small amount of error will be introduced by the plastic container of the water, but should be negligible.
+    \item There will be other sources of light such as from external reflections, but hopefully the SNR is high enough to see the intended measurement.
+\end{itemize}
+
+\end{document}
