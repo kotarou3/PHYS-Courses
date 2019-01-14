@@ -1,0 +1,87 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{siunitx}
+
+\usepackage{sectsty}
+\sectionfont{\large\selectfont}
+\subsectionfont{\normalsize\selectfont}
+
+\begin{document}
+
+\title{PHYS2114: Magnetic Hysteresis Prework}
+\author{ \\ \\ }
+\date{2016-08-01}
+\maketitle
+
+\section{Questions}
+\subsection{What hysteresis loop shape would you require for a magnetic material to be used in a permanent magnet, or a transformer core? Give reasons for your choice.}
+An ideal permanent magnet would be a straight line intersecting the \(B\) axis at the desired strength while a transformer core would be a straight line with no intersection requirements (since induction only depends on the time derivative of flux density). The gradient of this line would depend on the specific project requirements. A straight line would be optimal because it will not cause any waste power dissipation and is easy to model.
+
+\subsection{Show that if \(V_{in} = V \cos(\omega t)\) for an RC integrator circuit, then \(V_{C} = \frac{V}{R C \omega} \sin(\omega t)\).}
+\begin{align*}
+    V_C &\approx \frac{1}{R C} \int_0^t V_{in} \:\mathrm{d}t \\
+    &= \frac{V}{R C} \int_0^t \cos(\omega t) \:\mathrm{d}t \\
+    &= \frac{V}{R C \omega} \sin(\omega t)
+\end{align*}
+
+\subsection{Show that \(R = \SI{22}{\kilo\ohm}\) and \(C = \SI{8}{\micro\farad}\) are suitable values for RC integration of a \SI{50}{\hertz} signal}
+\begin{align*}
+    \frac{1}{R C} &\approx \SI{5.68}{\radian\per\second} \\
+    \omega &= 2 \pi \SI{50}{\hertz} \approx \SI{314}{\radian\per\second} \\
+    \therefore \omega &\gg \frac{1}{R C}
+\end{align*}
+
+\subsection{Derive a scaling factor relating the area of the hysteresis loop and the energy dissipated per cycle per unit volume.}
+The primary coil loops \(n_p\) times around a toroidal iron core with radius \(r\). It is powered by a constant-current source of \(I\), with it being measured by shunting the oscilloscope with a resistor of resistance \(R_p\) to provide a reading of \(V_X = I R_p\). This results in a H-field magnitude of:
+\begin{align*}
+    H &= \frac{n_p I}{2 \pi r} \\
+    &= \frac{n_p}{2 \pi r R_p} V_X
+\end{align*}
+
+By Faraday's law of induction, the voltage at the secondary coil with \(n_s\) loops around the same core is:
+\begin{align*}
+    V_S &= n_s \frac{\mathrm{d}\Phi_B}{\mathrm{d}t} \\
+    &= n_s W h \frac{\mathrm{d}B}{\mathrm{d}t}
+\end{align*}
+
+This then passes through the RC integrator, producing a final voltage reading of:
+\begin{align*}
+    V_Y &= \frac{1}{R C} \int_0^t V_S \:\mathrm{d}t \\
+    &= \frac{n_s W h}{R C} B
+\end{align*}
+and rearranged for \(B\):
+\[B = \frac{R C}{n_s W h} V_Y\]
+
+Since we are interested in energy dissipated per cycle per unit volume:
+\begin{align*}
+    \frac{E}{V} &= \oint H \:\mathrm{d}B \\
+    &= \frac{n_p}{n_s}\frac{R C}{2 \pi r W h R_p} \oint V_X \:\mathrm{d}V_Y
+\end{align*}
+
+Thus our scaling factor is:
+\[\frac{n_p}{n_s}\frac{R C}{2 \pi r W h R_p} \approx \frac{n_p}{n_s} (\SI{4.67}{\kilo\joule\per\volt\squared\per\metre\cubed})\]
+
+\subsection{Using the results from the previous section, how would you calculate the total energy dissipated by the iron sample over one hysteresis cycle?}
+Since the iron sample is approximately a hollowed out cylinder with outer and inner radius of \(r + \frac{W}{2}\) and \(r + \frac{W}{2}\), its volume is:
+\begin{align*}
+    V &= \pi \left(\left(r + \frac{W}{2}\right)^2 - \left(r - \frac{W}{2}\right)^2\right) h \\
+    &= 2 \pi r W h
+\end{align*}
+
+So total energy dissipated would be:
+\[E = \frac{n_p}{n_s}\frac{R C}{R_p} \oint V_X \:\mathrm{d}V_Y\]
+which is a scaling factor over the area by:
+\[\frac{n_p}{n_s}\frac{R C}{R_p} = \frac{n_p}{n_s} (\SI{88}{\milli\joule\per\volt\squared})\]
+
+\section{Experimental Plan}
+\begin{itemize}
+    \item Follow the method outlines in the student notes and operating instructions.
+    \item Try more than just one frequency or other kinds of waveforms.
+    \item Try more than one voltage.
+    \item Integrate the actual data rather than weighing a printout...
+    \item Try reading the voltage from the secondary coil directly rather than via the integrator.
+    \item Consider the possibility of flux leakage from the iron sample.
+\end{itemize}
+
+\end{document}

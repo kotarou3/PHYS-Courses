@@ -1,0 +1,245 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{siunitx}
+
+\begin{document}
+
+\title{PHYS2114: Assignment 1}
+\author{ \\ \\ }
+\date{2016-09-18}
+\maketitle
+
+\section{Dielectric Sphere}
+(Griffiths Problem 4.23)
+
+Without loss of generality, assume \(\mathbf{E}_0\) is parallel with the \(z\)-axis. It is clear that the bound charge densities for it are:
+\begin{align*}
+    \sigma_b &= \mathbf{P}_0 \cdot \hat{\mathbf{n}} \\
+    &= \varepsilon_0 \chi_e |\mathbf{E}_0| \cos \theta \\
+    \rho_b &= -\nabla \cdot \mathbf{P}_0 \\
+    &= 0
+\end{align*}
+
+According to the solution to Griffiths Example 3.9, we have, for surface charge density \(\sigma_0 = k \cos \theta\), a potential and electric field inside the sphere of:
+\begin{align*}
+    V &= \frac{k}{3 \varepsilon_0} r \cos \theta \\
+    &= \frac{k}{3 \varepsilon_0} z \\
+    \mathbf{E} &= -\nabla V \\
+    &= -\frac{k}{3 \varepsilon_0} \hat{\mathbf{z}}
+\end{align*}
+
+Now, with \(\mathbf{P}_0\), we have \(\sigma_0 = \sigma_b\), or \(k = \varepsilon_0 \chi_e |\mathbf{E}_0|\). This gives us an induced electric field of:
+\[\mathbf{E}_1 = -\frac{\chi_e}{3} \mathbf{E}_0\]
+which can be iterated, producing:
+\[\mathbf{E}_{n + 1} = -\frac{\chi_e}{3} \mathbf{E}_n\]
+
+Now if we consider the sum:
+\[\mathbf{E} = \sum_{n = 0}^\infty \mathbf{E}_n\]
+it is clear that it is a geometric series with ratio \(\frac{\mathbf{E}_{n + 1}}{\mathbf{E}_n} = -\frac{\chi_e}{3}\), which is trivially solvable assuming \(|\chi_e| < 3\):
+\[\mathbf{E} = \frac{\mathbf{E}_0}{1 + \frac{\chi_e}{3}} = \frac{3}{\chi_e + 3} \mathbf{E}_0\]
+
+Using the relation \(\chi_e = \varepsilon_r - 1\), we can get the solution as required:
+\[\mathbf{E} = \frac{3}{\varepsilon_r + 2} \mathbf{E}_0\]
+
+\section{Coaxial cable with magnetic insulator}
+(Griffiths Problem 6.16)
+
+Without loss of generality, assume the inner tube has current parallel to the \(z\)-axis. We can exploit the symmetry of this situation by using an Amperian loop of radius \(r\) centred on the tubes to find \(\mathbf{H}\). We have:
+\[\oint \mathbf{H} \cdot \mathrm{d}\mathbf{l} = {I_f}_{enc}\]
+
+Clearly, when \(r < a\) and \(r > b\), we have:
+\[\mathbf{H} = \mathbf{0}\]
+and otherwise, we have:
+\[\mathbf{H} = \frac{I}{2 \pi r} \hat{\boldsymbol{\phi}}\]
+
+Since the tubes are magnetically linear, the resulting flux density is simply
+\begin{align*}
+    \mathbf{B} &= \mu_0 (1 + \chi_m) \mathbf{H} \\
+    &= \frac{\mu_0 (1 + \chi_m) I}{2 \pi r} \hat{\boldsymbol{\phi}}
+\end{align*}
+
+Alternatively, we can use the magnetisation \(\mathbf{M}\) to find the bound current densities:
+\begin{align*}
+    \mathbf{M} &= \chi_m \mathbf{H} \\
+    \mathbf{K}_m &= \mathbf{M} \times \hat{\mathbf{n}} \\
+    &= \frac{\chi_m I}{2 \pi r} \hat{\mathbf{z}} \\
+    \mathbf{J}_m &= \nabla \times \mathbf{M} \\
+    &= \mathbf{0}
+\end{align*}
+
+Integrating \(\mathbf{K}_m\) over the Amperian loop gets a bound current of:
+\begin{align*}
+    \oint \mathbf{K}_m \:\mathrm{d}l &= \int_0^{2 \pi} \frac{\chi_m I}{2 \pi} \hat{\mathbf{z}} \:\mathrm{d}\phi \\
+    &= \chi_m I \hat{\mathbf{z}}
+\end{align*}
+
+Now we can apply the flux density version of Ampere's law:
+\begin{align*}
+    \oint \mathbf{B} \cdot \mathrm{d}\mathbf{l} &= \mu_0 I_{enc} \\
+    2 \pi r \mathbf{B} &= \mu_0 (I + \chi_m I) \hat{\boldsymbol{\phi}} \\
+    \mathbf{B} &= \frac{\mu_0 (1 + \chi_m) I}{2 \pi r} \hat{\boldsymbol{\phi}}
+\end{align*}
+
+Which matches our earlier result, as expected.
+
+\section{Solenoid with time-dependent current}
+(Griffiths Problem 7.15)
+
+Ignoring the net current flow in the \(z\) direction, we can construct an Amperian rectangle parallel to the solenoid, with one side inside and the opposite outside. This produces an outside flux density of:
+\[\mathbf{B} = \mathbf{0}\]
+and an inside density of:
+\[\mathbf{B} = \mu_0 n I \hat{\mathbf{z}}\]
+in the quasistatic approximation.
+
+Now we can construct another Amperian loop --- this time a circle of radius \(s\) centred on the solenoid. Applying Faraday's law:
+\begin{align*}
+    \oint \mathbf{E} \cdot \mathrm{d}\mathbf{l} &= -\frac{\mathrm{d}\Phi_B}{\mathrm{d}t} \\
+    2 \pi s \mathbf{E} &= -\frac{\mathrm{d}}{\mathrm{d}t}\bigg(\mu_0 \pi n \min(s, a)^2 I\bigg) \hat{\boldsymbol{\phi}} \\
+    &= -\mu_0 \pi n \min(s, a)^2 \frac{\mathrm{d}I}{\mathrm{d}t} \hat{\boldsymbol{\phi}} \\
+    \therefore \mathbf{E} &= -\frac{\mu_0 n \min(s, a)^2}{2 s} \frac{\mathrm{d}I}{\mathrm{d}t} \hat{\boldsymbol{\phi}}
+\end{align*}
+
+We can split the field into two cases to remove the \(\min(s, a)\) term --- \(s < a\):
+\[\mathbf{E} = -\frac{\mu_0 n s}{2} \frac{\mathrm{d}I}{\mathrm{d}t} \hat{\boldsymbol{\phi}}\]
+and \(s > a\):
+\[\mathbf{E} = -\frac{\mu_0 n a^2}{2 s} \frac{\mathrm{d}I}{\mathrm{d}t} \hat{\boldsymbol{\phi}}\]
+
+\section{Levitating Magnet}
+At the boundary of a superconductor in a magnetic field (for small enough magnetic fields, which you can assume), surface currents are generated to exclude the magnetic field from inside the superconductor.
+
+\subsection{Show that magnetic field \(\mathbf{B}\) lines just outside a superconductor are tangential to the surface.}
+Assuming there are no magnetic charges on the surface of the superconductor, we have the continuity condition:
+\[(\mathbf{B}_2 - \mathbf{B}_1) \cdot \hat{\mathbf{n}}_{12} = 0\]
+where \(\mathbf{B}_1\) is the field inside and \(\mathbf{B}_2\) outside. Or in other words, the normal component of \(\mathbf{B}\) is continuous across boundaries.
+
+Since inside the superconductor, \(\mathbf{B}_1 = \mathbf{0}\), this must mean that just outside the boundary, the normal component is also zero. Hence, \(\mathbf{B}_2\) must be either purely tangential or \(\mathbf{0}\).
+
+\subsection{A small permanent magnet with dipole moment \(m\) and mass \(M\) is placed above the horizontal surface of a superconductor. Find the equilibrium orientation and height \(h\) it levitates at.}
+Let \(\mathbf{m}\) be the vector dipole moment, with \(|\mathbf{m}| = m\).
+
+Since the flux density \(\mathbf{B}\) at the boundary must be purely tangential, we can use the method of images and mirror the dipole to the other side of the boundary (that is, in the \(z\) direction). Let this ''fake'' dipole moment be \(\mathbf{m}'\).
+
+Considering only the \(x\)-\(z\) plane, we can represent our dipole moments as a magnitude \(m\) and angle \(\theta\):
+\begin{align*}
+    \mathbf{m} &= m \cos \theta \hat{\mathbf{x}} + m \sin \theta \hat{\mathbf{z}} \\
+    \mathbf{m}' &= m \cos \theta \hat{\mathbf{x}} - m \sin \theta \hat{\mathbf{z}}
+\end{align*}
+
+The potential energy of \(\mathbf{m}\) is:
+\[U = M g z - \mathbf{m} \cdot \mathbf{B}'\]
+where \(\mathbf{B}'\) is the flux density caused by \(\mathbf{m}'\):
+\[\mathbf{B}' = \frac{\mu_0}{4 \pi} \frac{3 (\mathbf{m}' \cdot \hat{\mathbf{r}}) \hat{\mathbf{r}} - \mathbf{m}'}{|\mathbf{r}|^3}\]
+where \(\mathbf{r}\) is the displacement from \(\mathbf{m}'\) to \(\mathbf{m}\), which in our case is \(h + z \hat{\mathbf{z}}\).
+
+Playing around with these equations:
+\begin{align*}
+    U &= M g z - \frac{\mu_0}{4 \pi} \frac{3 (\mathbf{m} \cdot \hat{\mathbf{r}}) (\mathbf{m}' \cdot \hat{\mathbf{r}}) - \mathbf{m} \cdot \mathbf{m}'}{|\mathbf{r}|^3} \\
+    &= M g z - \frac{\mu_0}{4 \pi} \frac{-3 (m \sin \theta)^2 - (m \cos \theta)^2 + (m \sin \theta)^2}{|h + z|^3} \\
+    &= M g z + \frac{\mu_0 m^2 (\cos^2 \theta + 2 \sin^2 \theta)}{4 \pi |h + z|^3} \\
+    &= M g z + \frac{\mu_0 m^2 (\sin^2 \theta + 1)}{4 \pi |h + z|^3} \\
+    &\propto \sin^2 \theta
+\end{align*}
+
+Thus \(U(\theta)\) is minimised when \(\theta = n \pi\) where \(n \in \mathbb{Z}\). In other words, the dipole orientation is in a stable equilibrium when parallel to the plane of the superconductor (assuming fixed height).
+
+Minimising \(U(z)\) to find the equilibrium height is not as obvious, so we can go with the general method of finding stationary points:
+\begin{align*}
+    \frac{\partial U}{\partial z} \bigg|_{z = h} &= 0 \\
+    &= M g - \frac{3 \mu_0 m^2 (\sin^2 \theta + 1) \operatorname{sgn}(h + z)}{4 \pi (h + z)^4} \bigg|_{z = h} \\
+    \Rightarrow h^4 \operatorname{sgn}(h) &= \frac{3 \mu_0 m^2 (\sin^2 \theta + 1)}{64 \pi M g}
+\end{align*}
+
+Clearly, when \(h < 0\), there are no real solutions and hence unphysical, so we only need to consider the \(h > 0\) case:
+\[z = h = \left(\frac{3 \mu_0 m^2 (\sin^2 \theta + 1)}{64 \pi M g}\right)^\frac{1}{4}\]
+
+Since \(U(z) \propto a z + \frac{b}{|z|^3}\) (which only has a single stationary point, of which is a minima), this is a minima of \(U(z)\) and thus the stable equilibrium height (assuming fixed orientation).
+
+We can combine these two results to find the minima of \(U(\theta, z)\), but we need to check \(\frac{\partial^2 U}{\partial z \:\partial \theta}\) to ensure it isn't a saddle point:
+\begin{align*}
+    \frac{\partial^2 U}{\partial z \:\partial \theta} \bigg|_{z = h} &= \frac{\partial U}{\partial \theta} \left(M g - \frac{3 \mu_0 m^2 (\sin^2 \theta + 1) \operatorname{sgn}(h)}{4 \pi (z + h)^4}\right) \bigg|_{z = h} \\
+     &= \frac{\partial U}{\partial \theta} \left(M g - \frac{3 \mu_0 m^2 (3 - \cos 2 \theta) \operatorname{sgn}(h)}{64 \pi h^4}\right) \\
+     &= -\frac{3 \mu_0 m^2 \sin 2 \theta \operatorname{sgn}(h)}{64 \pi h^4} \\
+     &= 0
+\end{align*}
+for our minima condition on \(U(\theta)\).
+
+Thus \(U(\theta, z)\) is minimised and the dipole in stable equilibrium when:
+\begin{align*}
+    \theta &= n \pi \\
+    z = h &= \left(\frac{3 \mu_0 m^2}{64 \pi M g}\right)^\frac{1}{4}
+\end{align*}
+
+\subsection{Find \(h\) for a magnet of volume \(V = \SI{30}{\milli\metre\cubed}\), uniform magnetisation density \(\mu_0 |\mathbf{M}| \approx \SI{1}{\tesla}\) and uniform density \(\rho \approx \SI{8}{\gram\per\centi\metre\cubed}\)}
+\begin{align*}
+    m &= \left|\iiint \mathbf{M} \:\mathrm{d}V\right| = V |\mathbf{M}| \\
+    &\approx \frac{(\SI{30}{\milli\metre\cubed})(\SI{1}{\tesla})}{\mu_0} \\
+    &\approx \SI{24}{\milli\ampere\metre\squared} \\
+    M &= \iiint \rho \:\mathrm{d}V = \rho V \\
+    &\approx (\SI{8}{\gram\per\centi\metre\cubed})(\SI{30}{\milli\metre\cubed}) \\
+    &\approx \SI{240}{\milli\gram} \\
+    \therefore h &\approx \SI{8.2}{\milli\metre}
+\end{align*}
+
+\section{Speaker crossover circuit}
+For a speaker crossover circuit in a LC low-pass and high-pass configuration sharing a common signal and ground with identical speakers of pure resistive load \(R\), capacitors of capacitance \(C\) and inductors of inductance \(L\):
+
+\subsection{Find a relationship between \(L\) and \(C\) for a given \(R\) such that the network presents a purely resistive load (\(= R\)) to the amplifier at all frequencies.}
+Let the amplifier be driving the source line at a frequency of \(\omega\). Let the low pass filter have speaker \(R_1\), inductor \(L_1\) and capacitor \(C_1\), and the high pass filter with \(R_2\),  \(L_2\) and  \(C_2\).
+
+The impedance of the circuit is then:
+\begin{align*}
+    Z &= \frac{1}{\frac{1}{Z_{low}} + \frac{1}{Z_{high}}} \\
+    Z_{low} &= Z_{L_1} + \frac{1}{\frac{1}{Z_{C_1}} + \frac{1}{Z_{R_1}}} \\
+    &= i \omega L + \frac{1}{i \omega C + \frac{1}{R}} \\
+    Z_{high} &= Z_{C_2} + \frac{1}{\frac{1}{Z_{L_2}} + \frac{1}{Z_{R_2}}} \\
+    &= \frac{1}{i \omega C} + \frac{1}{\frac{1}{i \omega L} + \frac{1}{R}} \\
+    \therefore Z &= R - \frac{i \omega L - 2 i \omega R^2 C}{\omega^2 L C - 2 i \omega R C - 1}
+\end{align*}
+
+If we equate this to \(R\):
+\begin{align*}
+    0 &= i \omega L - 2 i \omega R^2 C \\
+    &= i \omega (L - 2 R^2 C)
+\end{align*}
+
+If \(\omega = 0\) (i.e., DC), then there are no requirements on \(L\) and \(C\). Otherwise:
+\[L = 2 R^2 C\]
+
+\subsection{Find the crossover frequency \(\omega_c\).}
+The transfer function for the low pass filter is:
+\begin{align*}
+    H_{low} &= \frac{\frac{1}{\frac{1}{Z_{C_1}} + \frac{1}{Z_{R_1}}}}{Z_{L_1} + \frac{1}{\frac{1}{Z_{C_1}} + \frac{1}{Z_{R_1}}}} \\
+    &= \frac{1}{Z_{L_1} \left(\frac{1}{Z_{C_1}} + \frac{1}{Z_{R_1}}\right) + 1} \\
+    &= \frac{1}{1 - \omega^2 L C + i \omega \frac{L}{R}}
+\end{align*}
+
+Assuming we want the entire circuit to be a purely resistive load, we can substitute in our result from the previous section:
+\[H_{low} = \frac{1}{1 - 2 \omega^2 R^2 C^2 + 2 i \omega R C}\]
+which happens to be a second-order Butterworth filter.
+
+The frequency response is:
+\[|H_{low}| = \frac{1}{\sqrt{1 + 4 \omega^4 R^4 C^4}}\]
+
+The crossover frequency is:
+\begin{align*}
+    |H_{low}| &= \frac{1}{\sqrt{2}} \\
+    \Rightarrow 2 &= 1 + 4 \omega_c^4 R^4 C^4 \\
+    \Rightarrow \omega_c &= \frac{1}{R C \sqrt{2}}
+\end{align*}
+or equivalently (by re-substituting the previous section's results):
+\begin{align*}
+    \omega_c &= \frac{R \sqrt{2}}{L} \\
+    \omega_c &= \frac{1}{\sqrt{L C}}
+\end{align*}
+
+A similar reasoning can be applied for \(H_{high}\) to arrive at the same result.
+
+\subsection{For a given \(R\) and \(\omega_c\), determine \(L\) and \(C\).}
+Simply rearrange the previous section's results for \(L\) and \(C\):
+\begin{align*}
+    L &= \frac{R \sqrt{2}}{\omega_c} \\
+    C &= \frac{1}{\omega_c R \sqrt{2}}
+\end{align*}
+
+\end{document}
