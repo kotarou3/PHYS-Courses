@@ -1,0 +1,48 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+
+\usepackage{sectsty}
+\sectionfont{\large\selectfont}
+\subsectionfont{\normalsize\selectfont}
+
+\begin{document}
+
+\title{PHYS2111: Double Slit Interference Prework}
+\author{ \\ \\ }
+\date{2016-04-26}
+\maketitle
+
+\section{Questions}
+\subsection{Using Figure 1a, prove expression (1). What assumptions did you need to make?}
+Assuming the incident is are in-phase and the slits are infinitesimally thin:
+\begin{align*}
+    \tan \theta &= \frac{y}{L} \\
+    r_1^2 &= (y - \frac{d}{2})^2 + L^2 \\
+    &= (L \tan \theta - \frac{d}{2})^2 + L^2 \\
+    r_2^2 &= (L \tan \theta + \frac{d}{2})^2 + L^2
+\end{align*}
+
+For a maxima, the \(r_1\) and \(r_2\) only differ by a integer multiple of the wavelength \(\lambda\). That is:
+\[r_2 - r_1 = m \lambda \quad (m \in \mathbb{Z})\]
+
+Assuming \(L \gg d\), we can take the Taylor series expansion of \(r_1 - r_2\) with \(L\) at infinity, and after factoring out a \(d\), we find that all terms with \(L\) in the denominator has a equal power \(d\) term in the numerator, so can be eliminated:
+\begin{align*}
+    r_2 - r_1 &= d \left(\frac{\tan \theta}{\sqrt{\tan^2 \theta + 1}} - \frac{d^2 \tan \theta}{8 L^2 \left(\tan^2 \theta + 1\right)^{5/2}} + O\left(\frac{d^3}{L^3}\right)\right) \\
+    &= d \left(\sin \theta + O\left(\frac{d^2}{L^2}\right)\right)
+\end{align*}
+
+Which results in our desired equation:
+\[d \sin \theta \approx m \lambda\]
+
+\subsection{Using Figure 1a, derive an expression for the distance \(y\) from the central bright fringe to the next bright fringe above it in terms of \(d\), \(L\) and \(\lambda\). What assumptions do you need to make?}
+Using the above expressions (and assumptions), we have:
+\begin{align*}
+    d \sin \theta &= \lambda \\
+    \tan \theta &= \frac{y}{L}
+\end{align*}
+
+Solving for \(y\) with basic trigonometric identities gives:
+\[y = \frac{L \lambda}{\sqrt{d^2 - \lambda^2}}\]
+
+\end{document}

@@ -1,0 +1,86 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+
+\usepackage{sectsty}
+\sectionfont{\large\selectfont}
+\subsectionfont{\normalsize\selectfont}
+
+\usepackage{siunitx}
+
+\begin{document}
+
+\title{PHYS2111: Assignment 1}
+\author{ \\ \\ }
+\date{2016-03-20}
+\maketitle
+
+\section{Question 1 (60 Marks)}
+\subsection{A particle in the ground state of a one-dimensional potential well (or potential 'box') is confined to the region \(0 \leq x \leq a\). The wavefunction for this state is \(\psi = A \sin(\frac{\pi x}{a})\) where \(A\) is a normalisation constant.}
+\subsubsection{Calculate the value of the normalisation constant \(A\) (10 marks)}
+\[\int_0^a \psi \psi^* \:\mathrm{d}x = 1\]
+\[\int_0^a A^2 \sin^2(\frac{\pi x}{a}) \:\mathrm{d}x = 1\]
+\[\frac{a A^2}{2} = 1\]
+\[\therefore A = \sqrt{\frac{2}{a}} \qquad (A > 0)\]
+
+\subsubsection{Calculate the probability of finding the particle in the range \(\frac{a}{2} \leq x \leq \frac{3 a}{4}\) (10 marks)}
+\[\int_\frac{a}{2}^\frac{3 a}{4} \psi \psi^* \:\mathrm{d}x = \int_\frac{a}{2}^\frac{3 a}{4} \frac{2}{a} \sin^2(\frac{\pi x}{a}) \:\mathrm{d}x\]
+\[= \frac{2 + \pi}{4 \pi} \approx 40.92\%\]
+
+\subsection{The wavefunction describing a particle confined in the ground state of an infinite one-dimensional potential well is \(\psi = \sqrt{\frac{2}{a}} \sin(\frac{\pi x}{a}) \quad 0 < x < a\)}
+\subsubsection{Calculate the expectation values \(\langle x \rangle\) and \(\langle p \rangle\) (15 marks)}
+\begin{align*}
+    \langle x \rangle &= \int_0^a \psi^* x \psi \:\mathrm{d}x = \int_0^a \frac{2 x}{a} \sin^2(\frac{\pi x}{a}) \:\mathrm{d}x \\
+    &= \frac{a}{2} \\
+    \langle p \rangle &= -i \hbar \int_0^a \psi^* \frac{\partial \psi}{\partial x} \:\mathrm{d}x = -i \hbar \int_0^a \frac{2 \pi}{a^2} \sin(\frac{\pi x}{a}) \cos(\frac{\pi x}{a}) \:\mathrm{d}x \\
+    &= \SI{0}{\kilo\gram \metre \per \second}
+\end{align*}
+
+\subsubsection{Calculate \(\langle x^2 \rangle\) and \(\langle p^2 \rangle\) and the uncertainties \(\Delta x\) and \(\Delta p\) (15 marks)}
+\begin{align*}
+    \langle x^2 \rangle &= \int_0^a \psi^* x^2 \psi \:\mathrm{d}x \\
+    &= \frac{a^2}{6} \left(2 - \frac{3}{\pi^2}\right) \\
+    \langle p^2 \rangle &= (-i \hbar)^2 \int_0^a \psi^* \frac{\partial^2 \psi}{\partial x^2} \:\mathrm{d}x \\
+    &= \frac{\pi^2 \hbar^2}{a^2} \\
+    \Delta x &= \sqrt{\langle x^2 \rangle - \langle x \rangle^2} \\
+    &= \frac{a}{2 \pi} \sqrt{\frac{1}{3} (\pi^2 - 6)} \\
+    \Delta p &= \sqrt{\langle p^2 \rangle - \langle p \rangle^2} \\
+    &= \frac{\pi \hbar}{a}
+\end{align*}
+
+\subsubsection{Comment on the value of the product \(\Delta x \Delta p\) you've found (10 marks)}
+Heisenberg's uncertainty principle states:
+\[\Delta x \Delta p \geq \frac{\hbar}{2}\]
+while using our custom wavefunction, we obtain the result:
+\[\Delta x \Delta p = \frac{\hbar}{2} \sqrt{\frac{1}{3} (\pi^2 - 6)} \approx \frac{\hbar}{2} 1.136 > \frac{\hbar}{2}\]
+therefore the uncertainty principle holds on our wavefunction.
+
+\section{Question 2 (40 Marks)}
+\subsection{An electron excited to a higher energy state in an atom by absorption of a photon re-radiates the photon after a time of typically \SI{1e-8}{\second}. This is called the lifetime of the excited state.}
+\subsubsection{Use the Uncertainty Principle to calculate the minimum uncertainty in the frequency \(\nu\) of the photon (10 marks)}
+\begin{align*}
+    \Delta E \Delta t &\geq \frac{\hbar}{2} \\
+    h \Delta \nu \Delta t &\geq \frac{\hbar}{2} \\
+    \Delta \nu \Delta t &\geq \frac{1}{4 \pi} \\
+    \Delta \nu &\geq \frac{1}{4 \pi \Delta t} \\
+    \therefore \Delta \nu &\gtrsim \frac{1}{4 \pi (\SI{1e-8}{\second})}\approx \SI{8}{\mega\hertz}
+\end{align*}
+
+\subsubsection{For a spectral line of wavelength \(\lambda = \SI{589.0}{\nano\metre}\) (the well-known yellow spectral line in the emission from a sodium lamp) what is the fractional width of the line \(\frac{\Delta \nu}{\nu}\)? (10 marks)}
+\begin{align*}
+    \nu &= \frac{c}{\lambda} \approx \SI{509.0}{\tera\hertz} \\
+    \therefore \frac{\Delta \nu}{\nu} &= \frac{\lambda}{4 \pi c \Delta t} \approx \SI{2e-8}{}
+\end{align*}
+
+\subsubsection{Use the Uncertainty Principle to calculate the uncertainty in the energy of the excited state \(\Delta E\) (10 marks)}
+\begin{align*}
+    \Delta E \Delta t &\geq \frac{\hbar}{2} \\
+    \Delta E &\geq \frac{\hbar}{2 \Delta t} \\
+    \therefore \Delta E &\gtrsim \frac{\hbar}{2 (\SI{1e-8}{\second})} \approx \SI{3e-8}{\electronvolt}
+\end{align*}
+
+\subsubsection{Use the above results to calculate, to within an uncertainty \(\Delta E\), the excited state energy \(E\) of the sodium atom emitting light at \SI{589.0}{\nano\metre}. Express your result referenced to the sodium atom's ground state energy (10 marks)}
+\[E = \frac{h c}{\lambda} \approx \SI{2.105}{\electronvolt}\]
+The uncertainty in the energy (\(\pm\SI{3e-8}{\electronvolt}\)) is 4 orders of magnitude smaller than the given precision of the wavelength, so there is no point including it.
+
+\end{document}

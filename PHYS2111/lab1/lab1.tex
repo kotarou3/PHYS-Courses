@@ -1,0 +1,79 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{siunitx}
+\usepackage[backend = biber, style = numeric-comp]{biblatex}
+
+\begin{filecontents}{\jobname.bib}
+@article{Walborn2002,
+    doi = {10.1103/physreva.65.033818},
+    url = {http://dx.doi.org/10.1103/PhysRevA.65.033818},
+    year  = {2002},
+    month = {feb},
+    publisher = {American Physical Society ({APS})},
+    volume = {65},
+    number = {3},
+    author = {S. P. Walborn and M. O. Terra Cunha and S. P{\'{a}}dua and C. H. Monken},
+    title = {Double-slit quantum eraser},
+    journal = {Phys. Rev. A}
+}
+\end{filecontents}
+\addbibresource{\jobname.bib}
+
+\begin{document}
+
+\title{PHYS2111: Quantum Eraser}
+\author{ \\ \\ }
+\date{2016-04-06}
+\maketitle
+
+\begin{abstract}
+    A very simple version of the quantum eraser experiment is performed, and the results match the quantum mechanical understanding of light. However, the classical wave understanding of light is shown to also produce the same results, so the validity of the experiment is called into question, while a revised version is suggested that addresses this shortcoming.
+\end{abstract}
+
+\section{Introduction}
+Please refer to the student notes of the experiment.
+
+\section{Materials and Methods}
+Please refer to the operating instructions of the experiment.
+
+PF3 was moved to be between SC2 and BS2. SC2 was then removed to project the beam onto a wall, and the old SC1 was relabelled SC2, and the wall labelled as SC1, to match expected results if this modification was not done.
+
+Each polarisation configuration was repeated a minimum of two times.
+
+\section{Results}
+\begin{figure}
+    \centering
+    \begin{tabular}{c | c | c | c | c}
+        PF1 & PF2 & PF3 & SC1 & SC2 \\
+        \hline
+        \SI{0}{\degree} & \SI{0}{\degree} & \SI{0}{\degree} & Yes & Yes \\
+        \SI{0}{\degree} & \SI{0}{\degree} & \SI{45}{\degree} & Yes & Yes \\
+        \SI{0}{\degree} & \SI{0}{\degree} & \SI{90}{\degree} & N/A & Yes \\
+        \SI{90}{\degree} & \SI{0}{\degree} & \SI{0}{\degree} & No & No \\
+        \SI{90}{\degree} & \SI{0}{\degree} & \SI{45}{\degree} & Yes & No \\
+        \SI{90}{\degree} & \SI{0}{\degree} & \SI{90}{\degree} & No & No \\
+        \SI{0}{\degree} & \SI{90}{\degree} & \SI{45}{\degree} & Yes & No \\
+        \SI{0}{\degree} & \SI{90}{\degree} & \SI{90}{\degree} & N/A & No \\
+        \SI{45}{\degree} & \SI{-45}{\degree} & \SI{0}{\degree} & Yes & No \\
+        \SI{45}{\degree} & \SI{-45}{\degree} & \SI{45}{\degree} & No & No \\
+        \SI{45}{\degree} & \SI{-45}{\degree} & \SI{90}{\degree} & Yes & No
+    \end{tabular}
+    \caption{Raw Data}
+    \label{tab:raw-data}
+\end{figure}
+
+Table \ref{tab:raw-data} shows the raw data from the experiment. Columns PF1, PF2 and PF3 all have individual errors of \(\pm\SI{1}{\degree}\). For columns SC1 and SC2, ``Yes'' means an clear interference pattern was seen, ``No'' means it was not, and ``N/A'' means no light appeared at all. Each repeat of the same polarisation configuration produced the same result.
+
+\section{Discussion}
+From a quantum mechanical understanding, when the photons from the two branches were ``marked'' with different polarisations (PF1 and PF2), they should no longer interfere when recombined (at BS2) since the path of the photon can be extracted from the polarisation. If another polariser (PF3) is added to the recombined beam such that it accepts light from both arms, then this path information is effectively ``erased'' and the interference pattern appears again. Only the relative polarisation settings of the polarisers should matter, since air is not birefringent. These expected results match the obtained experimental results, which appears to confirm our understanding is correct.
+
+However, while the experiment seemed to be successful, it is questionable if it really shows a quantum eraser in action. The results obtained seem to be same as expected from a classical wave understanding of light, where light is a polarisable electromagnetic wave.
+
+Orthogonally polarised waves (such as those travelling through the PF1 and PF2 arms) do not produce an interference pattern when recombined (at BS2) -- it only produces a elliptically polarised wave (Fresnel--Arago laws). Meanwhile, repolarising them back to the same polarisation (PF3) would allow them to interfere again, since they are no longer orthogonal. This result is identical to the quantum mechanical one described above.
+
+One method of performing the quantum eraser experiment again would be to involve entangled photons being shot down separate arms with separate detectors, where one arm has a double slit but different polarisation "markers" before each slit, while the other arm has a linear polariser (as described in \cite{Walborn2002}). This way, classical electromagnetism cannot explain the results.
+
+\printbibliography
+
+\end{document}
