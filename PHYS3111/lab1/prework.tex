@@ -1,0 +1,49 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{siunitx}
+\usepackage[greek, english]{babel}
+
+\usepackage{sectsty}
+\sectionfont{\large\selectfont}
+\subsectionfont{\normalsize\selectfont}
+
+\begin{document}
+
+\title{PHYS3111: Basic X-Ray Diffraction Prework}
+\author{ \\ \\}
+\date{2017-03-27}
+\maketitle
+
+\section{Questions}
+\subsection{If electrons in an X-ray tube are accelerated through a potential difference of \(V = \SI{20}{\kilo\volt}\), calculate the shortest possible wavelength appearing in the bremsstrahlung radiation}
+The electron will acquire a kinetic energy of \(e V\), and then dump this all into a single photon of wavelength:
+\[\lambda = \frac{h c}{e V} \approx \SI{0.62}{\angstrom}\]
+
+\subsection{A cubic crystal reflects the K\textgreek{b} radiation of copper (\(\lambda = \SI{1.38e-10}{\metre}\)) at an angle of \(\theta = \SI{18}{\degree}\) in the first order (\(n = 1\)). Calculate the corresponding inter-planar spacing \(d\) for the crystal.}
+The Bragg condition states that there will be maxima at angles satisfying \(2 d \sin \theta = n \lambda\). Solving for \(d\):
+\[d = \frac{n \lambda}{2 \sin \theta} \approx \SI{2.23}{\angstrom}\]
+
+\subsection{The crystal structure of NaCl is face-centred cubic (FCC). The unit cell is a cube with side length \(a\). The spacing \(d\) measured in this experiment is the separation between the upper face and that passing through the centre of the cube; thus \(d = \frac{a}{2}\).}
+\subsubsection{Show that each unit cell of the crystal contains four `molecules' of NaCl.}
+On average, each corner atom (Cl) is shared by 8 cells, each edge atom (Na) is shared by 4 cells and each face atom (Cl) is shared by 2 cells. The final atom in the centre (Na) is not shared.
+
+Thus the amount of Na and Cl atoms per cell would be:
+\begin{align*}
+    N_{Na} &= 12 \cdot \frac{1}{4} + 1 = 4 \\
+    N_{Cl} &= 8 \cdot \frac{1}{8} + 3 \cdot \frac{1}{2} = 4
+\end{align*}
+...which is 4 `molecules' of NaCl.
+
+\subsubsection{Prove that the density of the NaCl crystal is given by \(\rho = \frac{M}{2 N_A d^3}\), where \(M\) is the molar mass and \(N_A\) is Avogadro's number.}
+In a unit cell, we have 4 `molecules', so a mass of \(m = \frac{4 M}{N_A}\). A unit cell has volume \(V = a^3 = 8 d^3\). Thus our density is:
+\[\rho = \frac{m}{V} = \frac{M}{2 N_A d^3}\]
+
+\section{Experimental Plan}
+\begin{itemize}
+    \item Follow the method outlined in the operating instructions.
+    \item Find the K lines and shortest wavelength radiation angles, and focus measurements around these points.
+    \item Peaks are important for calculating the crystal spacing, while the spectrum is only important for verifying Kramer's law
+\end{itemize}
+
+\end{document}

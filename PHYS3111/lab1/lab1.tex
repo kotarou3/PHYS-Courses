@@ -1,0 +1,181 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb, esint}
+\usepackage{siunitx}
+\usepackage[utf8]{inputenc}
+\usepackage[backend = biber, style = numeric-comp]{biblatex}
+\usepackage[greek, english]{babel}
+
+\usepackage{tikz, pgfplots}
+\pgfplotsset{
+    compat = 1.12,
+    plot-scatter/.style = {
+        error bars/.cd,
+        x dir = both, y dir = both,
+        x explicit, y explicit
+    }
+}
+
+\begin{filecontents}{\jobname.bib}
+@book{Mott1940,
+    author    = {Mott and Gurney}, 
+    title     = {Electronic Processes in Electronic Crystals},
+    publisher = {Oxford University Press},
+    year      = 1940
+}
+@article{Laguitton1977,
+    doi = {10.1002/xrs.1300060409},
+    url = {https://doi.org/10.1002%2Fxrs.1300060409},
+    year  = {1977},
+    month = {oct},
+    publisher = {Wiley-Blackwell},
+    volume = {6},
+    number = {4},
+    pages = {201--203},
+    author = {Daniel Laguitton and William Parrish},
+    title = {Experimental spectral distribution versus Kramers{\textquotesingle} law for quantitative X-ray fluorescence by the fundamental parameters method},
+    journal = {X-Ray Spectrometry}
+}
+\end{filecontents}
+\addbibresource{\jobname.bib}
+
+\pgfplotstableread{data.tsv}\datatsv
+
+\begin{document}
+
+\title{PHYS3111: Basic X-ray Diffraction}
+\author{ \\ \\ }
+\date{2017-03-28}
+\maketitle
+
+\begin{abstract}
+    By measuring first, second and third order reflections of copper K-lines off a NaCl crystal sample, we obtained a lattice constant of \(a = \SI{5.62 \pm 0.06}{\angstrom}\), which agrees with the \(a = \SI{5.62}{\angstrom}\) value in the literature\cite{Mott1940}. A test on Kramers' Law was also attempted and our results differed to it by a significant amount, but this was more likely due to experimental error.
+\end{abstract}
+
+\section{Materials and Methods}
+Please refer to the operating instructions of the experiment and the prework.
+
+Using the lattice constant value from the literature, \(a = \SI{5.62}{\angstrom}\) \cite{Mott1940}, or lattice spacing \(d = \SI{2.82}{\angstrom}\), we expect the minimum wavelength x-ray of \(\lambda_{min} \approx \SI{0.62}{\angstrom}\) to be reflected to an angle of \(\theta_{min} \approx \SI{6.31}{\degree}\) in the first order.
+
+Unfortunately, our apparatus for measuring the reflected x-rays does not allow us to measure at an angle of less than \(2 \theta = \SI{20}{\degree}\), due to the x-ray shield locking mechanism blocking access, thus we cannot confirm this experimentally.
+
+The precision angle readout on our x-ray detector was broken, so we could only use the printed less precise angles, limiting our angle accuracy to \(\pm 0.25 \si{\degree}\).
+
+We can check Kramers' law by projecting the particle intensity:
+\[I(\theta) = K \left(\frac{\lambda}{\lambda_{min}} - 1\right) \frac{1}{\lambda^2} = K \left(\frac{\lambda e V}{h c} - 1\right) \frac{1}{\lambda^2}\]
+from the \(\lambda\) axis to \(\theta\) axis with the Bragg condition (\(\lambda = \frac{2 d \sin \theta}{n}\)) as the projection function:
+\begin{align*}
+    I(\lambda) \:\mathrm{d}\lambda &= \tilde I(\theta) \:\mathrm{d}\theta \\
+    \therefore \tilde I(\theta) &= I(\lambda) \frac{\mathrm{d}\lambda}{\mathrm{d}\theta} \\
+    &= I\left(\frac{2 d \sin \theta}{n}\right) \frac{2 d \cos \theta}{n}
+\end{align*}
+where \(K\) is an arbitrary constant.
+
+\section{Results}
+\begin{table}
+    \centering
+    \begin{tabular}{c | c | c | c}
+        Line & \(n\) & \(2 \theta\) (\si{\degree}) & \(d\) (\si{\angstrom}) \\
+        \hline
+        K\textgreek{b} & 1 & \SI{28.8 \pm 0.3}{} & \SI{2.77 \pm 0.03}{} \\
+        K\textgreek{a} & 1 & \SI{31.8 \pm 0.3}{} & \SI{2.81 \pm 0.03}{} \\
+        K\textgreek{b} & 2 & \SI{59.3 \pm 0.3}{} & \SI{2.790 \pm 0.013}{} \\
+        K\textgreek{a} & 2 & \SI{66.4 \pm 0.3}{} & \SI{2.812 \pm 0.011}{} \\
+        K\textgreek{a} & 3 & \SI{110.2 \pm 0.3}{} & \SI{2.817 \pm 0.005}{} \\
+    \end{tabular}
+    \caption{K-lines and corresponding lattice spacings}
+    \label{tab:k-lines}
+\end{table}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel = \(2 \theta\) (\si{\degree}),
+            ylabel = Counts (\si{\per\minute})
+        ]
+            \addplot +[plot-scatter] table [
+                x = 2th,
+                y = count,
+                x error = 2thError,
+                restrict x to domain = 27:35
+            ] {\datatsv};
+        \end{axis}
+    \end{tikzpicture}
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel = \(2 \theta\) (\si{\degree}),
+            ylabel = Counts (\si{\per\minute})
+        ]
+            \addplot +[plot-scatter] table [
+                x = 2th,
+                y = count,
+                x error = 2thError,
+                restrict x to domain = 57:70
+            ] {\datatsv};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{First and second order K-lines}
+    \label{fig:first-second-order-k-lines}
+\end{figure}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel = \(2 \theta\) (\si{\degree}),
+            ylabel = Count
+        ]
+            \addplot +[plot-scatter] table [
+                x = 2th,
+                y = count,
+                x error = 2thError,
+                restrict x to domain = 107:115
+            ] {\datatsv};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Third order K\textgreek{a} line}
+    \label{fig:third-order-k-lines}
+\end{figure}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \begin{semilogyaxis}[
+            xlabel = \(2 \theta\) (\si{\degree}),
+            ylabel = Counts (\si{\per\minute}),
+            samples = 100,
+            width = \textwidth
+        ]
+            \addplot +[plot-scatter] table [
+                x = 2th,
+                y = count,
+                x error = 2thError
+            ] {\datatsv};
+            \addplot +[no marks, red, smooth, domain = 13:130] {100 * cot(x / 2) * (9.09793 * sin(x / 2) - 1) / sin(x / 2)};
+        \end{semilogyaxis}
+    \end{tikzpicture}
+    \caption{All measured angles with Kramers' Law overlaid on a log plot}
+    \label{fig:all-data}
+\end{figure}
+
+Five maxima were observed in the measured data, corresponding to first and second order K-lines (Figure \ref{fig:first-second-order-k-lines}), and a third order K\textgreek{a} line (Figure \ref{fig:third-order-k-lines}). The maxima angles along with their corresponding lattice spacings are shown in Table \ref{tab:k-lines}.
+
+Taking a weighted average of the lattice spacing results, we get a spacing value of \(d = \SI{2.81 \pm 0.03}{\angstrom}\), or a lattice constant of \(a = \SI{5.62 \pm 0.06}{\angstrom}\).
+
+A graph of our measurements through the full angle range is shown in Figure \ref{fig:all-data}, with Kramers' Law overlaid.
+
+A background count (i.e., with the x-ray source off) produced a rate of around \SI{35}{\per\minute}, which is an order of magnitude smaller than the lowest rates with the source on. The temperature throughout the experiment was \SI{24 \pm 2}{\degreeCelsius}.
+
+\section{Discussion}
+Our lattice constant of \(a = \SI{5.62 \pm 0.06}{\angstrom}\) agrees with the \(a = \SI{5.62}{\angstrom}\) value in the literature\cite{Mott1940}. Our precision could be improved, however, by letting the angle placement be done by a computer or increasing the distance to the crystal sample, both which would decrease our error in \(\theta\) and thus \(a\).
+
+Figure \ref{fig:all-data} shows that Kramers' Law is a horrible fit to our data, and in fact is of completely the wrong shape, even ignoring the sharp K-lines. This indicates that Kramers' Law may not be an accurate description of bremsstrahlung emission (at least one paper\cite{Laguitton1977} claims this), or more likely, there were other sources of x-rays that we did not account for (such as x-rays passing through the source's enclosure than just out of the output slit).
+
+While the background rate of around \SI{35}{\per\minute} was more than an order of magnitude lower than the rest of our observations, it was measured when the x-ray source was off. It would have been better to measure the rate (and possible angle dependence) with the source on but without the sample. This might help with explaining the discrepancy with Kramer's Law.
+
+As trivia, using NaCl's molar mass of \(M = \SI{58.46e-3}{\kilo\gram\per\mole}\) and density of \(\rho = \SI{2.16e3}{\kilo\gram\per\metre\cubed}\) (as quoted from the student notes), we can calculate Avagadro's number to be \SI{6.08 \pm 0.19e23}{\per\mole}, which agrees with the CODATA 2014 \SI{6.02e23}{\per\mole} value.
+
+\section{Conclusion}
+\emph{(From abstract)} By measuring first, second and third order reflections of copper K-lines off a NaCl crystal sample, we obtained a lattice constant of \(a = \SI{5.62 \pm 0.06}{\angstrom}\), which agrees with the \(a = \SI{5.62}{\angstrom}\) value in the literature\cite{Mott1940}. A test on Kramers' Law was also attempted and our results differed to it by a significant amount, but this was more likely due to experimental error.
+
+\printbibliography
+
+\end{document}
