@@ -1,0 +1,88 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{amsmath, amssymb}
+
+\usepackage{sectsty}
+\sectionfont{\large\selectfont}
+\subsectionfont{\normalsize\selectfont}
+
+\usepackage{siunitx}
+
+\usepackage{tikz, pgfplots}
+\pgfplotsset{compat = 1.9}
+
+\begin{document}
+
+\title{PHYS1241: Assignment 3}
+\author{ \\ \\ }
+\date{2015-10-08}
+\maketitle
+
+\section{A step index optical fibre has a core refractive index \(n_0\) and a cladding refractive index \(n_{cl}\). The diameter of the core is \(d\). Light is sent into the fibre along its axis.}
+\subsection{Derive an expression for the smallest radius of curvature permitted for the core \(R_{min}\) so as to insure that no light escapes into the cladding.}
+Consider a cartesian coordinate system with the origin at the centre of curvature. Ignoring the wave properties of light, also consider a photon initially travelling on the to-be-inner edge of the curve, that is, from \((R - d, 0)\) in the positive \(y\) axis.
+
+This ray meets the outer edge of the curve at \((R \cos \theta = R - d, R \sin \theta)\), where \(\theta\) is the angle the point makes with the origin.
+
+The angle of incidence is \(\phi = \frac{\pi}{2} - \theta\), so the critical angle is defined by the expression \(\sin \phi = \cos \theta = \frac{n_{cl}}{n_0}\).
+
+Solving for \(R = R_{min}\) gives:
+\[R_{min} = \frac{d}{1 - \frac{n_{cl}}{n_0}}\]
+
+\subsection{Plot a graph of \(R_{min}\) as a function of \(d\) for \(n_0 = \SI{1.42}{}\) and \(n_{cl} = \SI{1.40}{}\) for values of \(d\) between \SI{0}{} and \SI{100}{\micro\metre}.}
+\begin{center}
+    \begin{tikzpicture}
+        \begin{axis}[
+            axis lines = middle,
+            xlabel = \(d\,\mathrm{(\si{\micro\metre})}\),
+            ylabel = \(R_{min}\,\mathrm{(\si{\micro\metre})}\)
+        ]
+            \addplot +[no marks, domain = 0:100] {x / (1 - (1.4 / 1.42))};
+        \end{axis}
+    \end{tikzpicture}
+\end{center}
+
+\subsection{After reading up on optical fibre sensors list the benefits of such sensors.}
+\begin{itemize}
+    \item Can sense a variety of different properties such as strain, temperature, pressure and attitude changes.
+    \item For some properties (e.g., temperature), multiple measurements at different displacements can be performed with a single fibre.
+    \item Can sense the above remotely (up to kilometres away), without needing the sensing equipment anywhere near the area being measured.
+    \item Is small, so it can fit into places where other equipment would be difficult to fit.
+    \item Is not affected (as much) by strong electromagnetic fields nor high temperatures or pressure that might otherwise break other measurement equipment.
+\end{itemize}
+
+\subsection{Can you find in the library or on the web or better still come up with your own idea for a fibre sensor that is based on the effect described in 1a above? Give details using words and or sketches.}
+Take a loop of fibre curved at exactly or slightly above its minimum radius of curvature. A change in temprature would cause the fibre to contract or expand, as well as changing the refractive index of both core and cladding, thus changing the minimum radius of curvature.
+
+This means if some light is shone into the fibre, and at the other end it is measured, a change in temperature would cause a change in the output light intensity, so the loop of fibre could be used to detect temperature changes.
+
+\section{Professor Joe Foxe is planning to build an acoustic spectrometer for the audible frequency range. He is thinking of using a diffraction grating as the dispersing element in his acoustic spectrometer. Is this a practical idea? If you think such a grating can be made give typical dimensions groove density and resolving power for your design. If you think that such grating cannot be made or will not work explain why not.}
+The audible frequency range is commonly stated to be between \SI{20}{\hertz} to \SI{20}{\kilo\hertz}, which is approximately a wavelength of between \SI{17}{\metre} and \SI{17}{\milli\metre}.
+
+Theoretically, the maximum possible frequency to be resolved by a diffraction grating is double the minimum, where the \(n = 2\) band of the higher frequency completely overlaps the \(n = 1\) band of the lower, but the audible frequency range spans three order of magnitudes, or approximately \(2^{10}\).
+
+Additionally, since a slit separation of greater than the wavelength is needed, the grating would be impractically large to cover the lower end of the audible spectrum.
+
+Completely unscientifically taking a spectrogram of some music I had, the majority of the ``interesting'' frequencies were between \SI{50}{\hertz} and \SI{2000}{\hertz}. And in human voice, the majority of frequencies are between \SI{90}{\hertz} and \SI{1000}{\hertz}.
+
+This means while it is possible to build diffraction gratings that covers small parts of the audible range, it is impossible to build a one that can completely resolve any significant or interesting audible frequency range, let alone the complete range.
+
+\section{In a double slit experiment where the separation between the slits is \(d\), and the distance from the slit to the screen is \(L\), we place a thin transparent plastic sheet of index of refraction \(n\) and thickness \(t\) over the upper slit. As a result the central maximum of the interference pattern moves upward a distance \(y\). Calculate \(y\).}
+Consider a 2D cartesian coordinate system with two point sources at \(S_0 = (0, \frac{d}{2})\) and \(S_1 = (0, -\frac{d}{2})\), where the upper source at \(S_0\) has a phase shift of \(\varphi\).
+
+The central maximum (when there is no phase shift) of the interference pattern occurs when the phases are equal at the same coordinate. That is:
+\[k \sqrt{x^2 + \left( y - \frac{d}{2} \right)^2} + \varphi = k \sqrt{x^2 + \left( y + \frac{d}{2} \right)^2}\]
+where \(k\) is the wavenumber, and the frequency/time component ignored since it cancels itself out.
+
+The phase shift in the upper source can be calculated by considering the optical path difference between with and without the plastic sheet. The phase shift would be the optical path difference (\(O = t (n - 1)\)) multiplied by the wavenumber. That is:
+\[\varphi = k O = k t (n - 1)\]
+
+Combining the above two equations, solving for \(y\), and substituting \(x\) for \(L\) (since that's all we're interested in) yields:
+\[y = \frac{O}{2}\sqrt{1 + \frac{4 L^2}{d^2 - O^2}} = \frac{t (n - 1)}{2}\sqrt{1 + \frac{4 L^2}{d^2 - t^2 (n - 1)^2}}\]
+
+If \(L \gg d\), the expression then simplifies down to:
+\[y = \frac{L O}{\sqrt{d^2 - O^2}} = \frac{L t (n - 1)}{\sqrt{d^2 - t^2 (n - 1)^2}}\]
+
+Note that if the optical path difference is big enough, the central maximum can move by such a large amount that it is no longer the maximum closest to the centre, and may even disappear entirely.
+
+\end{document}

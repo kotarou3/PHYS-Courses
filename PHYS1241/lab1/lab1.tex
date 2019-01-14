@@ -1,0 +1,124 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[cm]{fullpage}
+\usepackage{siunitx}
+\usepackage{arydshln}
+
+\begin{document}
+
+\title{PHYS1241: Faraday Ice Pail}
+\author{ \\ \\ }
+\date{2015-08-13}
+\maketitle
+
+\section{Abstract}
+Faraday's ice pail experiment is reproduced and verified to be consistent with expectations. The pail was then used to determine the triboelectric series of some materials to be, from positive to negative, synthetic blue fur, synthetic black wool, foam, red felt and PVC piping. The pail was also found to heavily attenuate \SI{10}{\giga\hertz} EM radiation, thus acting as a Faraday cage.
+
+\section{Introduction}
+A Faraday ice pail is a device based on the device originally used by Faraday along with an electroscope to demonstrate electrostatic inductance.
+
+We are provided with a Faraday ice pail and an electrometer to reproduce Faraday's experiment, along with producing our own triboelectric series and measuring whether or not the pail can pass \SI{10}{\giga\hertz} electromagnetic radiation.
+
+\section{Materials and Methods}
+Please refer to page 45 in the PHYS1241 laboratory manual for the base materials and methods used.
+
+The triboelectric series for the synthetic blue fur, synthetic black wool, red felt, PVC piping and foam was obtained by rubbing pairs of the materials together, sticking the rubbed section inside the pail without touching the walls and seeing if the electrometer deflected to a positive or negative value. These comparisons allow the materials to be sorted into an triboelectric series.
+
+Testing whether or not the pail passed \SI{10}{\giga\hertz} electromagnetic radiation was done by placing the transmitter and receiver, separated by \SI{30}{\centi\metre}, perpendicular and level to the sides of the pail, and measuring how much the pail attenuates the signal. Control was done by replacing the pail with a \SI{1}{\centi\metre} thick book, two of those books, and air.
+
+\section{Results}
++, -- and ? indicates a positive, negative or indeterminate charge or deflection.
+
+\subsection{Basic Electrostatic Induction}
+\begin{table}
+    \centering
+    \begin{tabular}{c : c | c : c}
+        Disk Type A & & Disk Type B & \\
+        \hline
+        White & + & Black & -- \\
+        White & -- & Silver & + \\
+        Black & -- & Silver & + \\
+        \hline
+    \end{tabular}
+    \caption{Electrometer deflection for each disk type (non-touching)}
+    \label{tab:induction}
+\end{table}
+
+To answer the initial questions posed in the method, the pail has a shield to reduce the chance of stray charges falling into the pail skewing the readings, and an electrometer measures the charge difference between two objects (with one of the objects usually being ground).
+
+Table \ref{tab:induction} shows the results obtained from this experiment. When the disks were instead touched to the pail, the deflection polarity reversed compared to the ones shown in the table.
+
+\subsection{Triboelectric Series}
+\begin{table}
+    \centering
+    \begin{tabular}{c : c | c : c}
+        Material A & & Material B & \\
+        \hline
+        Fur & + & Wool & -- \\
+        Fur & + & Foam & -- \\
+        Fur & + & PVC & -- \\
+        Wool & + & Felt & -- \\
+        Foam & + & PVC & -- \\
+        Felt & + & PVC & -- \\
+        Foam & ? & Wool & ? \\
+        Foam & ? & Felt & ? \\
+        \hline
+    \end{tabular}
+    \caption{Materials compared and corresponding electrometer deflections}
+    \label{tab:triboelectric_data}
+\end{table}
+
+\begin{table}
+    \centering
+    \begin{tabular}{| c |}
+        + Material \\
+        \hline
+        Synthetic Blue Fur \\
+        Synthetic Black Wool \\
+        Foam \\
+        Red Felt \\
+        PVC Piping \\
+        \hline
+        -- Material
+    \end{tabular}
+    \caption{Concluding triboelectric series}
+    \label{tab:triboelectric_series}
+\end{table}
+
+Table \ref{tab:triboelectric_data} shows the raw data collected from this experiment. Table \ref{tab:triboelectric_series} shows the conclusion of the comparisons, with the materials more likely to become positively charged listed higher up.
+
+\subsection{\SI{10}{\giga\hertz} EM Radiation Passing}
+\begin{table}
+    \centering
+    \begin{tabular}{c | c | c}
+        Object & Reading (\SI{}{\milli\ampere}) & Attenuation (\SI{}{\deci\bel}) \\
+        \hline
+        Air & \SI{15.0 \pm 0.6}{} & \SI{0.00}{} \\
+        Pail & \SI{0.02 \pm 0.02}{} & \SI{30}{} \\
+        Grounded Pail & \SI{0.01 \pm 0.02}{} & \SI{30}{} \\
+        \SI{1}{\centi\metre} Book & \SI{12.0 \pm 0.3}{} & \SI{0.969 \pm 0.020}{} \\
+        \SI{2}{\centi\metre} Book & \SI{8.4 \pm 0.6}{} & \SI{2.5}{} \\
+        \hline
+    \end{tabular}
+    \caption{Receiver readings}
+    \label{tab:em_data}
+\end{table}
+
+Table \ref{tab:em_data} shows the raw data gathered in this experiment. The \SI{30}{\deci\bel} of attenuation with the pail in between clearly shows that it does not pass the radiation very well, compared to the \SI{2.5}{\deci\bel} attenuation of the \SI{2}{\centi\metre} book.
+
+\section{Discussion}
+\subsection{Basic Electrostatic Induction}
+When the white and black charge producers were rubbed together, they acquired a positive and negative charge respectively, according to the user manual. When the white charge producer was brought inside the pail, but not touching, it induced a negative charge on the pail, drawing negative charges away from the eletrometer, making it positive, thus producing a positive deflection. The same applies with the black charge producer, but with opposite polarity.
+
+When the white charge producer was touched to the pail, negative charges are drawn away from both the initially neutral pail and electrometer to balance the positive charge on the charge producer, resulting in a net negative charge on the electrometer, thus producing the negative deflection. One again, similarly with the black charge producer, but with opposite polarity.
+
+The silver proof plane probably consistently became positively charged because it gives off negative charges more easily than both the charge producers.
+
+\subsection{Triboelectric Series}
+The foam was placed between the wool and felt in the series because the comparisons between both the foam and wool, and the foam and felt produced indeterminate results from the electrometer, since this likely means that its willingness to accept or reject charges are close to that of the wool and felt.
+
+\subsection{\SI{10}{\giga\hertz} EM Radiation Passing}
+The wavelength of \SI{10}{\giga\hertz} EM radiation is \SI{\approx 30}{\milli\metre}, while the square gratings on both the pail and shield had diagonal distances of \SI{\approx 7}{\milli\metre}. EM radiation exponentially decays when the maximum hole size in a Faraday cage is smaller than the wavelength, so the \SI{30}{\deci\bel} of attenuation measured is consistent with this expectation, though is somewhat low. The attenuation could have been a lot higher, but the receiver was not sensitive enough to measure this. Alternatively, the radiation diffracting around the pail may also have contributed to the lower attenuation.
+
+Comparing the attenuation of the pail to the books showed that the amount of material in between isn't the only contributing factor to the attenuation. \SI{2}{\centi\metre} of books is a fair bit more than the material in the pail, but since the books were non-conductive, they did not act as a Faraday cage and thus attenuation was a lot lower.
+
+\end{document}
